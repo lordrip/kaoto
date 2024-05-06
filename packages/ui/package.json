@@ -74,6 +74,7 @@
     "xml-formatter": "^3.6.5",
     "xml-name-validator": "^5.0.0",
     "yaml": "^2.3.2",
+    "zundo": "^2.3.0",
     "zustand": "^4.3.9"
   },
   "peerDependencies": {
@@ -102,6 +103,7 @@
     "@patternfly/react-icons": "^6.2.2",
     "@patternfly/react-table": "^6.2.2",
     "@patternfly/react-topology": "^6.2.0",
+    "@redux-devtools/extension": "^3.3.0",
     "@swc/core": "^1.7.14",
     "@swc/jest": "^0.2.36",
     "@testing-library/dom": "^10.0.0",
