@@ -1,5 +1,5 @@
 import { Icon } from '@patternfly/react-core';
-import { CatalogIcon } from '@patternfly/react-icons';
+import { CatalogIcon, PrintAltIcon, RedoIcon, UndoIcon } from '@patternfly/react-icons';
 import {
   Model,
   SELECTION_EVENT,
@@ -25,6 +25,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useStore } from 'zustand';
 import layoutHorizontalIcon from '../../../assets/layout-horizontal.png';
 import layoutVerticalIcon from '../../../assets/layout-vertical.png';
 import { useLocalStorage } from '../../../hooks';
@@ -32,6 +33,8 @@ import { LocalStorageKeys } from '../../../models';
 import { BaseVisualCamelEntity } from '../../../models/visualization/base-visual-entity';
 import { CatalogModalContext } from '../../../providers/catalog-modal.provider';
 import { VisibleFlowsContext } from '../../../providers/visible-flows.provider';
+import { useSourceCodeStore } from '../../../store';
+import { EventNotifier } from '../../../utils';
 import { VisualizationEmptyState } from '../EmptyState';
 import './Canvas.scss';
 import { CanvasSideBar } from './CanvasSideBar';
@@ -54,6 +57,9 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
     LocalStorageKeys.CanvasSidebarWidth,
     CanvasDefaults.DEFAULT_SIDEBAR_WIDTH,
   );
+
+  const eventNotifier = EventNotifier.getInstance();
+  const { undo, redo, pastStates, futureStates } = useStore(useSourceCodeStore.temporal, (state) => state);
 
   /** Context to interact with the Canvas catalog */
   const catalogModalContext = useContext(CatalogModalContext);
@@ -92,6 +98,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
 
     controller.fromModel(model, false);
     setInitialized(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controller, entities, visibleFlows]);
 
   const handleSelection = useCallback((selectedIds: string[]) => {
@@ -131,7 +138,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
         id: 'topology-control-bar-h_layout-button',
         icon: (
           <Icon>
-            <img src={layoutHorizontalIcon} />
+            <img alt="horizontal layout" src={layoutHorizontalIcon} />
           </Icon>
         ),
         tooltip: 'Horizontal Layout',
@@ -145,7 +152,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
         id: 'topology-control-bar-v_layout-button',
         icon: (
           <Icon>
-            <img src={layoutVerticalIcon} />
+            <img alt="vertical layout" src={layoutVerticalIcon} />
           </Icon>
         ),
         tooltip: 'Vertical Layout',
@@ -154,6 +161,32 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
           controller.getGraph().setLayout(LayoutType.DagreVertical);
           controller.getGraph().layout();
         }),
+      },
+      {
+        id: 'topology-control-bar-undo-button',
+        icon: <UndoIcon />,
+        tooltip: 'Undo',
+        callback: action(() => {
+          undo();
+          // eventNotifier.next('code:updated', useSourceCodeStore.getState().sourceCode);
+        }),
+      },
+      {
+        id: 'topology-control-bar-redo-button',
+        icon: <RedoIcon />,
+        tooltip: 'Redo',
+        callback: action(() => {
+          redo();
+          // eventNotifier.next('code:updated', useSourceCodeStore.getState().sourceCode);
+        }),
+      },
+      {
+        id: 'topology-control-bar-reset-button',
+        icon: <PrintAltIcon />,
+        tooltip: 'Reset',
+        callback: () => {
+          console.log(pastStates, futureStates);
+        },
       },
     ];
     if (catalogModalContext) {
@@ -183,7 +216,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
       legend: false,
       customButtons,
     });
-  }, [catalogModalContext, controller, setActiveLayout]);
+  }, [catalogModalContext, controller, eventNotifier, futureStates, pastStates, redo, setActiveLayout, undo]);
 
   const handleCloseSideBar = useCallback(() => {
     setSelectedIds([]);
