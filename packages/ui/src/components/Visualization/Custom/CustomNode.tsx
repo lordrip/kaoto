@@ -16,6 +16,8 @@ import {
 import clsx from 'clsx';
 import { FunctionComponent, ReactElement, useContext } from 'react';
 import { AddStepMode } from '../../../models/visualization/base-visual-entity';
+import { SettingsContext } from '../../../providers';
+import { doTruncateLabel } from '../../../utils/truncate-label';
 import { CanvasDefaults } from '../Canvas/canvas.defaults';
 import { CanvasNode } from '../Canvas/canvas.models';
 import './CustomNode.scss';
@@ -25,8 +27,6 @@ import { ItemDeleteStep } from './ItemDeleteStep';
 import { ItemDisableStep } from './ItemDisableStep';
 import { ItemInsertStep } from './ItemInsertStep';
 import { ItemReplaceStep } from './ItemReplaceStep';
-import { doTruncateLabel } from '../../../utils/truncate-label';
-import { SettingsContext } from '../../../providers';
 
 interface CustomNodeProps extends WithSelectionProps {
   element: Node<CanvasNode, CanvasNode['data']>;
