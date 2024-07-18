@@ -181,6 +181,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = (props)
     };
 
     controller.fromModel(model, false);
+    controller.getGraph().layout();
   }, [controller, props.entities, visibleFlows]);
 
   useEffect(() => {
