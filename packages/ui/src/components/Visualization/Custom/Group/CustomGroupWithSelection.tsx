@@ -11,11 +11,13 @@ import {
   withSelection,
 } from '@patternfly/react-topology';
 import { FunctionComponent, ReactElement } from 'react';
-import { AddStepMode } from '../../../models/visualization/base-visual-entity';
-import { CanvasNode } from '../Canvas/canvas.models';
-import { ItemDeleteGroup } from './ItemDeleteGroup';
-import { ItemInsertStep } from './ItemInsertStep';
-import { doTruncateLabel } from '../../../utils/truncate-label';
+import { AddStepMode } from '../../../../models/visualization/base-visual-entity';
+import { doTruncateLabel } from '../../../../utils/truncate-label';
+import { CanvasNode } from '../../Canvas/canvas.models';
+import './CustomGroup.scss';
+import { CustomGroupCollapsible } from './CustomGroupCollapsible';
+import { ItemDeleteGroup } from '../ItemDeleteGroup';
+import { ItemInsertStep } from '../ItemInsertStep';
 
 type IDefaultGroup = Parameters<typeof DefaultGroup>[0];
 interface ICustomGroup extends IDefaultGroup {
@@ -33,11 +35,12 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
   return (
     <g>
       <Layer>
-        <DefaultGroup
+        <CustomGroupCollapsible
           {...rest}
           element={element}
+          className="custom-group"
           label={doTruncateLabel(label)}
-          showLabel={true}
+          showLabel
           collapsible
           collapsedWidth={50}
           collapsedHeight={50}
