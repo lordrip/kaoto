@@ -1,3 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+/**
+ * This file is a clone of the original file from the Patternfly Topology component.
+ * For now it's necessary to ignore all typings errors because there are fields typed
+ * in a way that is not compatible with the original file.
+ */
 import {
   CollapsibleGroupProps,
   createSvgIdUrl,
