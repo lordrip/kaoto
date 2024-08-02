@@ -13,7 +13,9 @@ import {
 } from '@patternfly/react-topology';
 import { observer } from 'mobx-react';
 import { FunctionComponent, useRef } from 'react';
+import { CollapseButton } from './CollapseButton';
 import { CustomGroupProps, PointWithSize } from './Group.models';
+import { ContextMenuButton } from './ContextMenuButton';
 
 type CustomGroupExpandedProps = CustomGroupProps &
   CollapsibleGroupProps &
@@ -23,7 +25,8 @@ type CustomGroupExpandedProps = CustomGroupProps &
   WithContextMenuProps;
 
 export const CustomGroupExpanded: FunctionComponent<CustomGroupExpandedProps> = observer(
-  ({ className, element, onSelect, label, droppable, onContextMenu }) => {
+  ({ className, element, onSelect, label: propsLabel, droppable, onContextMenu, onCollapseChange }) => {
+    const label = propsLabel || element.getLabel();
     const vizNode = element.getData()?.vizNode;
     const anchorRef = useSvgAnchor();
     const boxRef = useRef<Rect | null>(null);
@@ -78,7 +81,10 @@ export const CustomGroupExpanded: FunctionComponent<CustomGroupExpandedProps> = 
                   <div className="custom-group__title__img-circle">
                     <img src={vizNode?.data.icon} />
                   </div>
-                  <span>{label || element.getLabel()}</span>
+                  <span title={label}>{label}</span>
+
+                  <CollapseButton element={element} onCollapseChange={onCollapseChange} />
+                  <ContextMenuButton element={element} />
                 </div>
               </div>
             </foreignObject>
