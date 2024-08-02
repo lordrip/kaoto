@@ -1,8 +1,5 @@
-import { CodeBranchIcon } from '@patternfly/react-icons';
 import {
-  ContextMenuSeparator,
   DefaultGroup,
-  ElementModel,
   GraphElement,
   Layer,
   isNode,
@@ -10,14 +7,11 @@ import {
   withContextMenu,
   withSelection,
 } from '@patternfly/react-topology';
-import { FunctionComponent, ReactElement } from 'react';
-import { AddStepMode } from '../../../../models/visualization/base-visual-entity';
-import { doTruncateLabel } from '../../../../utils/truncate-label';
+import { FunctionComponent } from 'react';
 import { CanvasNode } from '../../Canvas/canvas.models';
+import { NodeContextMenuFn } from '../NodeContextMenu';
 import './CustomGroup.scss';
 import { CustomGroupCollapsible } from './CustomGroupCollapsible';
-import { ItemDeleteGroup } from '../ItemDeleteGroup';
-import { ItemInsertStep } from '../ItemInsertStep';
 
 type IDefaultGroup = Parameters<typeof DefaultGroup>[0];
 interface ICustomGroup extends IDefaultGroup {
@@ -39,7 +33,7 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
           {...rest}
           element={element}
           className="custom-group"
-          label={doTruncateLabel(label)}
+          label={label}
           showLabel
           collapsible
           collapsedWidth={50}
@@ -51,38 +45,4 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
   );
 });
 
-export const CustomGroupWithSelection = withSelection()(
-  withContextMenu((element: GraphElement<ElementModel, CanvasNode['data']>) => {
-    const items: ReactElement[] = [];
-    const vizNode = element.getData()?.vizNode;
-    if (!vizNode) return items;
-
-    const nodeInteractions = vizNode.getNodeInteraction();
-
-    if (nodeInteractions.canHaveSpecialChildren) {
-      items.push(
-        <ItemInsertStep
-          key="context-menu-item-insert-special"
-          data-testid="context-menu-item-insert-special"
-          mode={AddStepMode.InsertSpecialChildStep}
-          vizNode={vizNode}
-        >
-          <CodeBranchIcon /> Add branch
-        </ItemInsertStep>,
-      );
-      items.push(<ContextMenuSeparator key="context-menu-separator-insert" />);
-    }
-
-    if (nodeInteractions.canRemoveFlow) {
-      items.push(
-        <ItemDeleteGroup
-          key="context-menu-container-remove"
-          data-testid="context-menu-container-remove"
-          vizNode={vizNode}
-        />,
-      );
-    }
-
-    return items;
-  })(CustomGroup),
-);
+export const CustomGroupWithSelection = withSelection()(withContextMenu(NodeContextMenuFn)(CustomGroup));

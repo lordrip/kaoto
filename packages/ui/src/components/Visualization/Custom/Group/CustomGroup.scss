@@ -23,7 +23,6 @@
   &__title {
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: var(--pf-v5-global--FontSize--lg);
     color: var(--pf-v5-global--palette--black-900);
     background-color: var(--pf-v5-global--palette--light-blue-200);
@@ -37,10 +36,6 @@
       border-radius: 50px;
       border: var(--custom-group--BorderSize) solid var(--custom-group--BorderColor);
       background-color: var(--pf-v5-global--palette--white);
-      transform: translate(-35%, -5%);
-      position: absolute;
-      top: 0;
-      left: 0;
 
       img {
         max-width: 30px;
@@ -49,8 +44,11 @@
     }
 
     span {
+      margin: 0 var(--pf-v5-global--FontSize--md);
       flex: 1;
-      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 
