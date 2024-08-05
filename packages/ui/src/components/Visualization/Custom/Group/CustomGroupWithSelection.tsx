@@ -35,7 +35,6 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
           element={element}
           className="custom-group"
           label={label}
-          showLabel
           collapsible
           collapsedWidth={CanvasDefaults.DEFAULT_NODE_DIAMETER}
           collapsedHeight={CanvasDefaults.DEFAULT_NODE_DIAMETER}

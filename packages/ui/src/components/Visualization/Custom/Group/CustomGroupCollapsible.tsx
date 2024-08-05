@@ -12,7 +12,7 @@ export const CustomGroupCollapsible: FunctionComponent<CustomGroupProps> = obser
         group.setDimensions(new Dimensions(rest.collapsedWidth, rest.collapsedHeight));
       }
       group.setCollapsed(collapsed);
-      onCollapseChange && onCollapseChange(group, collapsed);
+      onCollapseChange?.(group, collapsed);
     };
     const vizNode = element.getData()?.vizNode;
     const isDisabled = !!vizNode?.getComponentSchema()?.definition?.disabled;

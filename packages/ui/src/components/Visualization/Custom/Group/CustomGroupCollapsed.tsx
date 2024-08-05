@@ -40,8 +40,9 @@ export const CustomGroupCollapsed: FunctionComponent<CustomGroupExpandedProps> =
     return (
       <g onContextMenu={onContextMenu} onClick={onSelect} className={className}>
         <Layer id={GROUPS_LAYER}>
-          <g onContextMenu={onContextMenu} onClick={onSelect} className={className}>
+          <g>
             <rect className="phantom-rect" ref={anchorRef} width={collapsedWidth} height={collapsedHeight} />
+
             <foreignObject className="foreign-object" width={collapsedWidth} height={collapsedHeight}>
               <div className={className}>
                 <div className="custom-group__title">
