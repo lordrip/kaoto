@@ -33,7 +33,7 @@ export const ContextMenuButton: FunctionComponent<ContextMenuButtonProps> = ({ e
   return (
     <>
       <Tooltip content="Contextual menu">
-        <Button variant="control" onClick={onClick} data-testid={`contextualMenu-${id}`}>
+        <Button className='container-controls' variant="control" onClick={onClick} data-testid={`contextualMenu-${id}`}>
           <EllipsisVIcon />
         </Button>
       </Tooltip>
