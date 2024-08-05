@@ -14,8 +14,9 @@ export const CustomGroupCollapsible: FunctionComponent<CustomGroupProps> = obser
       group.setCollapsed(collapsed);
       onCollapseChange && onCollapseChange(group, collapsed);
     };
-
-    const classNames = clsx(className, { 'custom-group--selected': selected });
+    const vizNode = element.getData()?.vizNode;
+    const isDisabled = !!vizNode?.getComponentSchema()?.definition?.disabled;
+    const classNames = clsx(className, { 'custom-group--selected': selected, 'custom-group--disabled': isDisabled });
 
     if (element.isCollapsed()) {
       return (
