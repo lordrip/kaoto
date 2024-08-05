@@ -5,6 +5,7 @@
  * For now it's necessary to ignore all typings errors because there are fields typed
  * in a way that is not compatible with the original file.
  */
+import { ExpandArrowsAltIcon } from '@patternfly/react-icons';
 import {
   CollapsibleGroupProps,
   createSvgIdUrl,
@@ -14,6 +15,7 @@ import {
   LabelPosition,
   Layer,
   NodeLabel,
+  observer,
   useCombineRefs,
   useDragNode,
   useHover,
@@ -23,11 +25,9 @@ import {
   WithDragNodeProps,
   WithSelectionProps,
 } from '@patternfly/react-topology';
-import { observer } from 'mobx-react';
+import { NODE_SHADOW_FILTER_ID_HOVER } from '@patternfly/react-topology/dist/esm/components/nodes/NodeShadows';
 import { FunctionComponent } from 'react';
 import { CustomGroupProps } from './Group.models';
-import { ExpandArrowsAltIcon } from '@patternfly/react-icons';
-import { NODE_SHADOW_FILTER_ID_HOVER } from '@patternfly/react-topology/dist/esm/components/nodes/NodeShadows';
 
 type CustomGroupCollapsedProps = CustomGroupProps &
   CollapsibleGroupProps &

@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@patternfly/react-core';
 import { EllipsisVIcon } from '@patternfly/react-icons';
-import { ContextMenu, PointIface } from '@patternfly/react-topology';
+import { ContextMenu, observer, PointIface } from '@patternfly/react-topology';
 import { FunctionComponent, MouseEventHandler, useRef, useState } from 'react';
 import { NodeContextMenu } from '../NodeContextMenu';
 import { CustomGroupProps } from './Group.models';
@@ -17,6 +17,8 @@ export const ContextMenuButton: FunctionComponent<ContextMenuButtonProps> = ({ e
 
   const onClick: MouseEventHandler<HTMLButtonElement> & MouseEventHandler<HTMLDivElement> = (event) => {
     setTimeout(() => {
+      event.stopPropagation();
+
       if (menuRef.current) {
         const firstElement = menuRef.current.querySelector<HTMLElement>(
           'li > button:not(:disabled), li > a:not(:disabled), input:not(:disabled)',
@@ -25,7 +27,6 @@ export const ContextMenuButton: FunctionComponent<ContextMenuButtonProps> = ({ e
       }
     }, 0);
 
-    event.stopPropagation();
     reference.current = { x: event.clientX, y: event.clientY };
     setIsOpen(!isOpen);
   };
@@ -33,7 +34,7 @@ export const ContextMenuButton: FunctionComponent<ContextMenuButtonProps> = ({ e
   return (
     <>
       <Tooltip content="Contextual menu">
-        <Button className='container-controls' variant="control" onClick={onClick} data-testid={`contextualMenu-${id}`}>
+        <Button className="container-controls" variant="control" onClick={onClick} data-testid={`contextualMenu-${id}`}>
           <EllipsisVIcon />
         </Button>
       </Tooltip>

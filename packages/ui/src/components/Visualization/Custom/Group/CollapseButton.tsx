@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@patternfly/react-core';
-import { ExpandArrowsAltIcon, CompressArrowsAltIcon } from '@patternfly/react-icons';
+import { CompressArrowsAltIcon, ExpandArrowsAltIcon } from '@patternfly/react-icons';
 import { CollapsibleGroupProps } from '@patternfly/react-topology';
 import { FunctionComponent, MouseEventHandler } from 'react';
 import { CustomGroupProps } from './Group.models';
@@ -18,7 +18,7 @@ export const CollapseButton: FunctionComponent<CollapseButtonProps> = ({ element
 
   return (
     <Tooltip content={element.isCollapsed() ? 'Expand' : 'Collapse'}>
-      <Button className='container-controls' variant="control" onClick={onClick} data-testid={`collapseButton-${id}`}>
+      <Button className="container-controls" variant="control" onClick={onClick} data-testid={`collapseButton-${id}`}>
         {element.isCollapsed() ? <ExpandArrowsAltIcon /> : <CompressArrowsAltIcon />}
       </Button>
     </Tooltip>

@@ -1,6 +1,5 @@
-import { Dimensions, isNode, Node } from '@patternfly/react-topology';
+import { Dimensions, isNode, Node, observer } from '@patternfly/react-topology';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
 import { FunctionComponent } from 'react';
 import { CustomGroupCollapsed } from './CustomGroupCollapsed';
 import { CustomGroupExpanded } from './CustomGroupExpanded';

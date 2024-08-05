@@ -9,13 +9,13 @@ import {
   WithDndDropProps,
   WithDragNodeProps,
   WithSelectionProps,
+  observer,
   useSvgAnchor,
 } from '@patternfly/react-topology';
-import { observer } from 'mobx-react';
 import { FunctionComponent, useRef } from 'react';
 import { CollapseButton } from './CollapseButton';
-import { CustomGroupProps, PointWithSize } from './Group.models';
 import { ContextMenuButton } from './ContextMenuButton';
+import { CustomGroupProps, PointWithSize } from './Group.models';
 
 type CustomGroupExpandedProps = CustomGroupProps &
   CollapsibleGroupProps &

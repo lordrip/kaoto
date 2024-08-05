@@ -33,10 +33,7 @@
     background-color: var(--pf-v5-global--palette--light-blue-400);
 
     &__img-circle {
-      margin-left: 5px;
-      margin-top: 5px;
-      margin-bottom: 5px;
-      margin-right: -10px;
+      margin: 5px -10px 5px 5px;
       display: flex;
       align-items: center;
       justify-content: center;
