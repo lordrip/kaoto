@@ -8,6 +8,7 @@ import {
   withSelection,
 } from '@patternfly/react-topology';
 import { FunctionComponent } from 'react';
+import { CanvasDefaults } from '../../Canvas/canvas.defaults';
 import { CanvasNode } from '../../Canvas/canvas.models';
 import { NodeContextMenuFn } from '../NodeContextMenu';
 import './CustomGroup.scss';
@@ -36,8 +37,8 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
           label={label}
           showLabel
           collapsible
-          collapsedWidth={50}
-          collapsedHeight={50}
+          collapsedWidth={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+          collapsedHeight={CanvasDefaults.DEFAULT_NODE_DIAMETER}
           hulledOutline={false}
         />
       </Layer>
