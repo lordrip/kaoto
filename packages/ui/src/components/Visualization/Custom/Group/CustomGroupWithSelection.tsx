@@ -1,7 +1,6 @@
 import {
   DefaultGroup,
   GraphElement,
-  Layer,
   isNode,
   observer,
   withContextMenu,
@@ -28,20 +27,16 @@ const CustomGroup: FunctionComponent<ICustomGroup> = observer(({ element, ...res
   }
 
   return (
-    <g>
-      <Layer>
-        <CustomGroupCollapsible
-          {...rest}
-          element={element}
-          className="custom-group"
-          label={label}
-          collapsible
-          collapsedWidth={CanvasDefaults.DEFAULT_NODE_DIAMETER}
-          collapsedHeight={CanvasDefaults.DEFAULT_NODE_DIAMETER}
-          hulledOutline={false}
-        />
-      </Layer>
-    </g>
+    <CustomGroupCollapsible
+      {...rest}
+      element={element}
+      className="custom-group"
+      label={label}
+      collapsible
+      collapsedWidth={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+      collapsedHeight={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+      hulledOutline={false}
+    />
   );
 });
 
