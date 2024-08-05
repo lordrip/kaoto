@@ -2,8 +2,6 @@ import {
   CollapsibleGroupProps,
   GROUPS_LAYER,
   Layer,
-  NodeShape,
-  PointTuple,
   Rect,
   WithContextMenuProps,
   WithDndDropProps,
@@ -15,7 +13,7 @@ import {
 import { FunctionComponent, useRef } from 'react';
 import { CollapseButton } from './CollapseButton';
 import { ContextMenuButton } from './ContextMenuButton';
-import { CustomGroupProps, PointWithSize } from './Group.models';
+import { CustomGroupProps } from './Group.models';
 
 type CustomGroupExpandedProps = CustomGroupProps &
   CollapsibleGroupProps &
@@ -25,37 +23,11 @@ type CustomGroupExpandedProps = CustomGroupProps &
   WithContextMenuProps;
 
 export const CustomGroupExpanded: FunctionComponent<CustomGroupExpandedProps> = observer(
-  ({ className, element, onSelect, label: propsLabel, droppable, onContextMenu, onCollapseChange }) => {
+  ({ className, element, onSelect, label: propsLabel, onContextMenu, onCollapseChange }) => {
     const label = propsLabel || element.getLabel();
+    const boxRef = useRef<Rect>(element.getBounds());
     const vizNode = element.getData()?.vizNode;
     const anchorRef = useSvgAnchor();
-    const boxRef = useRef<Rect | null>(null);
-
-    if (!droppable || !boxRef.current) {
-      const children = element.getNodes().filter((c) => c.isVisible());
-      if (children.length === 0) {
-        return null;
-      }
-      const points: (PointWithSize | PointTuple)[] = [];
-      children.forEach((c) => {
-        if (c.getNodeShape() === NodeShape.circle) {
-          const bounds = c.getBounds();
-          const { width, height } = bounds;
-          const { x, y } = bounds.getCenter();
-          const radius = Math.max(width, height) / 2;
-          points.push([x, y, radius] as PointWithSize);
-        } else {
-          // add all 4 corners
-          const { width, height, x, y } = c.getBounds();
-          points.push([x, y, 0] as PointWithSize);
-          points.push([x + width, y, 0] as PointWithSize);
-          points.push([x, y + height, 0] as PointWithSize);
-          points.push([x + width, y + height, 0] as PointWithSize);
-        }
-      });
-
-      boxRef.current = element.getBounds();
-    }
 
     return (
       <g onContextMenu={onContextMenu} onClick={onSelect} className={className}>
