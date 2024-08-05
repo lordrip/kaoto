@@ -29,6 +29,8 @@ export const CustomGroupExpanded: FunctionComponent<CustomGroupExpandedProps> = 
     const vizNode = element.getData()?.vizNode;
     const anchorRef = useSvgAnchor();
 
+    boxRef.current = element.getBounds();
+
     return (
       <g onContextMenu={onContextMenu} onClick={onSelect} className={className}>
         <Layer id={GROUPS_LAYER}>

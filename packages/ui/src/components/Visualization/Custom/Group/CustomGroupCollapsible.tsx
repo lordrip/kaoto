@@ -11,7 +11,10 @@ export const CustomGroupCollapsible: FunctionComponent<CustomGroupProps> = obser
       if (collapsed && rest.collapsedWidth !== undefined && rest.collapsedHeight !== undefined) {
         group.setDimensions(new Dimensions(rest.collapsedWidth, rest.collapsedHeight));
       }
+
       group.setCollapsed(collapsed);
+      group.getController().getGraph().layout();
+
       onCollapseChange?.(group, collapsed);
     };
     const vizNode = element.getData()?.vizNode;
