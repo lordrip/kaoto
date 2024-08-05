@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@patternfly/react-core';
 import { EllipsisVIcon } from '@patternfly/react-icons';
-import { ContextMenu, observer, PointIface } from '@patternfly/react-topology';
+import { ContextMenu, PointIface } from '@patternfly/react-topology';
 import { FunctionComponent, MouseEventHandler, useRef, useState } from 'react';
 import { NodeContextMenu } from '../NodeContextMenu';
 import { CustomGroupProps } from './Group.models';
@@ -10,15 +10,14 @@ interface ContextMenuButtonProps {
 }
 
 export const ContextMenuButton: FunctionComponent<ContextMenuButtonProps> = ({ element }) => {
-  const id = element.getId();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const reference = useRef<PointIface>({ x: 0, y: 0 });
+  const id = element.getId();
 
   const onClick: MouseEventHandler<HTMLButtonElement> & MouseEventHandler<HTMLDivElement> = (event) => {
+    event.stopPropagation();
     setTimeout(() => {
-      event.stopPropagation();
-
       if (menuRef.current) {
         const firstElement = menuRef.current.querySelector<HTMLElement>(
           'li > button:not(:disabled), li > a:not(:disabled), input:not(:disabled)',

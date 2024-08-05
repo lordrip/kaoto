@@ -149,7 +149,6 @@ export class CanvasService {
 
     this.appendNodesAndEdges(vizNode);
 
-    console.log({ nodes: this.nodes, edges: this.edges });
     return { nodes: this.nodes, edges: this.edges };
   }
 
