@@ -26,7 +26,7 @@ import {
 import { observer } from 'mobx-react';
 import { FunctionComponent } from 'react';
 import { CustomGroupProps } from './Group.models';
-import { ExpandIcon } from '@patternfly/react-icons';
+import { ExpandArrowsAltIcon } from '@patternfly/react-icons';
 import { NODE_SHADOW_FILTER_ID_HOVER } from '@patternfly/react-topology/dist/esm/components/nodes/NodeShadows';
 
 type CustomGroupCollapsedProps = CustomGroupProps &
@@ -141,7 +141,7 @@ export const CustomGroupCollapsed: FunctionComponent<CustomGroupCollapsedProps> 
             onContextMenu={onContextMenu}
             contextMenuOpen={contextMenuOpen}
             hover={isHover || labelHover}
-            actionIcon={collapsible ? <ExpandIcon /> : undefined}
+            actionIcon={collapsible ? <ExpandArrowsAltIcon /> : undefined}
             onActionIconClick={() => onCollapseChange(element, false)}
           >
             {label || element.getLabel()}
