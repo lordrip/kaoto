@@ -14,7 +14,6 @@ import {
   GridLayout,
   Layout,
   LEFT_TO_RIGHT,
-  Model,
   ModelKind,
   TOP_TO_BOTTOM,
   Visualization,
@@ -36,15 +35,6 @@ export class CanvasService {
     newController.registerLayoutFactory(this.baselineLayoutFactory);
     newController.registerComponentFactory(this.baselineComponentFactory);
     newController.registerElementFactory(this.baselineElementFactory);
-
-    const defaultModel: Model = {
-      graph: {
-        id: 'default',
-        type: 'graph',
-      },
-    };
-
-    newController.fromModel(defaultModel, false);
 
     return newController;
   }
