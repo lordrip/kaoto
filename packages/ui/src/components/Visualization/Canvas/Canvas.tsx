@@ -9,6 +9,7 @@ import {
   TopologyControlBar,
   TopologyControlButton,
   TopologyView,
+  VisualizationProvider,
   VisualizationSurface,
   action,
   createTopologyControlButtons,
@@ -39,6 +40,7 @@ import { CanvasSideBar } from './CanvasSideBar';
 import { CanvasDefaults } from './canvas.defaults';
 import { CanvasEdge, CanvasNode, LayoutType } from './canvas.models';
 import { FlowService } from './flow.service';
+import { ControllerService } from './controller.service';
 
 interface CanvasProps {
   contextToolbar?: ReactNode;
@@ -58,7 +60,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
   /** Context to interact with the Canvas catalog */
   const catalogModalContext = useContext(CatalogModalContext);
 
-  const controller = useVisualizationController();
+  const controller = useMemo(() => ControllerService.createController(), []);
   const { visibleFlows } = useContext(VisibleFlowsContext)!;
   const shouldShowEmptyState = useMemo(() => {
     const areNoFlows = entities.length === 0;
@@ -93,24 +95,35 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
     controller.fromModel(model, true);
   }, [activeLayout, controller, entities, visibleFlows]);
 
-  useEventListener<SelectionEventListener>(SELECTION_EVENT, (ids) => {
-    setSelectedIds(ids);
-  });
-  useEventListener<GraphLayoutEndEventListener>(GRAPH_LAYOUT_END_EVENT, ({ graph }) => {
-    console.log('[RENDER] Canvas - Graph layout end');
-    setTimeout(
-      action(() => {
-        graph.fit(80);
-      }),
-      0,
-    );
-  });
+  const handleSelection = useCallback((selectedIds: string[]) => {
+    setSelectedIds(selectedIds);
+  }, []);
+
+  /** Set up the controller one time */
+  useEffect(() => {
+    const localController = controller;
+    // const graphLayoutEndFn = action(() => {
+    //   localController.getGraph().fit(80);
+    // });
+
+    localController.addEventListener(SELECTION_EVENT, handleSelection);
+    // localController.addEventListener(GRAPH_LAYOUT_END_EVENT, graphLayoutEndFn);
+
+    return () => {
+      localController.removeEventListener(SELECTION_EVENT, handleSelection);
+      // localController.removeEventListener(GRAPH_LAYOUT_END_EVENT, graphLayoutEndFn);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** Set select node and pan it into view */
   useEffect(() => {
     let resizeTimeout: number | undefined;
 
     if (!selectedIds[0]) {
+      setSelectedNode(undefined);
+    } else {
       const selectedNode = controller.getNodeById(selectedIds[0]);
       if (selectedNode) {
         setSelectedNode(selectedNode as unknown as CanvasNode);
@@ -122,12 +135,12 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
           500,
         ) as unknown as number;
       }
+      return () => {
+        if (resizeTimeout) {
+          clearTimeout(resizeTimeout);
+        }
+      };
     }
-    return () => {
-      if (resizeTimeout) {
-        clearTimeout(resizeTimeout);
-      }
-    };
   }, [selectedIds, controller]);
 
   const controlButtons = useMemo(() => {
@@ -143,9 +156,9 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
             tooltip: 'Horizontal Layout',
             callback: action(() => {
               setActiveLayout(LayoutType.DagreHorizontal);
-              controller.getGraph().setLayout(LayoutType.DagreHorizontal);
-              controller.getGraph().reset();
-              controller.getGraph().layout();
+              // controller.getGraph().setLayout(LayoutType.DagreHorizontal);
+              // controller.getGraph().reset();
+              // controller.getGraph().layout();
             }),
           },
           {
@@ -158,9 +171,9 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
             tooltip: 'Vertical Layout',
             callback: action(() => {
               setActiveLayout(LayoutType.DagreVertical);
-              controller.getGraph().setLayout(LayoutType.DagreVertical);
-              controller.getGraph().reset();
-              controller.getGraph().layout();
+              // controller.getGraph().setLayout(LayoutType.DagreVertical);
+              // controller.getGraph().reset();
+              // controller.getGraph().layout();
             }),
           },
           {
@@ -202,21 +215,23 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
   const isSidebarOpen = useMemo(() => selectedNode !== undefined, [selectedNode]);
 
   return (
-    <TopologyView
-      defaultSideBarSize={sidebarWidth + 'px'}
-      minSideBarSize="210px"
-      onSideBarResize={setSidebarWidth}
-      sideBarResizable
-      sideBarOpen={isSidebarOpen}
-      sideBar={<CanvasSideBar selectedNode={selectedNode} onClose={handleCloseSideBar} />}
-      contextToolbar={contextToolbar}
-      controlBar={<TopologyControlBar controlButtons={controlButtons} />}
-    >
-      {shouldShowEmptyState ? (
-        <VisualizationEmptyState data-testid="visualization-empty-state" entitiesNumber={entities.length} />
-      ) : (
-        <VisualizationSurface state={{ selectedIds }} />
-      )}
-    </TopologyView>
+    <VisualizationProvider controller={controller}>
+      <TopologyView
+        defaultSideBarSize={sidebarWidth + 'px'}
+        minSideBarSize="210px"
+        onSideBarResize={setSidebarWidth}
+        sideBarResizable
+        sideBarOpen={isSidebarOpen}
+        sideBar={<CanvasSideBar selectedNode={selectedNode} onClose={handleCloseSideBar} />}
+        contextToolbar={contextToolbar}
+        controlBar={<TopologyControlBar controlButtons={controlButtons} />}
+      >
+        {shouldShowEmptyState ? (
+          <VisualizationEmptyState data-testid="visualization-empty-state" entitiesNumber={entities.length} />
+        ) : (
+          <VisualizationSurface state={{ selectedIds }} />
+        )}
+      </TopologyView>
+    </VisualizationProvider>
   );
 };

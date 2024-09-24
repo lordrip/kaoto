@@ -2,7 +2,7 @@ import { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react'
 import { BaseVisualCamelEntity } from '../../models/visualization/base-visual-entity';
 import { CanvasFormTabsProvider } from '../../providers';
 import { ErrorBoundary } from '../ErrorBoundary';
-import { CanvasController } from './Canvas/CanvasController';
+import { Canvas } from './Canvas/Canvas';
 import { CanvasFallback } from './CanvasFallback';
 import { ContextToolbar } from './ContextToolbar/ContextToolbar';
 import './Visualization.scss';
@@ -20,7 +20,7 @@ export const Visualization: FunctionComponent<PropsWithChildren<CanvasProps>> = 
     <div className={`canvas-surface ${props.className ?? ''}`}>
       <ErrorBoundary key={lastUpdate} fallback={props.fallback ?? <CanvasFallback />}>
         <CanvasFormTabsProvider>
-          <CanvasController contextToolbar={<ContextToolbar />} entities={props.entities} />
+          <Canvas contextToolbar={<ContextToolbar />} entities={props.entities} />
         </CanvasFormTabsProvider>
       </ErrorBoundary>
     </div>
