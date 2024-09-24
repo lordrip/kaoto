@@ -93,7 +93,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
 
     console.log('[RENDER] Canvas - Draw graph', nodes);
     controller.fromModel(model, true);
-  }, [activeLayout, controller, entities, visibleFlows]);
+  }, [controller, entities, visibleFlows]);
 
   const handleSelection = useCallback((selectedIds: string[]) => {
     setSelectedIds(selectedIds);
@@ -156,9 +156,9 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
             tooltip: 'Horizontal Layout',
             callback: action(() => {
               setActiveLayout(LayoutType.DagreHorizontal);
-              // controller.getGraph().setLayout(LayoutType.DagreHorizontal);
-              // controller.getGraph().reset();
-              // controller.getGraph().layout();
+              controller.getGraph().setLayout(LayoutType.DagreHorizontal);
+              controller.getGraph().reset();
+              controller.getGraph().layout();
             }),
           },
           {
@@ -171,9 +171,9 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
             tooltip: 'Vertical Layout',
             callback: action(() => {
               setActiveLayout(LayoutType.DagreVertical);
-              // controller.getGraph().setLayout(LayoutType.DagreVertical);
-              // controller.getGraph().reset();
-              // controller.getGraph().layout();
+              controller.getGraph().setLayout(LayoutType.DagreVertical);
+              controller.getGraph().reset();
+              controller.getGraph().layout();
             }),
           },
           {
