@@ -3,7 +3,7 @@ import { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react'
 import { BaseVisualCamelEntity } from '../../models/visualization/base-visual-entity';
 import { CanvasFormTabsProvider } from '../../providers';
 import { ErrorBoundary } from '../ErrorBoundary';
-import { Canvas } from './Canvas/Canvas';
+import { Canvas } from './Canvas';
 import { ControllerService } from './Canvas/controller.service';
 import { CanvasFallback } from './CanvasFallback';
 import { ContextToolbar } from './ContextToolbar/ContextToolbar';
