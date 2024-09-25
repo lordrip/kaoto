@@ -1,8 +1,4 @@
-.canvas-surface {
-  display: flex;
-  flex-flow: column;
-
-  .pf-topology-content {
-    border-radius: 15px;
-  }
+.pf-topology-content {
+  border-radius: 15px;
+  border: 1px solid var(--pf-v5-global--Color--light-300);
 }

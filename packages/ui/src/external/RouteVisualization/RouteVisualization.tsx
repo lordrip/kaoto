@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react';
+import { FunctionComponent, useContext, useEffect, useLayoutEffect } from 'react';
+import { Visualization } from '../../components/Visualization';
+import { useReload } from '../../hooks/reload.hook';
 import {
   CatalogLoaderProvider,
   EntitiesContext,
@@ -8,11 +10,9 @@ import {
   VisibleFlowsContext,
   VisibleFlowsProvider,
 } from '../../providers';
-import { Visualization } from '../../components/Visualization';
 import { EventNotifier } from '../../utils';
-import { useReload } from '../../hooks/reload.hook';
 
-const VisibleFlowsVisualization: React.FC<{ className?: string }> = ({ className = '' }) => {
+const VisibleFlowsVisualization: FunctionComponent = () => {
   const { visibleFlows, visualFlowsApi } = useContext(VisibleFlowsContext)!;
   const entitiesContext = useContext(EntitiesContext);
   const visualEntities = entitiesContext?.visualEntities ?? [];
@@ -21,10 +21,10 @@ const VisibleFlowsVisualization: React.FC<{ className?: string }> = ({ className
     visualFlowsApi.showAllFlows();
   }, [visibleFlows, visualFlowsApi]);
 
-  return <Visualization className={`canvas-page ${className}`} entities={visualEntities} />;
+  return <Visualization entities={visualEntities} />;
 };
 
-const Viz: React.FC<{ catalogUrl: string; className?: string }> = ({ catalogUrl, className = '' }) => {
+const Viz: FunctionComponent<{ catalogUrl: string }> = ({ catalogUrl }) => {
   const ReloadProvider = useReload();
 
   return (
@@ -33,7 +33,7 @@ const Viz: React.FC<{ catalogUrl: string; className?: string }> = ({ catalogUrl,
         <SchemasLoaderProvider>
           <CatalogLoaderProvider>
             <VisibleFlowsProvider>
-              <VisibleFlowsVisualization className={`canvas-page ${className}`} />
+              <VisibleFlowsVisualization />
             </VisibleFlowsProvider>
           </CatalogLoaderProvider>
         </SchemasLoaderProvider>
@@ -42,12 +42,11 @@ const Viz: React.FC<{ catalogUrl: string; className?: string }> = ({ catalogUrl,
   );
 };
 
-export const RouteVisualization: React.FC<{
+export const RouteVisualization: FunctionComponent<{
   catalogUrl: string;
   code: string;
   codeChange: (code: string) => void;
-  className?: string;
-}> = ({ catalogUrl, code, codeChange, className }) => {
+}> = ({ catalogUrl, code, codeChange }) => {
   const eventNotifier = EventNotifier.getInstance();
 
   useLayoutEffect(() => {
@@ -62,7 +61,7 @@ export const RouteVisualization: React.FC<{
 
   return (
     <EntitiesProvider>
-      <Viz catalogUrl={catalogUrl} className={className} />
+      <Viz catalogUrl={catalogUrl} />
     </EntitiesProvider>
   );
 };

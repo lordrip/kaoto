@@ -17,17 +17,14 @@ interface CanvasProps {
 
 export const Visualization: FunctionComponent<PropsWithChildren<CanvasProps>> = (props) => {
   const controller = useMemo(() => ControllerService.createController(), []);
-  const lastUpdate = useMemo(() => Date.now(), [props.entities]);
 
   return (
     <VisualizationProvider controller={controller}>
-      <div className={`canvas-surface ${props.className ?? ''}`}>
-        <CanvasFormTabsProvider>
-          <ErrorBoundary key={lastUpdate} fallback={props.fallback ?? <CanvasFallback />}>
-            <Canvas contextToolbar={<ContextToolbar />} entities={props.entities} />
-          </ErrorBoundary>
-        </CanvasFormTabsProvider>
-      </div>
+      <CanvasFormTabsProvider>
+        <ErrorBoundary fallback={props.fallback ?? <CanvasFallback />}>
+          <Canvas contextToolbar={<ContextToolbar />} entities={props.entities} />
+        </ErrorBoundary>
+      </CanvasFormTabsProvider>
     </VisualizationProvider>
   );
 };
