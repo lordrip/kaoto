@@ -1,15 +1,12 @@
 import { Icon } from '@patternfly/react-core';
 import { CatalogIcon } from '@patternfly/react-icons';
 import {
-  GRAPH_LAYOUT_END_EVENT,
-  GraphLayoutEndEventListener,
   Model,
   SELECTION_EVENT,
   SelectionEventListener,
   TopologyControlBar,
   TopologyControlButton,
   TopologyView,
-  VisualizationProvider,
   VisualizationSurface,
   action,
   createTopologyControlButtons,
@@ -40,7 +37,6 @@ import { CanvasSideBar } from './CanvasSideBar';
 import { CanvasDefaults } from './canvas.defaults';
 import { CanvasEdge, CanvasNode, LayoutType } from './canvas.models';
 import { FlowService } from './flow.service';
-import { ControllerService } from './controller.service';
 
 interface CanvasProps {
   contextToolbar?: ReactNode;
@@ -60,7 +56,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
   /** Context to interact with the Canvas catalog */
   const catalogModalContext = useContext(CatalogModalContext);
 
-  const controller = useMemo(() => ControllerService.createController(), []);
+  const controller = useVisualizationController();
   const { visibleFlows } = useContext(VisibleFlowsContext)!;
   const shouldShowEmptyState = useMemo(() => {
     const areNoFlows = entities.length === 0;
@@ -91,31 +87,15 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
       },
     };
 
-    console.log('[RENDER] Canvas - Draw graph', nodes);
-    controller.fromModel(model, true);
+    requestAnimationFrame(() => {
+      controller.fromModel(model, true);
+    });
   }, [controller, entities, visibleFlows]);
 
   const handleSelection = useCallback((selectedIds: string[]) => {
     setSelectedIds(selectedIds);
   }, []);
-
-  /** Set up the controller one time */
-  useEffect(() => {
-    const localController = controller;
-    // const graphLayoutEndFn = action(() => {
-    //   localController.getGraph().fit(80);
-    // });
-
-    localController.addEventListener(SELECTION_EVENT, handleSelection);
-    // localController.addEventListener(GRAPH_LAYOUT_END_EVENT, graphLayoutEndFn);
-
-    return () => {
-      localController.removeEventListener(SELECTION_EVENT, handleSelection);
-      // localController.removeEventListener(GRAPH_LAYOUT_END_EVENT, graphLayoutEndFn);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEventListener<SelectionEventListener>(SELECTION_EVENT, handleSelection);
 
   /** Set select node and pan it into view */
   useEffect(() => {
@@ -144,59 +124,55 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
   }, [selectedIds, controller]);
 
   const controlButtons = useMemo(() => {
-    const customButtons: TopologyControlButton[] = catalogModalContext
-      ? [
-          {
-            id: 'topology-control-bar-h_layout-button',
-            icon: (
-              <Icon>
-                <img src={layoutHorizontalIcon} />
-              </Icon>
-            ),
-            tooltip: 'Horizontal Layout',
-            callback: action(() => {
-              setActiveLayout(LayoutType.DagreHorizontal);
-              controller.getGraph().setLayout(LayoutType.DagreHorizontal);
-              controller.getGraph().reset();
-              controller.getGraph().layout();
-            }),
-          },
-          {
-            id: 'topology-control-bar-v_layout-button',
-            icon: (
-              <Icon>
-                <img src={layoutVerticalIcon} />
-              </Icon>
-            ),
-            tooltip: 'Vertical Layout',
-            callback: action(() => {
-              setActiveLayout(LayoutType.DagreVertical);
-              controller.getGraph().setLayout(LayoutType.DagreVertical);
-              controller.getGraph().reset();
-              controller.getGraph().layout();
-            }),
-          },
-          {
-            id: 'topology-control-bar-catalog-button',
-            icon: <CatalogIcon />,
-            tooltip: 'Open Catalog',
-            callback: action(() => {
-              catalogModalContext.setIsModalOpen(true);
-            }),
-          },
-        ]
-      : [];
+    const customButtons: TopologyControlButton[] = [
+      {
+        id: 'topology-control-bar-h_layout-button',
+        icon: (
+          <Icon>
+            <img src={layoutHorizontalIcon} />
+          </Icon>
+        ),
+        tooltip: 'Horizontal Layout',
+        callback: action(() => {
+          setActiveLayout(LayoutType.DagreHorizontal);
+          controller.getGraph().setLayout(LayoutType.DagreHorizontal);
+          controller.getGraph().layout();
+        }),
+      },
+      {
+        id: 'topology-control-bar-v_layout-button',
+        icon: (
+          <Icon>
+            <img src={layoutVerticalIcon} />
+          </Icon>
+        ),
+        tooltip: 'Vertical Layout',
+        callback: action(() => {
+          setActiveLayout(LayoutType.DagreVertical);
+          controller.getGraph().setLayout(LayoutType.DagreVertical);
+          controller.getGraph().layout();
+        }),
+      },
+    ];
+    if (catalogModalContext) {
+      customButtons.push({
+        id: 'topology-control-bar-catalog-button',
+        icon: <CatalogIcon />,
+        tooltip: 'Open Catalog',
+        callback: action(() => {
+          catalogModalContext.setIsModalOpen(true);
+        }),
+      });
+    }
 
     return createTopologyControlButtons({
       ...defaultControlButtonsOptions,
+      fitToScreen: false,
       zoomInCallback: action(() => {
         controller.getGraph().scaleBy(4 / 3);
       }),
       zoomOutCallback: action(() => {
         controller.getGraph().scaleBy(3 / 4);
-      }),
-      fitToScreenCallback: action(() => {
-        controller.getGraph().fit(80);
       }),
       resetViewCallback: action(() => {
         controller.getGraph().reset();
@@ -215,23 +191,21 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
   const isSidebarOpen = useMemo(() => selectedNode !== undefined, [selectedNode]);
 
   return (
-    <VisualizationProvider controller={controller}>
-      <TopologyView
-        defaultSideBarSize={sidebarWidth + 'px'}
-        minSideBarSize="210px"
-        onSideBarResize={setSidebarWidth}
-        sideBarResizable
-        sideBarOpen={isSidebarOpen}
-        sideBar={<CanvasSideBar selectedNode={selectedNode} onClose={handleCloseSideBar} />}
-        contextToolbar={contextToolbar}
-        controlBar={<TopologyControlBar controlButtons={controlButtons} />}
-      >
-        {shouldShowEmptyState ? (
-          <VisualizationEmptyState data-testid="visualization-empty-state" entitiesNumber={entities.length} />
-        ) : (
-          <VisualizationSurface state={{ selectedIds }} />
-        )}
-      </TopologyView>
-    </VisualizationProvider>
+    <TopologyView
+      defaultSideBarSize={sidebarWidth + 'px'}
+      minSideBarSize="210px"
+      onSideBarResize={setSidebarWidth}
+      sideBarResizable
+      sideBarOpen={isSidebarOpen}
+      sideBar={<CanvasSideBar selectedNode={selectedNode} onClose={handleCloseSideBar} />}
+      contextToolbar={contextToolbar}
+      controlBar={<TopologyControlBar controlButtons={controlButtons} />}
+    >
+      {shouldShowEmptyState ? (
+        <VisualizationEmptyState data-testid="visualization-empty-state" entitiesNumber={entities.length} />
+      ) : (
+        <VisualizationSurface state={{ selectedIds }} />
+      )}
+    </TopologyView>
   );
 };
