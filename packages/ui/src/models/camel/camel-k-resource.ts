@@ -93,6 +93,10 @@ export abstract class CamelKResource implements CamelResource {
     return '';
   }
 
+  addExistingEntity(_entity: BaseCamelEntity): void {
+    return;
+  }
+
   supportsMultipleVisualEntities(): boolean {
     /** Not supported by default */
     return false;

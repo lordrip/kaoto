@@ -56,6 +56,10 @@ export const router = createHashRouter([
         path: `${Links.DataMapper}/:id`,
         lazy: async () => import('./pages/DataMapper'),
       },
+      {
+        path: Links.OpenApi,
+        lazy: async () => import('./pages/OpenApi'),
+      },
     ],
   },
 ]);

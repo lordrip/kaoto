@@ -44,6 +44,7 @@ export const Navigation: FunctionComponent<INavigationSidebar> = (props) => {
         hidden: () => !NAVIGATION_ELEMENTS.DataMapper.includes(currentSchemaType),
       },
       { title: 'Catalog', to: Links.Catalog },
+      { title: 'Open API', to: Links.OpenApi },
     ],
     [currentSchemaType],
   );

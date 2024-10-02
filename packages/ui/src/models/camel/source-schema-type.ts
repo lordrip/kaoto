@@ -4,6 +4,7 @@ export enum SourceSchemaType {
   KameletBinding = 'KameletBinding',
   Kamelet = 'Kamelet',
   Pipe = 'Pipe',
+  Rest = 'Rest',
 }
 
 export const getResourceTypeFromPath = (path?: string): SourceSchemaType | undefined => {

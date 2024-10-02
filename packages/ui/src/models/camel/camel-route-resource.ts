@@ -172,6 +172,10 @@ export class CamelRouteResource implements CamelResource, BeansAwareResource {
     return entity.id;
   }
 
+  addExistingEntity(entity: BaseCamelEntity): void {
+    this.entities.push(entity);
+  }
+
   getType(): SourceSchemaType {
     return SourceSchemaType.Route;
   }
