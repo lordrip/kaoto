@@ -105,7 +105,7 @@ describe('FlowService', () => {
       expect(edges).toHaveLength(0);
 
       const group = nodes[nodes.length - 1];
-      expect(group.children).toEqual(['timer-1234']);
+      expect(group.children).toEqual(['timer|from']);
       expect(group.group).toBeTruthy();
     });
   });

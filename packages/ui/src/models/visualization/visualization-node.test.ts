@@ -16,8 +16,13 @@ describe('VisualizationNode', () => {
     node = createVisualizationNode('test', {});
   });
 
-  it('should create a node with a random id', () => {
-    expect(node.id).toEqual('test-1234');
+  it('should create a node using the id and concatenating the undefined path', () => {
+    expect(node.id).toEqual('test|undefined');
+  });
+
+  it('should create a node using the id and concatenating the path', () => {
+    node = createVisualizationNode('test', { path: 'test-path' });
+    expect(node.id).toEqual('test|test-path');
   });
 
   it('should create a node and set the ID as the title', () => {
