@@ -95,11 +95,11 @@ describe('FlowService', () => {
       expect(nodes[2].data?.vizNode?.data.path).toEqual('route');
 
       expect(edges).toHaveLength(1);
-      expect(edges[0].source).toEqual('timer-1234');
-      expect(edges[0].target).toEqual('route.from.steps-1234');
+      expect(edges[0].source).toEqual('timer|route.from');
+      expect(edges[0].target).toEqual('route.from.steps|route.from.steps.0.placeholder');
 
       const group = nodes[nodes.length - 1];
-      expect(group.children).toEqual(['timer-1234', 'route.from.steps-1234']);
+      expect(group.children).toEqual(['timer|route.from', 'route.from.steps|route.from.steps.0.placeholder']);
       expect(group.group).toBeTruthy();
     });
   });
