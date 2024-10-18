@@ -49,6 +49,7 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
   return (
     <Layer id={DEFAULT_LAYER}>
       <g
+        className="custom-node"
         data-testid={`custom-node__${vizNode?.id}`}
         data-nodelabel={label}
         data-selected={selected}
@@ -58,18 +59,13 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
         onContextMenu={rest.onContextMenu}
       >
         <rect className="phantom-rect" width={boxRef.current.width} height={boxRef.current.height} />
-        <foreignObject
-          className="foreign-object"
-          data-nodelabel={label}
-          width={boxRef.current.width}
-          height={boxRef.current.height}
-        >
-          <div className="custom-node">
-            <div title={tooltipContent} className="custom-node__image">
+        <foreignObject data-nodelabel={label} width={boxRef.current.width} height={boxRef.current.height}>
+          <div className="custom-node__container">
+            <div title={tooltipContent} className="custom-node__container__image">
               <img src={vizNode?.data.icon} />
             </div>
 
-            <div className="custom-node__label">
+            <div className="custom-node__container__label">
               <span title={label}>{label}</span>
             </div>
           </div>
@@ -78,7 +74,7 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
         {doesHaveWarnings && (
           <Tooltip triggerRef={decoratorRef} content={validationText}>
             <Decorator
-              className="custom-node__warning"
+              className="custom-node__container__warning"
               innerRef={decoratorRef}
               ariaLabel={NodeStatus.warning}
               radius={DEFAULT_DECORATOR_RADIUS}
