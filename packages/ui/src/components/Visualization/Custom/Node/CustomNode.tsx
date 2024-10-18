@@ -53,11 +53,17 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
         data-nodelabel={label}
         data-selected={selected}
         data-disabled={isDisabled}
+        data-warning={doesHaveWarnings}
         onClick={onSelect}
         onContextMenu={rest.onContextMenu}
       >
         <rect className="phantom-rect" width={boxRef.current.width} height={boxRef.current.height} />
-        <foreignObject data-nodelabel={label} width={boxRef.current.width} height={boxRef.current.height}>
+        <foreignObject
+          className="foreign-object"
+          data-nodelabel={label}
+          width={boxRef.current.width}
+          height={boxRef.current.height}
+        >
           <div className="custom-node">
             <div title={tooltipContent} className="custom-node__image">
               <img src={vizNode?.data.icon} />
@@ -76,7 +82,7 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
               innerRef={decoratorRef}
               ariaLabel={NodeStatus.warning}
               radius={DEFAULT_DECORATOR_RADIUS}
-              x={CanvasDefaults.DEFAULT_NODE_WIDTH * 0.25}
+              x={CanvasDefaults.DEFAULT_NODE_WIDTH * 0.3}
               y={0}
               icon={<WarningTriangleIcon />}
               showBackground
@@ -87,7 +93,7 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
         {isDisabled && (
           <Decorator
             radius={DEFAULT_DECORATOR_RADIUS}
-            x={CanvasDefaults.DEFAULT_NODE_WIDTH * 0.75}
+            x={CanvasDefaults.DEFAULT_NODE_WIDTH * 0.7}
             y={0}
             icon={<BanIcon />}
             showBackground

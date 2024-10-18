@@ -1,4 +1,10 @@
+.foreign-object {
+  overflow: auto;
+}
+
 .custom-node {
+  --custom-node--BackgroundColor: var(--pf-v5-global--BackgroundColor--100);
+
   width: 100%;
   height: 100%;
   position: relative;
@@ -6,7 +12,7 @@
   flex-flow: column nowrap;
   justify-content: space-around;
   border-radius: var(--pf-v5-global--BorderRadius--sm);
-  background-color: var(--pf-v5-global--BackgroundColor--100);
+  background-color: var(--custom-node--BackgroundColor);
   overflow: auto;
   text-align: center;
 
@@ -14,12 +20,15 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    height: 50%;
     justify-content: center;
 
     img {
-      max-height: 100%;
-      max-width: 100%;
+      border: 2px solid var(--pf-v5-global--BorderColor--100);
+      border-radius: 10px;
+      background-color: var(--custom-node--BackgroundColor);
+      padding: var(--pf-v5-global--spacer--sm);
+      height: 60px;
+      width: 60px;
     }
   }
 
@@ -34,14 +43,16 @@
   }
 
   &:hover {
+    --custom-node--BackgroundColor: var(--pf-v5-global--BackgroundColor--150);
+
     border: 1px solid var(--pf-v5-global--primary-color--light-100);
-    background-color: var(--pf-v5-global--BackgroundColor--150);
     box-shadow: var(--pf-v5-global--BoxShadow--md);
   }
 
   [data-selected='true'] & {
-    border: 1px solid var(--pf-v5-global--primary-color--dark-100);
-    background-color: var(--pf-v5-global--BackgroundColor--200);
+    --custom-node--BackgroundColor: var(--pf-v5-global--BackgroundColor--200);
+
+    border: 2px solid var(--pf-v5-global--primary-color--dark-100);
   }
 
   [data-disabled='true'] & {
