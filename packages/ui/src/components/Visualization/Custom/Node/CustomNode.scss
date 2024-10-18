@@ -1,45 +1,52 @@
-/* stylelint-disable */
-
 .custom-node {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  border-radius: var(--pf-v5-global--BorderRadius--sm);
+  background-color: var(--pf-v5-global--BackgroundColor--100);
+  overflow: auto;
+  text-align: center;
+
   &__image {
     display: flex;
     flex-flow: column;
     align-items: center;
-    height: 100%;
+    height: 50%;
     justify-content: center;
 
     img {
-      max-height: 80%;
-      max-width: 95%;
+      max-height: 100%;
+      max-width: 100%;
     }
   }
 
-  &[data-disabled='true'] &__image {
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__warning {
+    --pf-topology__node_decorator--Color: var(--pf-v5-global--warning-color--100);
+  }
+
+  &:hover {
+    border: 1px solid var(--pf-v5-global--primary-color--light-100);
+    background-color: var(--pf-v5-global--BackgroundColor--150);
+    box-shadow: var(--pf-v5-global--BoxShadow--md);
+  }
+
+  [data-selected='true'] & {
+    border: 1px solid var(--pf-v5-global--primary-color--dark-100);
+    background-color: var(--pf-v5-global--BackgroundColor--200);
+  }
+
+  [data-disabled='true'] & {
     filter: grayscale(100%);
+    font-style: italic;
+    text-decoration: line-through;
   }
-
-  &--disabled {
-    --pf-topology__node_decorator--Color: var(--pf-v5-global--BackgroundColor--dark-200);
-  }
-}
-
-.custom-node__label--disabled {
-  font-style: italic;
-  text-decoration: line-through;
-}
-
-.custom-node__label {
-  z-index: 20;
-}
-
-/* Ensure selected state has higher specificity */
-.custom-node__label--selected, .custom-node__label--selected:hover {
-  --pf-topology__node__label__background--Stroke: var(--pf-topology__node--m-selected--node__label__background--Stroke);
-  --pf-topology__node__label__background--Fill: var(--pf-topology__node--m-selected--node__label__background--Fill);
-  --pf-topology__node__separator--Stroke: var(--pf-topology__node--m-selected--node__label__text--m-secondary--Fill);
-  --pf-topology__node__action-icon__icon--Color: var(--pf-topology__node--m-selected--action-icon__icon--Color);
-  --pf-topology__node__label__text--Fill: var(--pf-topology__node--m-selected--node__label__text--Fill);
-  --pf-topology__node__label__text--m-secondary--Fill: var(--pf-topology__node--m-selected--node__label__text--m-secondary--Fill);
-
-  z-index: 50;
 }
