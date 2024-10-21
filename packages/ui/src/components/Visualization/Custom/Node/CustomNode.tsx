@@ -1,5 +1,5 @@
 import { Tooltip } from '@patternfly/react-core';
-import { BanIcon, WarningTriangleIcon, WarningTriangleIconConfig } from '@patternfly/react-icons';
+import { BanIcon, WarningTriangleIcon } from '@patternfly/react-icons';
 import {
   AnchorEnd,
   DEFAULT_DECORATOR_RADIUS,
@@ -24,6 +24,7 @@ import { CanvasNode } from '../../Canvas/canvas.models';
 import { NodeContextMenuFn } from '../ContextMenu/NodeContextMenu';
 import { TargetAnchor } from '../target-anchor';
 import './CustomNode.scss';
+import { CustomNodeToolbar } from './CustomNodeToolbar';
 
 interface CustomNodeProps extends WithSelectionProps {
   element: Node<CanvasNode, CanvasNode['data']>;
@@ -46,11 +47,15 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
     return new TargetAnchor(element);
   }, AnchorEnd.both);
 
+  if (!vizNode) {
+    return null;
+  }
+
   return (
     <Layer id={DEFAULT_LAYER}>
       <g
         className="custom-node"
-        data-testid={`custom-node__${vizNode?.id}`}
+        data-testid={`custom-node__${vizNode.id}`}
         data-nodelabel={label}
         data-selected={selected}
         data-disabled={isDisabled}
@@ -68,6 +73,8 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
             <div className="custom-node__container__label">
               <span title={label}>{label}</span>
             </div>
+
+            <CustomNodeToolbar className="custom-node__container__toolbar" vizNode={vizNode} />
           </div>
         </foreignObject>
 

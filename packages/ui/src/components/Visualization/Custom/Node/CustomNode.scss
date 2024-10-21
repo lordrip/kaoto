@@ -1,64 +1,60 @@
+@use '../custom';
+
 .custom-node {
-  --custom-node-BorderColor: var(--pf-v5-global--BorderColor--100);
-  --custom-node--BackgroundColor: var(--pf-v5-global--BackgroundColor--100);
+  @include custom.highligth {
+    &__container {
+      @include custom.container;
 
-  &[data-selected='true'] {
-    --custom-node-BorderColor: var(--pf-v5-global--primary-color--dark-100);
-  }
-
-  &[data-warning='true'] {
-    --custom-node-BorderColor: var(--pf-v5-global--warning-color--100);
-  }
-
-  &__container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-around;
-    overflow: auto;
-    text-align: center;
-
-    &__image {
       display: flex;
-      flex-flow: column;
-      align-items: center;
-      justify-content: center;
+      flex-flow: column nowrap;
+      justify-content: space-around;
 
-      img {
-        border: 2px solid var(--custom-node-BorderColor);
-        border-radius: 10px;
-        background-color: var(--custom-node--BackgroundColor);
-        padding: var(--pf-v5-global--spacer--sm);
-        height: 60px;
-        width: 60px;
+      &__image {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          border: 2px solid var(--custom-node-BorderColor);
+          border-radius: var(--custom-node-BorderRadius);
+          background-color: var(--custom-node-BackgroundColor);
+          padding: var(--pf-v5-global--spacer--sm);
+          height: 60px;
+          width: 60px;
+        }
       }
-    }
 
-    &__label {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+      &__label {
+        @include custom.text;
+      }
 
-    &:hover img {
-      border: 2px solid var(--pf-v5-global--primary-color--light-100);
-      box-shadow: var(--pf-v5-global--BoxShadow--md);
-    }
+      &__toolbar {
+        position: absolute;
+        top: 0;
+        right: var(--pf-v5-global--spacer--sm);
+      }
 
-    [data-selected='true'] & img {
-      border: 3px solid var(--custom-node-BorderColor);
-    }
+      &:not(:hover) &__toolbar {
+        display: none;
+      }
 
-    [data-disabled='true'] & {
-      filter: grayscale(100%);
-      font-style: italic;
-      text-decoration: line-through;
-    }
+      &:hover img {
+        border-color: var(--custom-node-hover-BorderColor);
+        box-shadow: var(--custom-node-Shadow);
+      }
 
-    &__warning {
-      --pf-topology__node_decorator--Color: var(--custom-node-BorderColor);
+      [data-selected='true'] & img {
+        @include custom.selected;
+      }
+
+      [data-disabled='true'] & {
+        @include custom.disabled;
+      }
+
+      &__warning {
+        --pf-topology__node_decorator--Color: var(--custom-node-BorderColor);
+      }
     }
   }
 }

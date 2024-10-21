@@ -1,0 +1,36 @@
+@use '../custom';
+
+/* stylelint-disable-next-line selector-class-pattern */
+.custom-node__container__toolbar {
+  --custom-node-toolbar-BorderRadius: 5px;
+
+  display: flex;
+  flex-flow: column nowrap;
+  box-shadow: var(--custom-node-Shadow);
+  background-color: var(--custom-node-BackgroundColor);
+
+  &__button {
+    padding: 12px;
+    border: 2px solid var(--custom-node-hover-BorderColor);
+
+    &:hover {
+      color: var(--pf-v5-global--primary-color--dark-100);
+    }
+
+    &:first-of-type {
+      border-top-left-radius: var(--custom-node-toolbar-BorderRadius);
+      border-top-right-radius: var(--custom-node-toolbar-BorderRadius);
+      border-bottom: none;
+    }
+
+    &:last-of-type {
+      border-top: none;
+      border-bottom-left-radius: var(--custom-node-toolbar-BorderRadius);
+      border-bottom-right-radius: var(--custom-node-toolbar-BorderRadius);
+    }
+
+    &.danger:hover {
+      color: var(--pf-v5-global--danger-color--100);
+    }
+  }
+}
