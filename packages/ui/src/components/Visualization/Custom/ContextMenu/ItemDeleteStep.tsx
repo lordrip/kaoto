@@ -7,13 +7,13 @@ import { useDeleteStep } from '../hooks/delete-step.hook';
 
 interface ItemDeleteStepProps extends PropsWithChildren<IDataTestID> {
   vizNode: IVisualizationNode;
-  loadActionConfirmationModal: boolean;
 }
 
 export const ItemDeleteStep: FunctionComponent<ItemDeleteStepProps> = (props) => {
-  const { onRemoveNode } = useDeleteStep(props.vizNode);
+  const { onDeleteStep } = useDeleteStep(props.vizNode);
+
   return (
-    <ContextMenuItem onClick={onRemoveNode} data-testid={props['data-testid']}>
+    <ContextMenuItem onClick={onDeleteStep} data-testid={props['data-testid']}>
       <TrashIcon /> Delete
     </ContextMenuItem>
   );

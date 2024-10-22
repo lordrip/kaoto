@@ -9,7 +9,7 @@ export const useDeleteStep = (vizNode: IVisualizationNode) => {
   const childrenNodes = vizNode.getChildren();
   const hasChildren = childrenNodes !== undefined && childrenNodes.length > 0;
 
-  const onRemoveNode = useCallback(async () => {
+  const onDeleteStep = useCallback(async () => {
     if (hasChildren) {
       /** Open delete confirm modal, get the confirmation  */
       const isDeleteConfirmed = await deleteModalContext?.actionConfirmation({
@@ -26,9 +26,9 @@ export const useDeleteStep = (vizNode: IVisualizationNode) => {
 
   const value = useMemo(
     () => ({
-      onRemoveNode,
+      onDeleteStep,
     }),
-    [onRemoveNode],
+    [onDeleteStep],
   );
 
   return value;

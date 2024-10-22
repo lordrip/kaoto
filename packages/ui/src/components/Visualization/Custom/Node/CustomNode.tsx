@@ -23,8 +23,8 @@ import { CanvasDefaults } from '../../Canvas/canvas.defaults';
 import { CanvasNode } from '../../Canvas/canvas.models';
 import { NodeContextMenuFn } from '../ContextMenu/NodeContextMenu';
 import { TargetAnchor } from '../target-anchor';
+import { CustomNodeToolbar } from '../Toolbar/CustomToolbar';
 import './CustomNode.scss';
-import { CustomNodeToolbar } from './CustomNodeToolbar';
 
 interface CustomNodeProps extends WithSelectionProps {
   element: Node<CanvasNode, CanvasNode['data']>;
