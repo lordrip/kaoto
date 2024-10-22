@@ -35,7 +35,7 @@
         right: var(--pf-v5-global--spacer--sm);
       }
 
-      &:not(:hover) &__toolbar {
+      [data-selected='false'] &:not(:hover) &__toolbar {
         display: none;
       }
 
