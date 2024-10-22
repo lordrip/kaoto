@@ -1,11 +1,14 @@
 import { Tooltip } from '@patternfly/react-core';
 import { BanIcon } from '@patternfly/react-icons';
 import {
+  DEFAULT_LAYER,
   Decorator,
   DefaultNode,
+  Layer,
   Node,
   NodeStatus,
   ScaleDetailsLevel,
+  TOP_LAYER,
   WithSelectionProps,
   observer,
   useSelection,
@@ -20,6 +23,7 @@ import { CanvasDefaults } from '../../Canvas/canvas.defaults';
 import { CanvasNode } from '../../Canvas/canvas.models';
 import './CustomNode.scss';
 import { NodeContextMenuFn } from '../ContextMenu/NodeContextMenu';
+import { StepToolbar } from '../../Canvas/StepToolbar/StepToolbar';
 
 interface CustomNodeProps extends WithSelectionProps {
   element: Node<CanvasNode, CanvasNode['data']>;
@@ -39,51 +43,64 @@ const CustomNode: FunctionComponent<CustomNodeProps> = observer(({ element, ...r
   const id = vizNode?.getTitle();
 
   return (
-    <DefaultNode
-      {...rest}
-      element={element}
-      label={selected ? label : doTruncateLabel(label)}
-      scaleLabel={detailsLevel !== ScaleDetailsLevel.low}
-      labelClassName={clsx('custom-node__label', {
-        'custom-node__label--disabled': isDisabled,
-        'custom-node__label--selected': selected,
-      })}
-      showStatusDecorator={!isDisabled}
-      statusDecoratorTooltip={statusDecoratorTooltip}
-      nodeStatus={nodeStatus}
-      onStatusDecoratorClick={noopFn}
-      secondaryLabel={id !== label ? id : undefined}
-    >
-      <g
-        className="custom-node"
-        data-testid={`custom-node__${vizNode?.id}`}
-        data-nodelabel={label}
-        data-disabled={isDisabled}
+    <>
+      <DefaultNode
+        {...rest}
+        element={element}
+        label={selected ? label : doTruncateLabel(label)}
+        scaleLabel={detailsLevel !== ScaleDetailsLevel.low}
+        labelClassName={clsx('custom-node__label', {
+          'custom-node__label--disabled': isDisabled,
+          'custom-node__label--selected': selected,
+        })}
+        showStatusDecorator={!isDisabled}
+        statusDecoratorTooltip={statusDecoratorTooltip}
+        nodeStatus={nodeStatus}
+        onStatusDecoratorClick={noopFn}
+        secondaryLabel={id !== label ? id : undefined}
       >
-        <foreignObject
-          x="0"
-          y="0"
-          width={CanvasDefaults.DEFAULT_NODE_DIAMETER}
-          height={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+        <g
+          className="custom-node"
+          data-testid={`custom-node__${vizNode?.id}`}
+          data-nodelabel={label}
+          data-disabled={isDisabled}
         >
-          <Tooltip content={tooltipContent}>
-            <div className="custom-node__image">
-              <img src={vizNode?.data.icon} />
-            </div>
-          </Tooltip>
-        </foreignObject>
+          <foreignObject
+            x="0"
+            y="0"
+            width={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+            height={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+          >
+            <Tooltip content={tooltipContent}>
+              <div className="custom-node__image">
+                <img src={vizNode?.data.icon} />
+              </div>
+            </Tooltip>
+          </foreignObject>
 
-        {isDisabled && (
-          <Decorator
-            radius={12}
-            x={CanvasDefaults.DEFAULT_NODE_DIAMETER}
-            y={0}
-            icon={<BanIcon className="custom-node--disabled" />}
-            showBackground
-          />
-        )}
-      </g>
-    </DefaultNode>
+          {selected && (
+            <foreignObject
+              x="-200"
+              y={CanvasDefaults.DEFAULT_NODE_DIAMETER * -2}
+              width="100%"
+              height={CanvasDefaults.DEFAULT_NODE_DIAMETER * 2}
+            >
+              <StepToolbar vizNode={vizNode!} />
+            </foreignObject>
+          )}
+
+          {isDisabled && (
+            <Decorator
+              radius={12}
+              x={CanvasDefaults.DEFAULT_NODE_DIAMETER}
+              y={0}
+              icon={<BanIcon className="custom-node--disabled" />}
+              showBackground
+            />
+          )}
+        </g>
+      </DefaultNode>
+    </>
   );
 });
 
