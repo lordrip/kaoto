@@ -2996,6 +2996,7 @@ __metadata:
     ajv: "npm:^8.12.0"
     ajv-formats: "npm:^3.0.0"
     babel-jest: "npm:^29.4.2"
+    browser-fs-access: "npm:^0.35.0"
     chevrotain: "npm:10.5.0"
     clsx: "npm:^2.1.0"
     copyfiles: "npm:^2.4.1"
@@ -6283,7 +6284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4, @types/lodash@npm:^4.14.172, @types/lodash@npm:^4.17.7":
+"@types/lodash@npm:^4, @types/lodash@npm:^4.14.172":
   version: 4.17.13
   resolution: "@types/lodash@npm:4.17.13"
   checksum: 10/ddb34e20810c71be2d9445bcc4b64ec25b83976738454de709854b79c7f655b03704b76235445699956d65012987720e0e429a35489de65495cdb5420202d905
@@ -6294,6 +6295,13 @@ __metadata:
   version: 4.17.5
   resolution: "@types/lodash@npm:4.17.5"
   checksum: 10/10e2e9cbeb16998026f4071f9f5f2a38b651eba15302f512e0b8ab904c07c197ca0282d2821f64e53c2b692d7046af0a1ce3ead190fb077cbe4036948fce1924
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.17.7":
+  version: 4.17.7
+  resolution: "@types/lodash@npm:4.17.7"
+  checksum: 10/b8177f19cf962414a66989837481b13f546afc2e98e8d465bec59e6ac03a59c584eb7053ce511cde3a09c5f3096d22a5ae22cfb56b23f3b0da75b0743b6b1a44
   languageName: node
   linkType: hard
 
@@ -7768,6 +7776,13 @@ __metadata:
   version: 1.2.1
   resolution: "browser-assert@npm:1.2.1"
   checksum: 10/8b2407cd04c1ed592cf892dec35942b7d72635829221e0788c9a16c4d2afa8b7156bc9705b1c4b32c30d88136c576fda3cbcb8f494d6f865264c706ea8798d92
+  languageName: node
+  linkType: hard
+
+"browser-fs-access@npm:^0.35.0":
+  version: 0.35.0
+  resolution: "browser-fs-access@npm:0.35.0"
+  checksum: 10/5fa9876cc10499bfc8e1a3d83261f8966c5687c2d31c1abefed35ecc5a8e1ab8b12a51aed638b48ee4e2109ec48c2cba3bfcd162b9de270a5b5ca08740024eda
   languageName: node
   linkType: hard
 
@@ -15404,7 +15419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.38, postcss@npm:^8.4.40, postcss@npm:^8.4.45":
+"postcss@npm:^8.4.38, postcss@npm:^8.4.40":
   version: 8.4.49
   resolution: "postcss@npm:8.4.49"
   dependencies:
@@ -15412,6 +15427,17 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/28fe1005b1339870e0a5006375ba5ac1213fd69800f79e7db09c398e074421ba6e162898e94f64942fed554037fd292db3811d87835d25ab5ef7f3c9daacb6ca
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.45":
+  version: 8.4.47
+  resolution: "postcss@npm:8.4.47"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.1.0"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10/f2b50ba9b6fcb795232b6bb20de7cdc538c0025989a8ed9c4438d1960196ba3b7eaff41fdb1a5c701b3504651ea87aeb685577707f0ae4d6ce6f3eae5df79a81
   languageName: node
   linkType: hard
 

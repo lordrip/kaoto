@@ -4,6 +4,7 @@ import { sourceSchemaConfig } from '../../../models/camel';
 import { EntitiesContext } from '../../../providers/entities.provider';
 import './ContextToolbar.scss';
 import { DSLSelector } from './DSLSelector/DSLSelector';
+import { Files } from './Files/Files';
 import { FlowClipboard } from './FlowClipboard/FlowClipboard';
 import { FlowExportImage } from './FlowExportImage/FlowExportImage';
 import { FlowsMenu } from './Flows/FlowsMenu';
@@ -42,6 +43,9 @@ export const ContextToolbar: FunctionComponent = () => {
             <FlowExportImage />
           </ToolbarItem>,
           <RuntimeSelector key="runtime-selector" />,
+          <ToolbarItem key="toolbar-files">
+            <Files />
+          </ToolbarItem>,
         ])}
       </ToolbarContent>
     </Toolbar>
