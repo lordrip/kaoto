@@ -1,11 +1,15 @@
+import { ProcessorDefinition } from '@kaoto/camel-catalog/types';
 import { IVisualizationNode } from '../../base-visual-entity';
 import { ICamelElementLookupResult } from '../support/camel-component-types';
 import { BaseNodeMapper } from './mappers/base-node-mapper';
 import { ChoiceNodeMapper } from './mappers/choice-node-mapper';
-import { OtherwiseNodeMapper } from './mappers/otherwise-node-mapper';
-import { WhenNodeMapper } from './mappers/when-node-mapper';
-import { MulticastNodeMapper } from './mappers/multicast-node-mapper';
+import { FromNodeMapper } from './mappers/from-node-mapper';
+import { InterceptNodeMapper } from './mappers/intercept-node-mapper';
 import { LoadBalanceNodeMapper } from './mappers/loadbalance-node-mapper';
+import { MulticastNodeMapper } from './mappers/multicast-node-mapper';
+import { OtherwiseNodeMapper } from './mappers/otherwise-node-mapper';
+import { RouteNodeMapper } from './mappers/route-node-mapper';
+import { WhenNodeMapper } from './mappers/when-node-mapper';
 import { INodeMapper } from './node-mapper';
 import { RootNodeMapper } from './root-node-mapper';
 
@@ -36,5 +40,23 @@ export class NodeMapperService {
     this.rootNodeMapper.registerMapper('otherwise', new OtherwiseNodeMapper(this.rootNodeMapper));
     this.rootNodeMapper.registerMapper('multicast', new MulticastNodeMapper(this.rootNodeMapper));
     this.rootNodeMapper.registerMapper('loadBalance', new LoadBalanceNodeMapper(this.rootNodeMapper));
+    this.rootNodeMapper.registerMapper('from' as keyof ProcessorDefinition, new FromNodeMapper(this.rootNodeMapper));
+    this.rootNodeMapper.registerMapper('route' as keyof ProcessorDefinition, new RouteNodeMapper(this.rootNodeMapper));
+    this.rootNodeMapper.registerMapper(
+      'template' as keyof ProcessorDefinition,
+      new RouteNodeMapper(this.rootNodeMapper),
+    );
+    this.rootNodeMapper.registerMapper(
+      'intercept' as keyof ProcessorDefinition,
+      new InterceptNodeMapper(this.rootNodeMapper),
+    );
+    this.rootNodeMapper.registerMapper(
+      'interceptFrom' as keyof ProcessorDefinition,
+      new InterceptNodeMapper(this.rootNodeMapper),
+    );
+    this.rootNodeMapper.registerMapper(
+      'interceptSendToEndpoint' as keyof ProcessorDefinition,
+      new InterceptNodeMapper(this.rootNodeMapper),
+    );
   }
 }
