@@ -2,23 +2,21 @@ import { Button } from '@patternfly/react-core';
 import {
   BanIcon,
   CheckIcon,
-  CodeBranchIcon,
   CompressArrowsAltIcon,
   ExpandArrowsAltIcon,
-  PlusIcon,
   PowerOffIcon,
   SyncAltIcon,
   TrashIcon,
 } from '@patternfly/react-icons';
 import clsx from 'clsx';
 import { FunctionComponent } from 'react';
-import { AddStepMode, IDataTestID, IVisualizationNode } from '../../../../models';
+import { IDataTestID, IVisualizationNode } from '../../../../models';
 import { useDeleteGroup } from '../../Custom/hooks/delete-group.hook';
 import { useDeleteStep } from '../../Custom/hooks/delete-step.hook';
 import { useDisableStep } from '../../Custom/hooks/disable-step.hook';
 import { useEnableAllSteps } from '../../Custom/hooks/enable-all-steps.hook';
-import { useInsertStep } from '../../Custom/hooks/insert-step.hook';
 import { useReplaceStep } from '../../Custom/hooks/replace-step.hook';
+import { AddStepDropdown } from './AddStepDropdown';
 import './StepToolbar.scss';
 
 interface IStepToolbar extends IDataTestID {
@@ -36,10 +34,17 @@ export const StepToolbar: FunctionComponent<IStepToolbar> = ({
   onCollapseToggle,
   'data-testid': dataTestId,
 }) => {
-  const { canHaveChildren, canHaveSpecialChildren, canBeDisabled, canReplaceStep, canRemoveStep, canRemoveFlow } =
-    vizNode.getNodeInteraction();
-  const { onInsertStep } = useInsertStep(vizNode);
-  const { onInsertStep: onInsertSpecial } = useInsertStep(vizNode, AddStepMode.InsertSpecialChildStep);
+  const {
+    canHaveNextStep,
+    canHavePreviousStep,
+    canHaveChildren,
+    canHaveSpecialChildren,
+    canBeDisabled,
+    canReplaceStep,
+    canRemoveStep,
+    canRemoveFlow,
+  } = vizNode.getNodeInteraction();
+  const showAddStepDropdown = canHaveNextStep || canHavePreviousStep || canHaveChildren || canHaveSpecialChildren;
   const { onToggleDisableNode, isDisabled } = useDisableStep(vizNode);
   const { areMultipleStepsDisabled, onEnableAllSteps } = useEnableAllSteps();
   const { onReplaceNode } = useReplaceStep(vizNode);
@@ -48,36 +53,6 @@ export const StepToolbar: FunctionComponent<IStepToolbar> = ({
 
   return (
     <div className={clsx(className, 'step-toolbar')} data-testid={dataTestId}>
-      {canHaveChildren && (
-        <Button
-          className="step-toolbar__button"
-          data-testid="step-toolbar-button-add"
-          variant="secondary"
-          title="Add step"
-          onClick={(event) => {
-            onInsertStep();
-            event.stopPropagation();
-          }}
-        >
-          <PlusIcon />
-        </Button>
-      )}
-
-      {canHaveSpecialChildren && (
-        <Button
-          className="step-toolbar__button"
-          data-testid="step-toolbar-button-add-special"
-          variant="secondary"
-          title="Add branch"
-          onClick={(event) => {
-            onInsertSpecial();
-            event.stopPropagation();
-          }}
-        >
-          <CodeBranchIcon />
-        </Button>
-      )}
-
       {canBeDisabled && (
         <Button
           className="step-toolbar__button"
@@ -121,6 +96,10 @@ export const StepToolbar: FunctionComponent<IStepToolbar> = ({
         >
           <SyncAltIcon />
         </Button>
+      )}
+
+      {showAddStepDropdown && (
+        <AddStepDropdown className="step-toolbar__button" vizNode={vizNode} data-testid="add-step-toggle" />
       )}
 
       {onCollapseToggle && (
