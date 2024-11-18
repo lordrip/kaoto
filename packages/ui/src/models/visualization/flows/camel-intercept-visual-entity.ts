@@ -1,17 +1,11 @@
 import { Intercept, ProcessorDefinition } from '@kaoto/camel-catalog/types';
 import { getCamelRandomId } from '../../../camel-utils/camel-random-id';
-import { NodeIconResolver, NodeIconType, isDefined } from '../../../utils';
+import { isDefined } from '../../../utils';
 import { EntityType } from '../../camel/entities/base-entity';
-import {
-  BaseVisualCamelEntity,
-  IVisualizationNode,
-  IVisualizationNodeData,
-  NodeInteraction,
-} from '../base-visual-entity';
+import { BaseVisualCamelEntity, IVisualizationNodeData, NodeInteraction } from '../base-visual-entity';
 import { AbstractCamelVisualEntity } from './abstract-camel-visual-entity';
 import { CamelComponentSchemaService } from './support/camel-component-schema.service';
 import { CamelRouteVisualEntityData } from './support/camel-component-types';
-import { NodeMapperService } from './nodes/node-mapper.service';
 import { ModelValidationService } from './support/validators/model-validation.service';
 
 export class CamelInterceptVisualEntity
@@ -82,19 +76,6 @@ export class CamelInterceptVisualEntity
     if (!componentVisualSchema) return undefined;
 
     return ModelValidationService.validateNodeStatus(componentVisualSchema);
-  }
-
-  toVizNode(): IVisualizationNode<IVisualizationNodeData> {
-    const interceptGroupNode = NodeMapperService.getVizNode(
-      CamelInterceptVisualEntity.ROOT_PATH,
-      { processorName: CamelInterceptVisualEntity.ROOT_PATH as keyof ProcessorDefinition },
-      this.interceptDef,
-    );
-    interceptGroupNode.data.entity = this;
-    interceptGroupNode.data.isGroup = true;
-    interceptGroupNode.data.icon = NodeIconResolver.getIcon(this.type, NodeIconType.VisualEntity);
-
-    return interceptGroupNode;
   }
 
   toJSON(): { intercept: Intercept } {

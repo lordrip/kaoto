@@ -33,7 +33,14 @@ export class CamelComponentSchemaService {
     'onCompletion',
     ...CamelComponentFilterService.REST_DSL_METHODS,
   ];
-  static DISABLED_REMOVE_STEPS = ['from', 'route'] as unknown as (keyof ProcessorDefinition)[];
+  static DISABLED_REMOVE_STEPS = [
+    'from',
+    'route',
+    'template',
+    'intercept',
+    'interceptFrom',
+    'interceptSendToEndpoint',
+  ] as unknown as (keyof ProcessorDefinition)[];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static getVisualComponentSchema(path: string, definition: any): VisualComponentSchema | undefined {

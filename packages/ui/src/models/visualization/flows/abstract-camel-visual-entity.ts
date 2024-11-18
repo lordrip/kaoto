@@ -13,7 +13,6 @@ import {
   NodeInteraction,
   VisualComponentSchema,
 } from '../base-visual-entity';
-import { createVisualizationNode } from '../visualization-node';
 import { NodeMapperService } from './nodes/node-mapper.service';
 import { CamelComponentDefaultService } from './support/camel-component-default.service';
 import { CamelComponentSchemaService } from './support/camel-component-schema.service';
@@ -290,43 +289,16 @@ export abstract class AbstractCamelVisualEntity<T extends object> implements Bas
   }
 
   toVizNode(): IVisualizationNode {
-    const routeGroupNode = createVisualizationNode(this.getRootPath(), {
-      path: this.getRootPath(),
-      entity: this,
-      isGroup: true,
-      icon: NodeIconResolver.getIcon(this.type, NodeIconType.VisualEntity),
-      processorName: 'route',
-    });
-
-    const fromNode = NodeMapperService.getVizNode(
-      `${this.getRootPath()}.from`,
+    const routeGroupNode = NodeMapperService.getVizNode(
+      this.getRootPath(),
       {
-        processorName: 'from' as keyof ProcessorDefinition,
-        componentName: CamelComponentSchemaService.getComponentNameFromUri(this.getRootUri()!),
+        processorName: this.getRootPath() as keyof ProcessorDefinition,
       },
       this.entityDef,
     );
 
-    if (!this.getRootUri()) {
-      fromNode.data.icon = NodeIconResolver.getPlaceholderIcon();
-    }
-    routeGroupNode.addChild(fromNode);
-
-    fromNode.getChildren()?.forEach((child, index) => {
-      routeGroupNode.addChild(child);
-      if (index === 0) {
-        fromNode.setNextNode(child);
-        child.setPreviousNode(fromNode);
-      }
-
-      const previousChild = fromNode.getChildren()?.[index - 1];
-      if (previousChild) {
-        previousChild.setNextNode(child);
-        child.setPreviousNode(previousChild);
-      }
-    });
-    fromNode.getChildren()?.splice(0);
-    fromNode.data.isGroup = false;
+    routeGroupNode.data.entity = this;
+    routeGroupNode.data.icon = NodeIconResolver.getIcon(this.type, NodeIconType.VisualEntity);
 
     return routeGroupNode;
   }

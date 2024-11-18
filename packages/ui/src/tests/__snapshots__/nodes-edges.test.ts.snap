@@ -16,7 +16,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
           "canRemoveStep": false,
           "canReplaceStep": false,
         },
-        "children": [],
+        "children": undefined,
         "data": {
           "componentName": "timer",
           "icon": "",
@@ -884,7 +884,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                       "canRemoveStep": false,
                       "canReplaceStep": false,
                     },
-                    "children": [],
+                    "children": undefined,
                     "data": {
                       "componentName": "timer",
                       "icon": "",
@@ -994,7 +994,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                     "canRemoveStep": false,
                     "canReplaceStep": false,
                   },
-                  "children": [],
+                  "children": undefined,
                   "data": {
                     "componentName": "timer",
                     "icon": "",
@@ -1112,7 +1112,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                 "canRemoveStep": false,
                 "canReplaceStep": false,
               },
-              "children": [],
+              "children": undefined,
               "data": {
                 "componentName": "timer",
                 "icon": "",
@@ -1404,7 +1404,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                     "canRemoveStep": false,
                     "canReplaceStep": false,
                   },
-                  "children": [],
+                  "children": undefined,
                   "data": {
                     "componentName": "timer",
                     "icon": "",
@@ -1514,7 +1514,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
@@ -1632,7 +1632,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
               "canRemoveStep": false,
               "canReplaceStep": false,
             },
-            "children": [],
+            "children": undefined,
             "data": {
               "componentName": "timer",
               "icon": "",
@@ -1920,7 +1920,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                       "canRemoveStep": false,
                       "canReplaceStep": false,
                     },
-                    "children": [],
+                    "children": undefined,
                     "data": {
                       "componentName": "timer",
                       "icon": "",
@@ -2030,7 +2030,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                     "canRemoveStep": false,
                     "canReplaceStep": false,
                   },
-                  "children": [],
+                  "children": undefined,
                   "data": {
                     "componentName": "timer",
                     "icon": "",
@@ -2148,7 +2148,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                 "canRemoveStep": false,
                 "canReplaceStep": false,
               },
-              "children": [],
+              "children": undefined,
               "data": {
                 "componentName": "timer",
                 "icon": "",
@@ -2440,7 +2440,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                     "canRemoveStep": false,
                     "canReplaceStep": false,
                   },
-                  "children": [],
+                  "children": undefined,
                   "data": {
                     "componentName": "timer",
                     "icon": "",
@@ -2550,7 +2550,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
@@ -2668,7 +2668,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
               "canRemoveStep": false,
               "canReplaceStep": false,
             },
-            "children": [],
+            "children": undefined,
             "data": {
               "componentName": "timer",
               "icon": "",
@@ -2963,7 +2963,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
@@ -3073,7 +3073,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                 "canRemoveStep": false,
                 "canReplaceStep": false,
               },
-              "children": [],
+              "children": undefined,
               "data": {
                 "componentName": "timer",
                 "icon": "",
@@ -3191,7 +3191,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
             "canRemoveStep": false,
             "canReplaceStep": false,
           },
-          "children": [],
+          "children": undefined,
           "data": {
             "componentName": "timer",
             "icon": "",
@@ -3367,7 +3367,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                 "canRemoveStep": false,
                 "canReplaceStep": false,
               },
-              "children": [],
+              "children": undefined,
               "data": {
                 "componentName": "timer",
                 "icon": "",
@@ -3624,7 +3624,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
@@ -3847,7 +3847,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
@@ -3943,7 +3943,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
               "canRemoveStep": false,
               "canReplaceStep": false,
             },
-            "children": [],
+            "children": undefined,
             "data": {
               "componentName": "timer",
               "icon": "",
@@ -4080,7 +4080,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
               "canRemoveStep": false,
               "canReplaceStep": false,
             },
-            "children": [],
+            "children": undefined,
             "data": {
               "componentName": "timer",
               "icon": "",
@@ -4381,7 +4381,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                 "canRemoveStep": false,
                 "canReplaceStep": false,
               },
-              "children": [],
+              "children": undefined,
               "data": {
                 "componentName": "timer",
                 "icon": "",
@@ -4543,7 +4543,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
                   "canRemoveStep": false,
                   "canReplaceStep": false,
                 },
-                "children": [],
+                "children": undefined,
                 "data": {
                   "componentName": "timer",
                   "icon": "",
