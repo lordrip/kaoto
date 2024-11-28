@@ -1,14 +1,12 @@
+import validator from '@rjsf/validator-ajv8';
 import { FunctionComponent, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { CanvasFormTabsContext } from '../../../../providers/canvas-form-tabs.provider';
 import { EntitiesContext } from '../../../../providers/entities.provider';
-import { SchemaBridgeProvider } from '../../../../providers/schema-bridge.provider';
-import { getUserUpdatedPropertiesSchema, getRequiredPropertiesSchema, isDefined, setValue } from '../../../../utils';
-import { CustomAutoForm, CustomAutoFormRef } from '../../../Form/CustomAutoForm';
-import { DataFormatEditor } from '../../../Form/dataFormat/DataFormatEditor';
-import { LoadBalancerEditor } from '../../../Form/loadBalancer/LoadBalancerEditor';
-import { StepExpressionEditor } from '../../../Form/stepExpression/StepExpressionEditor';
+import { getRequiredPropertiesSchema, getUserUpdatedPropertiesSchema, isDefined, setValue } from '../../../../utils';
+import { CustomAutoFormRef } from '../../../Form/CustomAutoForm';
 import { UnknownNode } from '../../Custom/UnknownNode';
 import { CanvasNode } from '../canvas.models';
-import { CanvasFormTabsContext } from '../../../../providers/canvas-form-tabs.provider';
+import { CustomForm } from './rjsf';
 
 interface CanvasFormTabsProps {
   selectedNode: CanvasNode;
@@ -80,27 +78,28 @@ export const CanvasFormBody: FunctionComponent<CanvasFormTabsProps> = (props) =>
       {stepFeatures.isUnknownComponent ? (
         <UnknownNode model={model} />
       ) : (
-        <SchemaBridgeProvider schema={processedSchema} parentRef={divRef}>
-          {stepFeatures.isExpressionAwareStep && (
-            <StepExpressionEditor selectedNode={props.selectedNode} formMode={selectedTab} />
-          )}
-          {stepFeatures.isDataFormatAwareStep && (
-            <DataFormatEditor selectedNode={props.selectedNode} formMode={selectedTab} />
-          )}
-          {stepFeatures.isLoadBalanceAwareStep && (
-            <LoadBalancerEditor selectedNode={props.selectedNode} formMode={selectedTab} />
-          )}
-          <CustomAutoForm
-            key={props.selectedNode.id}
-            ref={formRef}
-            model={model}
-            onChange={handleOnChangeIndividualProp}
-            sortFields={false}
-            omitFields={omitFields.current}
-            data-testid="autoform"
-          />
-          <div data-testid="root-form-placeholder" ref={divRef} />
-        </SchemaBridgeProvider>
+        <CustomForm
+          className="pf-v5-c-form pf-m-limit-width"
+          schema={processedSchema}
+          omitFields={omitFields.current}
+          formData={model}
+          experimental_defaultFormStateBehavior={{
+            emptyObjectFields: 'populateRequiredDefaults',
+          }}
+          validator={validator}
+          onChange={(data, id) => {
+            console.log('changed', data, id);
+
+            props.selectedNode.data?.vizNode?.updateModel(data.formData);
+            entitiesContext?.updateSourceCodeFromEntities();
+          }}
+          onSubmit={(...args) => {
+            console.log('submitted', ...args);
+          }}
+          onError={(...args) => {
+            console.log('errors', ...args);
+          }}
+        />
       )}
     </>
   );
