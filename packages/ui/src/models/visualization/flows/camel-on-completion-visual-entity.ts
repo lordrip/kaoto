@@ -45,10 +45,6 @@ export class CamelOnCompletionVisualEntity
     return CamelOnCompletionVisualEntity.ROOT_PATH;
   }
 
-  getId(): string {
-    return this.id;
-  }
-
   setId(id: string): void {
     this.id = id;
     this.onCompletionDef.onCompletion.id = id;

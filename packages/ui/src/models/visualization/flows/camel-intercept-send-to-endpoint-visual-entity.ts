@@ -72,10 +72,6 @@ export class CamelInterceptSendToEndpointVisualEntity
     return CamelInterceptSendToEndpointVisualEntity.ROOT_PATH;
   }
 
-  getId(): string {
-    return this.id;
-  }
-
   setId(id: string): void {
     this.id = id;
     this.interceptSendToEndpointDef.interceptSendToEndpoint.id = id;

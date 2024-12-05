@@ -210,7 +210,7 @@ export class PipeVisualEntity implements BaseVisualCamelEntity {
   }
 
   toVizNode(): IVisualizationNode {
-    const pipeGroupNode = createVisualizationNode(this.id, {
+    const pipeGroupNode = createVisualizationNode(this.getId(), {
       path: this.getRootPath(),
       entity: this,
       isGroup: true,
@@ -264,7 +264,7 @@ export class PipeVisualEntity implements BaseVisualCamelEntity {
       icon,
     };
 
-    const vizNode = createVisualizationNode(step?.ref?.name ?? path, data);
+    const vizNode = createVisualizationNode(path, data);
     vizNode.setTitle(kameletDefinition?.metadata.name ?? '');
 
     return vizNode;

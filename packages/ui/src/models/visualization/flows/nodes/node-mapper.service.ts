@@ -13,6 +13,7 @@ export class NodeMapperService {
   private static rootNodeMapper: RootNodeMapper;
 
   static getVizNode(
+    id: string,
     path: string,
     componentLookup: ICamelElementLookupResult,
     entityDefinition: unknown,

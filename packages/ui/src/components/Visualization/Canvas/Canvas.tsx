@@ -80,6 +80,8 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({ enti
       }
     });
 
+    console.log(nodes.map((node) => node.id).join('\n'));
+
     const model: Model = {
       nodes,
       edges,

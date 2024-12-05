@@ -60,10 +60,6 @@ export class CamelInterceptFromVisualEntity
     return CamelInterceptFromVisualEntity.ROOT_PATH;
   }
 
-  getId(): string {
-    return this.id;
-  }
-
   setId(id: string): void {
     this.id = id;
     this.interceptFromDef.interceptFrom.id = id;

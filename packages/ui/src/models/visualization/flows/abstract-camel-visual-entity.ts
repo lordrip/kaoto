@@ -228,7 +228,7 @@ export abstract class AbstractCamelVisualEntity<T extends object> implements Bas
   }
 
   toVizNode(): IVisualizationNode {
-    const routeGroupNode = createVisualizationNode(this.getRootPath(), {
+    const routeGroupNode = createVisualizationNode(this.getId(), {
       path: this.getRootPath(),
       entity: this,
       isGroup: true,

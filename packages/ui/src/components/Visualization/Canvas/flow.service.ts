@@ -4,32 +4,38 @@ import { CanvasDefaults } from './canvas.defaults';
 import { CanvasEdge, CanvasNode, CanvasNodesAndEdges } from './canvas.models';
 
 export class FlowService {
-  static nodes: CanvasNode[] = [];
-  static edges: CanvasEdge[] = [];
-  private static visitedNodes: string[] = [];
-
   static getFlowDiagram(vizNode: IVisualizationNode): CanvasNodesAndEdges {
-    this.nodes = [];
-    this.edges = [];
-    this.visitedNodes = [];
+    const nodes: CanvasNode[] = [];
+    const edges: CanvasEdge[] = [];
+    const visitedNodes: string[] = [];
 
-    this.appendNodesAndEdges(vizNode);
+    this.appendNodesAndEdges(vizNode.id, vizNode, nodes, edges, visitedNodes);
 
-    return { nodes: this.nodes, edges: this.edges };
+    return { nodes, edges };
   }
 
   /** Method for iterating over all the IVisualizationNode and its children using a depth-first algorithm */
-  private static appendNodesAndEdges(vizNodeParam: IVisualizationNode): void {
-    if (this.visitedNodes.includes(vizNodeParam.id)) {
+  private static appendNodesAndEdges(
+    scope: string,
+    vizNodeParam: IVisualizationNode,
+    nodesAcc: CanvasNode[],
+    edgesAcc: CanvasEdge[],
+    visitedNodes: string[] = [],
+  ): void {
+    if (visitedNodes.includes(vizNodeParam.id)) {
       return;
     }
 
     let node: CanvasNode;
 
     const children = vizNodeParam.getChildren();
+    children?.forEach((child) => {
+      child.id = `${scope}>${child.id}`;
+    });
+
     if (vizNodeParam.data.isGroup && children) {
       children.forEach((child) => {
-        this.appendNodesAndEdges(child);
+        this.appendNodesAndEdges(scope, child, nodesAcc, edgesAcc, visitedNodes);
       });
 
       const containerId = vizNodeParam.id;
@@ -44,11 +50,11 @@ export class FlowService {
     }
 
     /** Add node */
-    this.nodes.push(node);
-    this.visitedNodes.push(node.id);
+    nodesAcc.push(node);
+    visitedNodes.push(node.id);
 
     /** Add edges */
-    this.edges.push(...this.getEdgesFromVizNode(vizNodeParam));
+    edgesAcc.push(...this.getEdgesFromVizNode(vizNodeParam));
   }
 
   private static getCanvasNode(vizNodeParam: IVisualizationNode): CanvasNode {

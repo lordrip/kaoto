@@ -14,7 +14,7 @@ export const createVisualizationNode = <T extends IVisualizationNodeData = IVisu
   id: string,
   data: T,
 ): IVisualizationNode<T> => {
-  const vizNode = new VisualizationNode(`${id}|${data.path}`, data);
+  const vizNode = new VisualizationNode(id, data);
   vizNode.setTitle(id);
 
   return vizNode;

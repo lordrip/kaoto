@@ -45,10 +45,6 @@ export class CamelOnExceptionVisualEntity
     return CamelOnExceptionVisualEntity.ROOT_PATH;
   }
 
-  getId(): string {
-    return this.id;
-  }
-
   setId(id: string): void {
     this.id = id;
     this.onExceptionDef.onException.id = id;
@@ -88,6 +84,7 @@ export class CamelOnExceptionVisualEntity
 
   toVizNode(): IVisualizationNode<IVisualizationNodeData> {
     const onExceptionGroupNode = NodeMapperService.getVizNode(
+      this.getId(),
       CamelOnExceptionVisualEntity.ROOT_PATH,
       { processorName: CamelOnExceptionVisualEntity.ROOT_PATH as keyof ProcessorDefinition },
       this.onExceptionDef,

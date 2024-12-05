@@ -70,10 +70,6 @@ export class CamelRouteConfigurationVisualEntity
     return CamelRouteConfigurationVisualEntity.ROOT_PATH;
   }
 
-  getId(): string {
-    return this.id;
-  }
-
   setId(id: string): void {
     this.id = id;
   }
@@ -143,7 +139,7 @@ export class CamelRouteConfigurationVisualEntity
   }
 
   toVizNode(): IVisualizationNode {
-    const routeConfigurationGroupNode = createVisualizationNode(this.id, {
+    const routeConfigurationGroupNode = createVisualizationNode(this.getId(), {
       path: this.getRootPath(),
       entity: this,
       isGroup: true,
