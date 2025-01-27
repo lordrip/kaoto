@@ -2,12 +2,14 @@ package io.kaoto.camelcatalog.generators;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class CamelYAMLSchemaReader {
 
     ObjectMapper jsonMapper = new ObjectMapper();
     ObjectNode camelYamlSchemaNode;
+    private final SchemaPropertyFilter schemaPropertyFilter = new SchemaPropertyFilter();
 
     public CamelYAMLSchemaReader(ObjectNode camelYamlSchemaNode) throws JsonProcessingException {
         this.camelYamlSchemaNode = camelYamlSchemaNode;
@@ -36,24 +38,15 @@ public class CamelYAMLSchemaReader {
         }
 
         var eipSchemaNode = jsonMapper.createObjectNode();
+        var eipSchemaDefinitionsNode = jsonMapper.createObjectNode();
 
+        var resolvedNode = getResolvedNode(eipNodeRef);
 
+        schemaPropertyFilter.schemaPropertyFilter(eipName, resolvedNode);
+        eipSchemaNode.setAll(resolvedNode);
 
-
-        // TODO: Bring the definitions from the Camel YAML DSL schema
-        // See: io.kaoto.camelcatalog.generator.CamelYamlDslSchemaProcessor.relocateToRootDefinitions
-
-
-
-
-
-//        var resolvedNode = getResolvedNode(eipNodeRef);
-//        eipSchemaNode.setAll(resolvedNode);
-//
-//        setRequiredPropertyIfNeeded(eipSchemaNode);
-//        extractSingleOneOfFromAnyOf(eipSchemaNode);
-//        inlineDefinitions(eipSchemaNode);
-
+        inlineDefinitions(eipSchemaNode, eipSchemaDefinitionsNode);
+        eipSchemaNode.set("definitions", eipSchemaDefinitionsNode);
 
         return eipSchemaNode;
     }
@@ -72,10 +65,11 @@ public class CamelYAMLSchemaReader {
             String ref = node.get("$ref").asText();
             String[] refPath = ref.split("/");
 
-            ObjectNode currentNode = camelYamlSchemaNode;
+            var definition = camelYamlSchemaNode.deepCopy();
+            ObjectNode currentNode = definition;
             for (String path : refPath) {
                 if (path.equals("#")) {
-                    currentNode = camelYamlSchemaNode;
+                    currentNode = definition;
                 } else if (!path.isEmpty()) {
                     currentNode = (ObjectNode) currentNode.get(path);
                 }
@@ -85,59 +79,6 @@ public class CamelYAMLSchemaReader {
         }
 
         return node;
-    }
-
-    /**
-     * Initialize the required property if it does not exist
-     *
-     * @param node the node to set the required property if it does not exist
-     */
-    void setRequiredPropertyIfNeeded(ObjectNode node) {
-        if (!node.has("required")) {
-            node.set("required", jsonMapper.createArrayNode());
-        }
-    }
-
-    /**
-     * Extract single OneOf definition from AnyOf definition and put it into the
-     * root definitions.
-     * It's a workaround for the current Camel YAML DSL JSON schema, where some
-     * AnyOf definition
-     * contains only one OneOf definition.
-     * This is done mostly for the errorHandler definition, f.i.
-     * ```
-     * {
-     * anyOf: [
-     * {
-     * oneOf: [
-     * { type: "object", ... },
-     * { type: "object", ... },
-     * ]
-     * },
-     * ]
-     * }
-     * ```
-     * will be transformed into
-     * ```
-     * {
-     * oneOf: [
-     * { type: "object", ... },
-     * { type: "object", ... },
-     * ]
-     * }
-     */
-    private void extractSingleOneOfFromAnyOf(ObjectNode node) {
-        if (!node.has("anyOf")) {
-            return;
-        }
-        var anyOfArray = node.withArray("/anyOf");
-        if (anyOfArray.size() != 1) {
-            return;
-        }
-
-        var anyOfOneOf = anyOfArray.get(0).withArray("/oneOf");
-        node.set("oneOf", anyOfOneOf);
-        node.remove("anyOf");
     }
 
     /**
@@ -160,19 +101,49 @@ public class CamelYAMLSchemaReader {
      *
      * @param node the node to inline the required definitions from the Camel YAML DSL schema
      */
-    void inlineDefinitions(ObjectNode node) {
-        if (!node.has("properties")) {
-            return;
+    void inlineDefinitions(ObjectNode node, ObjectNode definitions) {
+
+        if (node.has("properties")) {
+            var properties = (ObjectNode) node.get("properties");
+            properties.fields().forEachRemaining(entry -> {
+                var property = (ObjectNode) entry.getValue();
+                if (property.has("$ref")) {
+                    addRefDefinition(property, definitions);
+                } else if (property.has("items") && property.get("items").has("$ref") && !entry.getKey().equals("steps")) {
+                    var refParent = (ObjectNode)  property.get("items");
+                    addRefDefinition(refParent, definitions);
+                }
+            });
         }
 
-        var properties = (ObjectNode) node.get("properties");
-        properties.fields().forEachRemaining(entry -> {
-            var property = (ObjectNode) entry.getValue();
-            if (property.has("$ref")) {
-                var resolvedNode = getResolvedNode(property);
-                property.setAll(resolvedNode);
-                inlineDefinitions(property);
+        inlineArrayFields(node, "anyOf", definitions);
+        inlineArrayFields(node, "oneOf", definitions);
+    }
+
+    private void inlineArrayFields(ObjectNode node, String arrayName, ObjectNode definitions) {
+        if (!node.has(arrayName)) return;
+
+        var array = (ArrayNode) node.get(arrayName);
+        array.forEach(element -> {
+            if (element.isObject()) {
+                var elementNode = (ObjectNode) element;
+                if (elementNode.has("$ref")) {
+                    addRefDefinition(elementNode, definitions);
+                } else {
+                    // Recursively process nested objects in the array element
+                    inlineDefinitions(elementNode, definitions);
+                }
             }
         });
+    }
+
+    private void addRefDefinition(ObjectNode refParent, ObjectNode definitions) {
+        var newRefKey = refParent.get("$ref").asText().replace("#/items/definitions/", "");
+        if (!definitions.has(newRefKey)) {
+            var resolvedNode = getResolvedNode(refParent);
+            definitions.set(newRefKey, resolvedNode);
+            inlineDefinitions(resolvedNode, definitions);
+        }
+        refParent.put("$ref", refParent.get("$ref").asText().replace("#/items/definitions/", "#/definitions/"));
     }
 }

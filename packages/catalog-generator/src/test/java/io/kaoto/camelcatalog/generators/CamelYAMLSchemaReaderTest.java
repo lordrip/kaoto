@@ -1,7 +1,9 @@
 package io.kaoto.camelcatalog.generators;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.camel.dsl.yaml.YamlRoutesBuilderLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CamelYAMLSchemaReaderTest {
     CamelYAMLSchemaReader camelYAMLSchemaReader;
@@ -29,9 +30,6 @@ class CamelYAMLSchemaReaderTest {
         }
 
         camelYAMLSchemaReader = new CamelYAMLSchemaReader(camelYamlSchemaNode);
-
-        var resequenceSchemaNode = (ObjectNode) jsonMapper.readTree(
-                getClass().getClassLoader().getResourceAsStream("camel-4.9.0-resequence-schema.json"));
     }
 
     @Test
@@ -40,24 +38,35 @@ class CamelYAMLSchemaReaderTest {
         var eipSchema = camelYAMLSchemaReader.getJSONSchema(eipName);
 
         assertNotNull(eipSchema);
-        assertTrue(eipSchema.has("type"));
         assertTrue(eipSchema.has("properties"));
-        assertTrue(eipSchema.has("required"));
+        assertTrue(eipSchema.has("anyOf"));
     }
 
     @Test
     void shouldInlineDefinitions() {
-        var eipName = "resequence";
-        var eipSchema = camelYAMLSchemaReader.getJSONSchema(eipName);
+        var eipSchemaForResequence = camelYAMLSchemaReader.getJSONSchema("resequence");
 
-        assertTrue(eipSchema.has("items"));
-        var itemsNode = (ObjectNode) eipSchema.get("items");
-
-        assertTrue(itemsNode.has("definitions"));
-        var definitionsNode = (ObjectNode)  itemsNode.get("definitions");
+        assertTrue(eipSchemaForResequence.has("definitions"));
+        var definitionsNode = (ObjectNode)  eipSchemaForResequence.get("definitions");
 
         assertTrue(definitionsNode.has("org.apache.camel.model.config.BatchResequencerConfig"));
         assertTrue(definitionsNode.has("org.apache.camel.model.config.StreamResequencerConfig"));
         assertTrue(definitionsNode.has("org.apache.camel.model.language.ExpressionDefinition"));
+        assertTrue(definitionsNode.has("org.apache.camel.model.language.ConstantExpression"));
+        assertTrue(definitionsNode.has("org.apache.camel.model.PropertyDefinition"));
+    }
+
+    @Test
+    void shouldRenameRefPath() {
+        var eipSchemaForAggregate = camelYAMLSchemaReader.getJSONSchema("aggregate");
+
+        assertTrue(eipSchemaForAggregate.has("properties"));
+        var propertiesNode = (ObjectNode)  eipSchemaForAggregate.get("properties");
+
+        assertTrue(propertiesNode.has("optimisticLockRetryPolicy"));
+        var optimisticLockRetryPolicyNode = (ObjectNode)  propertiesNode.get("optimisticLockRetryPolicy");
+
+        assertTrue(optimisticLockRetryPolicyNode.has("$ref"));
+        assertEquals("#/definitions/org.apache.camel.model.OptimisticLockRetryPolicyDefinition", optimisticLockRetryPolicyNode.get("$ref").asText());
     }
 }

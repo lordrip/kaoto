@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.camel.catalog.CamelCatalog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class EIPGenerator {
     }
 
     public Map<String, ObjectNode> generate() {
-        Map<String, ObjectNode> eipMap = new HashMap<>();
+        Map<String, ObjectNode> eipMap = new LinkedHashMap<>();
 
         getEIPNames().forEach(eipName -> {
             var eipJSON = getEIPJson(eipName);
