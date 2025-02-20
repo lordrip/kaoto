@@ -1,6 +1,13 @@
+import { subtle } from 'node:crypto';
 import { getCamelRandomId, getHexaDecimalRandomId, getObjectHash } from './camel-random-id';
 
 describe('camel-random-id', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(global, 'crypto', 'get')
+      .mockImplementation(() => ({ getRandomValues: () => [12345678], subtle }) as unknown as Crypto);
+  });
+
   it('should return a random number', () => {
     expect(getCamelRandomId('route')).toEqual(expect.any(String));
   });

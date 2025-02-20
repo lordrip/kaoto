@@ -46,6 +46,7 @@ export const StringField: FunctionComponent<FieldProps> = ({ propName, required,
           placeholder={schema.default?.toString()}
           value={value}
           onChange={onFieldChange}
+          aria-label={schema.title}
           aria-describedby={id}
         />
 
