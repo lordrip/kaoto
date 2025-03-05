@@ -1,6 +1,7 @@
 import { ErrorHandler } from '@kaoto/camel-catalog/types';
-import { getAppliedSchemaIndex } from './get-applied-schema-index';
 import { errorHandlerSchema } from '../stubs/error-handler';
+import { getAppliedSchemaIndex } from './get-applied-schema-index';
+import { getOneOfSchemaList } from './get-oneof-schema-list';
 
 describe('getAppliedSchemaIndex', () => {
   it('should return the index of the applied oneOf schema for a given model', () => {
@@ -12,9 +13,9 @@ describe('getAppliedSchemaIndex', () => {
       },
     };
 
-    const result = getAppliedSchemaIndex(model, errorHandlerSchema.oneOf!, errorHandlerSchema);
+    const result = getAppliedSchemaIndex(model, getOneOfSchemaList(errorHandlerSchema.oneOf!), errorHandlerSchema);
 
-    expect(result).toBe(6);
+    expect(result).toBe(5);
   });
 
   it('should return the index of the applied oneOf schema for a given model when a missing required property', () => {
@@ -25,7 +26,7 @@ describe('getAppliedSchemaIndex', () => {
       springTransactionErrorHandler: undefined,
     };
 
-    const result = getAppliedSchemaIndex(model, errorHandlerSchema.oneOf!, errorHandlerSchema);
+    const result = getAppliedSchemaIndex(model, getOneOfSchemaList(errorHandlerSchema.oneOf!), errorHandlerSchema);
 
     expect(result).toBe(0);
   });
