@@ -24,7 +24,7 @@ export const BeanField: FunctionComponent<FieldProps> = ({ propName, required })
   const beanSchema = useMemo(() => {
     return beansHandler.getBeanSchema();
   }, [beansHandler]);
-  const [isNewBeanModalOpen, setIsNewBeanModalOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(beanReference);
   const beansEntity = useMemo(() => {
     return beansHandler.getBeansEntity();
@@ -73,7 +73,7 @@ export const BeanField: FunctionComponent<FieldProps> = ({ propName, required })
       } else {
         setInputValue('');
       }
-      setIsNewBeanModalOpen(true);
+      setIsOpen(true);
     }
   }, []);
 
@@ -83,7 +83,7 @@ export const BeanField: FunctionComponent<FieldProps> = ({ propName, required })
 
       const beanRef = beansHandler.getReferenceFromName(model.name);
 
-      setIsNewBeanModalOpen(false);
+      setIsOpen(false);
       onChange(beanRef ?? '');
       setInputValue(beanRef as string);
     },
@@ -92,7 +92,7 @@ export const BeanField: FunctionComponent<FieldProps> = ({ propName, required })
 
   const handleCancelCreateBean = useCallback(() => {
     setInputValue(beanReference);
-    setIsNewBeanModalOpen(false);
+    setIsOpen(false);
   }, [beanReference]);
   const javaType = extractGroup('bean', schema.format);
 
@@ -120,15 +120,16 @@ export const BeanField: FunctionComponent<FieldProps> = ({ propName, required })
         />
       </FieldWrapper>
 
-      <NewBeanModal
-        isOpen={isNewBeanModalOpen}
-        beanSchema={beanSchema!}
-        beanName={beansHandler.stripReferenceQuote(inputValue)}
-        propertyTitle={schema.title ?? ''}
-        javaType={javaType}
-        onCreateBean={handleCreateBean}
-        onCancelCreateBean={handleCancelCreateBean}
-      />
+      {isOpen && (
+        <NewBeanModal
+          beanSchema={beanSchema!}
+          beanName={beansHandler.stripReferenceQuote(inputValue)}
+          propertyTitle={schema.title ?? ''}
+          javaType={javaType}
+          onCreateBean={handleCreateBean}
+          onCancelCreateBean={handleCancelCreateBean}
+        />
+      )}
     </>
   );
 };

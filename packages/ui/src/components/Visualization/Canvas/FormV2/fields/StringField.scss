@@ -1,0 +1,9 @@
+.string-field {
+  /*
+   The error icon in the TextField component needs to be separated from the field
+   using the pf-m-icon class. This class is used to add padding to the icon.
+   Nevetheless the padding-inline-start property is set to initial to remove the
+   left padding added by the pf-m-icon class.
+   */
+  padding-inline-start: initial;
+}
