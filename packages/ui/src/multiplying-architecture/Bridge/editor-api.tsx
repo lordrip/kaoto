@@ -1,6 +1,8 @@
 import { EditorApi } from '@kie-tools-core/editor/dist/api';
 import { useCallback, useContext, useMemo, useRef } from 'react';
+import { useStore } from 'zustand';
 import { SourceCodeApiContext } from '../../providers/source-code.provider';
+import { useSourceCodeStore } from '../../store';
 
 export interface SourceCodeBridgeProviderRef extends EditorApi {
   setContent: (path: string, content: string) => Promise<void>;
@@ -10,6 +12,7 @@ export interface SourceCodeBridgeProviderRef extends EditorApi {
 export const useEditorApi = () => {
   const sourceCodeRef = useRef<string>('');
   const sourceCodeApiContext = useContext(SourceCodeApiContext);
+  const { undo, redo } = useStore(useSourceCodeStore.temporal);
 
   /**
    * Callback is exposed to the Channel that is called when a new file is opened.
@@ -58,15 +61,23 @@ export const useEditorApi = () => {
       getContent: () => Promise.resolve(sourceCodeRef.current),
       getPreview: () => Promise.resolve(undefined),
       undo: (): Promise<void> => {
-        return Promise.resolve();
+        return new Promise((resolve) => {
+          undo();
+          setContent(useSourceCodeStore.getState().path ?? '', useSourceCodeStore.getState().sourceCode);
+          resolve();
+        });
       },
       redo: (): Promise<void> => {
-        return Promise.resolve();
+        return new Promise((resolve) => {
+          redo();
+          setContent(useSourceCodeStore.getState().path ?? '', useSourceCodeStore.getState().sourceCode);
+          resolve();
+        });
       },
       validate: () => Promise.resolve([]),
       setTheme: () => Promise.resolve(),
     }),
-    [setContent],
+    [redo, setContent, undo],
   );
 
   const output = useMemo(() => {

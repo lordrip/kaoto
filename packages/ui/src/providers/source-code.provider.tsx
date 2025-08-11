@@ -20,8 +20,7 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
   children,
 }) => {
   const eventNotifier = EventNotifier.getInstance();
-  // const [sourceCode, setSourceCode] = useState<string>(initialSourceCode);
-  const { sourceCode, setSourceCode } = useSourceCodeStore();
+  const { sourceCode, setSourceCode, setPath } = useSourceCodeStore();
 
   useLayoutEffect(() => {
     setSourceCode(initialSourceCode);
@@ -37,9 +36,9 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
   const setCodeAndNotify = useCallback(
     (code: string, path?: string) => {
       setSourceCode(code);
-      eventNotifier.next('code:updated', { code, path });
+      setPath(path);
     },
-    [eventNotifier, setSourceCode],
+    [setPath, setSourceCode],
   );
 
   const sourceCodeApi: ISourceCodeApi = useMemo(
