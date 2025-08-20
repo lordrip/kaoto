@@ -1,15 +1,11 @@
 import { curveMonotoneX } from '@visx/curve';
 import { Circle, LinePath } from '@visx/shape';
 import clsx from 'clsx';
-import { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { useCanvas } from '../../hooks/useCanvas';
 import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { LineProps } from '../../models/datamapper';
 import './MappingLink.scss';
-
-// Static functions to avoid recreation on every render
-const getX = (d: [number, number]) => d[0];
-const getY = (d: [number, number]) => d[1];
 
 export const MappingLink: FunctionComponent<LineProps> = ({
   x1,
@@ -30,10 +26,6 @@ export const MappingLink: FunctionComponent<LineProps> = ({
   const lineClassName = clsx('mapping-link__line', {
     'mapping-link__line--selected': isSelected,
     'mapping-link__line--hover': isOver,
-  });
-
-  const circleClassName = clsx('mapping-link__circle', {
-    'mapping-link__circle--hover': isOver,
   });
 
   const dotRadius = isOver ? 6 : 3;
@@ -58,16 +50,6 @@ export const MappingLink: FunctionComponent<LineProps> = ({
     const newRef = getNodeReference(targetNodePath);
     toggleSelectedNodeReference(newRef);
   }, [getNodeReference, targetNodePath, toggleSelectedNodeReference]);
-
-  const lineData = useMemo(
-    (): [number, number][] => [
-      [x1, y1],
-      [canvasLeft ? canvasLeft : x1, y1],
-      [canvasRight ? canvasRight : x2, y2],
-      [x2, y2],
-    ],
-    [x1, y1, x2, y2, canvasLeft, canvasRight],
-  );
 
   return (
     <>
