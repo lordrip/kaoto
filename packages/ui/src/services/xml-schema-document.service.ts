@@ -135,7 +135,7 @@ export class XmlSchemaDocumentService {
     documentId: string,
     content: string,
     rootElementChoice?: RootElementOption,
-  ) {
+  ): XmlSchemaDocument {
     const schema = XmlSchemaDocumentService.parseXmlSchema(content);
     let rootElement: XmlSchemaElement | undefined;
 
