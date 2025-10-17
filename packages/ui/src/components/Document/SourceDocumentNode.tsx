@@ -6,8 +6,7 @@ import { FunctionComponent, MouseEvent, useCallback, useRef } from 'react';
 import { useCanvas } from '../../hooks/useCanvas';
 import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { useToggle } from '../../hooks/useToggle';
-import { DocumentTreeNode } from '../../models/datamapper/document-tree-node';
-import { NodeReference } from '../../models/datamapper/visualization';
+import { NodeData, NodeReference } from '../../models/datamapper/visualization';
 import { TreeUIService } from '../../services/tree-ui.service';
 import { VisualizationService } from '../../services/visualization.service';
 import { useDocumentTreeStore } from '../../store';
@@ -19,7 +18,7 @@ import { NodeTitle } from './NodeTitle';
 import { ParameterInputPlaceholder } from './ParameterInputPlaceholder';
 
 type TreeSourceNodeProps = {
-  treeNode: DocumentTreeNode;
+  nodeData: NodeData;
   documentId: string;
   isReadOnly: boolean;
   rank: number;
@@ -30,7 +29,7 @@ type TreeSourceNodeProps = {
  * for improved performance with large schemas
  */
 export const SourceDocumentNode: FunctionComponent<TreeSourceNodeProps> = ({
-  treeNode,
+  nodeData,
   documentId,
   isReadOnly,
   rank,
@@ -43,9 +42,7 @@ export const SourceDocumentNode: FunctionComponent<TreeSourceNodeProps> = ({
     toggleOff: toggleOffRenamingParameter,
   } = useToggle(false);
 
-  const isExpanded = useDocumentTreeStore((state) => state.isExpanded(documentId, treeNode.path));
-  const nodeData = treeNode.nodeData;
-
+  const isExpanded = useDocumentTreeStore((state) => state.isExpanded(documentId, nodeData.id));
   const isDocument = VisualizationService.isDocumentNode(nodeData);
   const hasChildren = VisualizationService.hasChildren(nodeData);
 
@@ -54,10 +51,10 @@ export const SourceDocumentNode: FunctionComponent<TreeSourceNodeProps> = ({
       event.stopPropagation();
       if (!hasChildren) return;
 
-      TreeUIService.toggleNode(documentId, treeNode.path);
+      TreeUIService.toggleNode(documentId, nodeData.id);
       reloadNodeReferences();
     },
-    [hasChildren, documentId, treeNode.path, reloadNodeReferences],
+    [hasChildren, documentId, nodeData.id, reloadNodeReferences],
   );
 
   const isCollectionField = VisualizationService.isCollectionField(nodeData);
@@ -153,20 +150,6 @@ export const SourceDocumentNode: FunctionComponent<TreeSourceNodeProps> = ({
             </section>
           </NodeContainer>
         </div>
-
-        {hasChildren && isExpanded && (
-          <div className={clsx({ node__children: !isDocument })}>
-            {treeNode.children.map((childTreeNode) => (
-              <SourceDocumentNode
-                treeNode={childTreeNode}
-                documentId={documentId}
-                key={childTreeNode.path}
-                isReadOnly={isReadOnly}
-                rank={rank + 1}
-              />
-            ))}
-          </div>
-        )}
       </NodeContainer>
     </div>
   );

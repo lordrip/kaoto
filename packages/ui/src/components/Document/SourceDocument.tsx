@@ -1,10 +1,10 @@
-import { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { IDocument } from '../../models/datamapper/document';
-import { DocumentTree } from '../../models/datamapper/document-tree';
+import { DocumentMap } from '../../models/datamapper/document-map';
 import { DocumentNodeData } from '../../models/datamapper/visualization';
-import { TreeUIService } from '../../services/tree-ui.service';
 import './Document.scss';
 import { SourceDocumentNode } from './SourceDocumentNode';
+import { VirtualScroll } from '../VirtualScroll/VirtualScroll';
 
 type DocumentTreeProps = {
   document: IDocument;
@@ -16,17 +16,30 @@ type DocumentTreeProps = {
  * Uses pre-parsed tree structure with simplified UI state management
  */
 export const SourceDocument: FunctionComponent<DocumentTreeProps> = ({ document, isReadOnly }) => {
-  const documentNodeData = useMemo(() => new DocumentNodeData(document), [document]);
-  const [treeNode, setTreeNode] = useState<DocumentTree | undefined>(undefined);
-  const documentId = documentNodeData.id;
+  const { documentNodeData, documentMap, documentId } = useMemo(() => {
+    const documentNodeData = new DocumentNodeData(document);
+    const documentMap = new DocumentMap(documentNodeData);
+    const documentId = documentNodeData.id;
+    return { documentNodeData, documentMap, documentId };
+  }, [document]);
 
-  useEffect(() => {
-    setTreeNode(TreeUIService.createTree(documentNodeData));
-  }, [documentNodeData]);
+  return (
+    <>
+      <SourceDocumentNode nodeData={documentNodeData} documentId={documentId} isReadOnly={isReadOnly} rank={0} />
 
-  if (!treeNode) {
-    return <div>Loading tree...</div>;
-  }
+      <VirtualScroll>
+        {Object.keys(documentMap.items)
+          .sort()
+          .map((key) => {
+            const nodeDataEntry = documentMap.getItem(key);
 
-  return <SourceDocumentNode treeNode={treeNode.root} documentId={documentId} isReadOnly={isReadOnly} rank={0} />;
+            return (
+              <p key={key}>
+                {nodeDataEntry?.rank} - {key}
+              </p>
+            );
+          })}
+      </VirtualScroll>
+    </>
+  );
 };
