@@ -1,7 +1,10 @@
 .virtual-scroll {
   &__container {
+    flex: 1;
+    min-height: 0;
     display: block;
     position: relative;
+    overflow: auto;
     border: 3px solid blue;
   }
 }

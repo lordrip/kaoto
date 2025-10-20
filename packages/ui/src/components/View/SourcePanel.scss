@@ -1,8 +1,12 @@
 .source-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: scroll;
+  overflow: hidden;
 
   &__header {
+    flex: 0 0 auto;
     padding: var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--sm) 0;
   }
 }

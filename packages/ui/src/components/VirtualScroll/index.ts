@@ -4,4 +4,4 @@ export { VirtualScrollItem } from './VirtualScrollItem';
 export type { VirtualScrollItemProps } from './VirtualScrollItem';
 export { useVirtualScroll } from './useVirtualScroll';
 export type { VirtualScrollConfig, VirtualScrollResult } from './useVirtualScroll';
-export * from './virtual-scroll.service';
+export * from './calculate-viewport';

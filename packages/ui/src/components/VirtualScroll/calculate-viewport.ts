@@ -19,7 +19,7 @@ export interface VirtualWindow {
  * @param overscan - Number of extra items to render above/below viewport (default: 5)
  * @returns Virtual window with indices and padding values
  */
-export function calculateWindow(
+export function calculateViewport(
   scrollTop: number,
   itemHeight: number,
   containerHeight: number,

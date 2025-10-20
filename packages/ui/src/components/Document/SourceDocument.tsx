@@ -33,14 +33,18 @@ export const SourceDocument: FunctionComponent<DocumentTreeProps> = ({ document,
     return { allItems, documentId };
   }, [document]);
 
-  const { visibleItems, paddingTop, paddingBottom, onScroll } = useVirtualScroll({
+  const { visibleItems, paddingTop, paddingBottom, onScroll, containerRef } = useVirtualScroll({
     items: allItems,
     itemHeight: 40, // Fixed height for MVP
-    containerHeight: 600, // TODO: Make dynamic
   });
 
   return (
-    <VirtualScroll height={600} paddingTop={paddingTop} paddingBottom={paddingBottom} onScroll={onScroll}>
+    <VirtualScroll
+      paddingTop={paddingTop}
+      paddingBottom={paddingBottom}
+      onScroll={onScroll}
+      containerRef={containerRef}
+    >
       {visibleItems.map((item) => (
         <VirtualScrollItem key={item.path} rank={item.rank}>
           <SourceDocumentNode

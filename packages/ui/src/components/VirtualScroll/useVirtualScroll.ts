@@ -1,10 +1,9 @@
-import { useState, useMemo } from 'react';
-import { calculateWindow } from './virtual-scroll.service';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { calculateViewport } from './calculate-viewport';
 
 export interface VirtualScrollConfig<T> {
   items: T[];
   itemHeight: number;
-  containerHeight: number;
   overscan?: number;
 }
 
@@ -13,38 +12,56 @@ export interface VirtualScrollResult<T> {
   paddingTop: number;
   paddingBottom: number;
   onScroll: (e: React.UIEvent<HTMLElement>) => void;
-  window: {
-    startIndex: number;
-    endIndex: number;
-    paddingTop: number;
-    paddingBottom: number;
-  };
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
 /**
  * React hook for virtual scrolling
+ * Automatically measures container height using ResizeObserver
  *
- * @param config - Configuration object with items, heights, and overscan
- * @returns Virtual scroll state and handlers
+ * @param config - Configuration object with items, itemHeight, and overscan
+ * @returns Virtual scroll state, handlers, and containerRef
  */
 export function useVirtualScroll<T>({
   items,
   itemHeight,
-  containerHeight,
   overscan = 5,
 }: VirtualScrollConfig<T>): VirtualScrollResult<T> {
   const [scrollTop, setScrollTop] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(600); // Default fallback
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Measure container height with ResizeObserver
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const height = entry.contentRect.height;
+        if (height > 0) {
+          setContainerHeight(height);
+        }
+      }
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   // Calculate which items should be visible
-  const window = useMemo(
-    () => calculateWindow(scrollTop, itemHeight, containerHeight, items.length, overscan),
+  const viewPort = useMemo(
+    () => calculateViewport(scrollTop, itemHeight, containerHeight, items.length, overscan),
     [scrollTop, itemHeight, containerHeight, items.length, overscan],
   );
 
   // Slice the items array to get only visible items
   const visibleItems = useMemo(
-    () => items.slice(window.startIndex, window.endIndex),
-    [items, window.startIndex, window.endIndex],
+    () => items.slice(viewPort.startIndex, viewPort.endIndex),
+    [items, viewPort.startIndex, viewPort.endIndex],
   );
 
   // Scroll event handler
@@ -54,9 +71,9 @@ export function useVirtualScroll<T>({
 
   return {
     visibleItems,
-    paddingTop: window.paddingTop,
-    paddingBottom: window.paddingBottom,
+    paddingTop: viewPort.paddingTop,
+    paddingBottom: viewPort.paddingBottom,
+    containerRef,
     onScroll,
-    window, // For debugging
   };
 }
