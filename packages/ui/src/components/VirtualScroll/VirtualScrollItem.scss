@@ -1,0 +1,7 @@
+.virtual-scroll-item {
+  --base-indent: 24px;
+
+  // Apply rank-based indentation using CSS custom property
+  // The --rank variable is set inline via style prop
+  padding-left: calc(var(--base-indent) * var(--rank, 0));
+}
