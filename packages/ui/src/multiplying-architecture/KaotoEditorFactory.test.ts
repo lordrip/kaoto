@@ -17,6 +17,7 @@ describe('KaotoEditorFactory', () => {
       nodeLabel: NodeLabelType.Id,
       nodeToolbarTrigger: NodeToolbarTrigger.onHover,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'apicurio-registry-url',
       experimentalFeatures: {
         enableDragAndDrop: false,
       },
@@ -46,6 +47,7 @@ describe('KaotoEditorFactory', () => {
       nodeLabel: NodeLabelType.Id,
       nodeToolbarTrigger: NodeToolbarTrigger.onHover,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'apicurio-registry-url',
       experimentalFeatures: {
         enableDragAndDrop: false,
       },
@@ -100,6 +102,7 @@ describe('KaotoEditorFactory', () => {
       nodeLabel: NodeLabelType.Id,
       nodeToolbarTrigger: NodeToolbarTrigger.onHover,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'apicurio-registry-url',
       experimentalFeatures: {
         enableDragAndDrop: false,
       },
@@ -109,6 +112,7 @@ describe('KaotoEditorFactory', () => {
       nodeLabel: NodeLabelType.Id,
       nodeToolbarTrigger: NodeToolbarTrigger.onHover,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'apicurio-registry-url',
       experimentalFeatures: {
         enableDragAndDrop: false,
       },

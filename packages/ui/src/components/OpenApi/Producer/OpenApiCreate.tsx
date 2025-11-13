@@ -1,57 +1,35 @@
-import { Rest, RouteDefinition } from '@kaoto/camel-catalog/types';
+import { RouteDefinition } from '@kaoto/camel-catalog/types';
 import {
   ActionList,
   ActionListItem,
   Alert,
   Bullseye,
   Button,
+  Checkbox,
+  Content,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
-  EmptyStateHeader,
-  EmptyStateIcon,
-  EmptyStateVariant,
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Checkbox,
-  DropEvent,
-  FileUpload,
-  Form,
-  FormGroup,
-  HelperText,
-  HelperTextItem,
-  InputGroup,
-  Popover,
   SearchInput,
-  Text,
-  TextContent,
-  TextVariants,
-  TextInput,
   Wizard,
-  WizardHeader,
-  WizardStep,
   WizardFooterWrapper,
+  WizardStep,
   useWizardContext,
-  Title,
 } from '@patternfly/react-core';
-import { Table, Thead, Th, Tbody, Td, Tr } from '@patternfly/react-table';
 import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@patternfly/react-table';
 import { OpenApi, OpenApiOperation, OpenApiPath } from 'openapi-v3';
 import { FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { parse } from 'yaml';
 import { BaseVisualCamelEntity, CamelRouteVisualEntity } from '../../../models';
 import { EntityType } from '../../../models/camel/entities';
-import { SourceSchemaType } from '../../../models/camel/source-schema-type';
 import { CamelRestVisualEntity } from '../../../models/visualization/flows/camel-rest-visual-entity';
-import { FlowTemplateService } from '../../../models/visualization/flows/support/flow-templates-service';
 import { EntitiesContext } from '../../../providers/entities.provider';
 import { isDefined } from '../../../utils';
-import { OpenApiSpecification } from '../OpenApiSpecification';
 import PaginationTop from '../../Visualization/Pagination/PaginationTop';
+import { OpenApiSpecification } from '../OpenApiSpecification';
 
 interface Props {
   openApiCreateToggle: () => void;
@@ -82,9 +60,9 @@ interface Operation {
 function SubmitSpecificationFooter(props: SpecificationFooterProps) {
   const { goToNextStep, close } = useWizardContext();
 
-  async function onNext() {
+  const onNext = () => {
     goToNextStep();
-  }
+  };
 
   return (
     <WizardFooterWrapper>
@@ -101,10 +79,10 @@ function SubmitSpecificationFooter(props: SpecificationFooterProps) {
 function CreateOpenApiFooter(props: FooterProps) {
   const { goToNextStep, goToPrevStep, close } = useWizardContext();
 
-  async function onNext() {
+  const onNext = () => {
     goToNextStep();
     props.footerCallback();
-  }
+  };
 
   return (
     <WizardFooterWrapper>
@@ -187,8 +165,8 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
 
         entitiesContext?.camelResource.getVisualEntities().forEach((entity: BaseVisualCamelEntity) => {
           if (
-            entity.type === EntityType.Route &&
-            (entity as CamelRouteVisualEntity).route?.from?.uri === 'direct:' + operationId
+            entity instanceof CamelRouteVisualEntity &&
+            entity.entityDef.route?.from?.uri === 'direct:' + operationId
           ) {
             operation.routeExists = true;
           }
@@ -252,8 +230,8 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
         let routeExists: boolean = false;
         entitiesContext?.camelResource.getVisualEntities().forEach((entity: BaseVisualCamelEntity) => {
           if (
-            entity.type === EntityType.Route &&
-            (entity as CamelRouteVisualEntity).route?.from?.uri === 'direct:' + operationId
+            entity instanceof CamelRouteVisualEntity &&
+            entity.entityDef.route?.from?.uri === 'direct:' + operationId
           ) {
             routeExists = true;
           }
@@ -261,7 +239,7 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
 
         if (!routeExists) {
           const entity = new CamelRouteVisualEntity(route);
-          entitiesContext?.camelResource.addExistingEntity(entity);
+          entitiesContext?.camelResource.addNewEntity(EntityType.Route, entity);
         }
       }
     });
@@ -289,7 +267,7 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
         },
       };
       const entity = new CamelRestVisualEntity(rest);
-      entitiesContext?.camelResource.addExistingEntity(entity);
+      entitiesContext?.camelResource.addNewEntity(EntityType.Route, entity);
     }
 
     entitiesContext?.updateSourceCodeFromEntities();
@@ -319,9 +297,7 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <TextContent>
-        <Text component={TextVariants.h1}>Add Open API Producer</Text>
-      </TextContent>
+      <Content component="h1">Add Open API Producer</Content>
       <Table title="Add Open API Producer">
         <Tbody>
           <Tr>
@@ -333,7 +309,7 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
                   id={'specification'}
                   footer={<SubmitSpecificationFooter hasSpecification={hasSpecification} />}
                 >
-                  <OpenApiSpecification updateSpecification={updateSpecification} />
+                  <OpenApiSpecification updateSpecification={updateSpecification} specificationUri={specUrl} />
                   {hasSpecification && (
                     <Alert variant="success" title="Specification provided">
                       <p>Specification provided, now proceed by clicking &quot;Next&quot;</p>
@@ -346,9 +322,9 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
                   id="operations"
                   footer={<CreateOpenApiFooter footerCallback={onCreate} />}
                 >
-                  <Text>
+                  <Content component="p">
                     The following operations are included in the Open API specification and will be added automatically:
-                  </Text>
+                  </Content>
                   <Table borders={false} variant="compact">
                     <Thead>
                       <Tr>
@@ -412,12 +388,7 @@ export const OpenApiCreate: FunctionComponent<Props> = (props) => {
                         <Tr>
                           <Td colSpan={4}>
                             <Bullseye>
-                              <EmptyState variant={EmptyStateVariant.sm}>
-                                <EmptyStateHeader
-                                  icon={<EmptyStateIcon icon={SearchIcon} />}
-                                  titleText="No results found"
-                                  headingLevel="h2"
-                                />
+                              <EmptyState variant="sm" titleText="No results found" icon={SearchIcon} headingLevel="h2">
                                 <EmptyStateBody>Clear all filters and try again.</EmptyStateBody>
                                 <EmptyStateFooter>
                                   <EmptyStateActions>

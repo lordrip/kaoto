@@ -1,33 +1,25 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   ActionList,
   ActionListItem,
   Bullseye,
   Button,
+  Content,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
-  EmptyStateHeader,
-  EmptyStateIcon,
-  EmptyStateVariant,
-  Icon,
   SearchInput,
-  Text,
-  TextContent,
-  TextVariants,
 } from '@patternfly/react-core';
-import { Table, Thead, Th, Tbody, Td, Tr } from '@patternfly/react-table';
-import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
-import DeleteIcon from '@patternfly/react-icons/dist/esm/icons/trash-icon';
 import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@patternfly/react-table';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { EntityType } from '../../../models/camel/entities';
+import { BaseVisualCamelEntity } from '../../../models/visualization/base-visual-entity';
 import { CamelRestVisualEntity } from '../../../models/visualization/flows/camel-rest-visual-entity';
 import { EntitiesContext } from '../../../providers/entities.provider';
 import PaginationTop from '../../Visualization/Pagination/PaginationTop';
 import { OpenApiCreate } from './OpenApiCreate';
-import { BaseVisualCamelEntity } from '../../../models/visualization/base-visual-entity';
 
 interface OpenApi {
   id: string;
@@ -68,7 +60,7 @@ export default function OpenApis() {
   const handleDeleteOpenApi = (openApiId: string) => {
     entitiesContext?.camelResource.getVisualEntities().filter((entity: BaseVisualCamelEntity) => {
       if (entity.type === EntityType.Rest && entity.getId() == openApiId) {
-        entitiesContext?.camelResource.removeEntity(entity.getId());
+        entitiesContext?.camelResource.removeEntity([entity.getId()]);
       }
     });
 
@@ -109,9 +101,7 @@ export default function OpenApis() {
       {openApiCreateOpen && <OpenApiCreate openApiCreateToggle={openApiCreateToggle} />}
       {!openApiCreateOpen && (
         <div>
-          <TextContent>
-            <Text component={TextVariants.h1}>Configure Open API Producers</Text>
-          </TextContent>
+          <Content component="h1">Configure Open API Producers</Content>
           <Table borders={false} variant="compact">
             <Thead noWrap>
               <Tr>
@@ -165,12 +155,7 @@ export default function OpenApis() {
                 <Tr>
                   <Td colSpan={4}>
                     <Bullseye>
-                      <EmptyState variant={EmptyStateVariant.sm}>
-                        <EmptyStateHeader
-                          icon={<EmptyStateIcon icon={SearchIcon} />}
-                          titleText="No results found"
-                          headingLevel="h2"
-                        />
+                      <EmptyState variant="sm" titleText="No results found" icon={SearchIcon} headingLevel="h2">
                         <EmptyStateBody>
                           No Open API matches your filter settings. Change your filter or add an Open API.
                         </EmptyStateBody>

@@ -4,23 +4,18 @@ import {
   Alert,
   Bullseye,
   Button,
+  Content,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
-  EmptyStateHeader,
-  EmptyStateIcon,
-  EmptyStateVariant,
   Radio,
   SearchInput,
-  Text,
-  TextContent,
   TextInput,
-  TextVariants,
   Wizard,
   WizardFooterWrapper,
   WizardStep,
-  useWizardContext
+  useWizardContext,
 } from '@patternfly/react-core';
 import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@patternfly/react-table';
@@ -67,9 +62,9 @@ interface Operation {
 function SubmitSpecificationFooter(props: SpecificationFooterProps) {
   const { goToNextStep, close } = useWizardContext();
 
-  async function onNext() {
+  const onNext = () => {
     goToNextStep();
-  }
+  };
 
   return (
     <WizardFooterWrapper>
@@ -86,9 +81,9 @@ function SubmitSpecificationFooter(props: SpecificationFooterProps) {
 function ConfigureOperationFooter(props: FooterProps) {
   const { goToNextStep, goToPrevStep, close } = useWizardContext();
 
-  async function onNext() {
+  const onNext = () => {
     goToNextStep();
-  }
+  };
 
   return (
     <WizardFooterWrapper>
@@ -108,10 +103,10 @@ function ConfigureOperationFooter(props: FooterProps) {
 function ConfigureHostFooter(props: FooterProps) {
   const { goToNextStep, goToPrevStep, close } = useWizardContext();
 
-  async function onNext() {
+  const onNext = () => {
     goToNextStep();
     props.footerCallback();
-  }
+  };
 
   return (
     <WizardFooterWrapper>
@@ -219,12 +214,12 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
   };
 
   const configureRestOpenApiClientRecurse = (contextNode: IVisualizationNode) => {
-    if (contextNode.getTitle() == 'rest-openapi' && contextNode.getId() == props.restOpenApiId) {
+    if (contextNode.getNodeLabel() == 'rest-openapi' && contextNode.getId() == props.restOpenApiId) {
       console.log('Found rest-api, updating');
 
       let currentDefinition = { parameters: {} };
-      if (isDefined(contextNode.getComponentSchema())) {
-        currentDefinition = contextNode.getComponentSchema()!.definition;
+      if (isDefined(contextNode.getNodeDefinition())) {
+        currentDefinition = contextNode.getNodeDefinition();
       }
 
       const newDefinition = {
@@ -285,9 +280,7 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <TextContent>
-        <Text component={TextVariants.h1}>Configure Open API Consumer</Text>
-      </TextContent>
+      <Content component="h1">Configure Open API Consumer</Content>
       <Table title="Configure Open API Consumer">
         <Tbody>
           <Tr>
@@ -315,7 +308,9 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
                   id="operation"
                   footer={<ConfigureOperationFooter footerCallback={onConfigure} />}
                 >
-                  <Text>The following operations are included in the Open API specification and can be used:</Text>
+                  <Content component="p">
+                    The following operations are included in the Open API specification and can be used:
+                  </Content>
                   <Table borders={false} variant="compact">
                     <Thead>
                       <Tr>
@@ -353,6 +348,7 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
                               <Td width={10}>
                                 <Radio
                                   id={operation.operationId}
+                                  name={operation.operationId}
                                   isChecked={operation.selected || operations.length === 0}
                                   onChange={(_event, checked) => selectOperation(operation.operationId)}
                                   aria-label={operation.operationId}
@@ -360,7 +356,7 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
                               </Td>
                               <Td width={20}>{operation.operationId}</Td>
                               <Td width={10}>{operation.httpMethod}</Td>
-                              <Td withd={60}>{operation.path}</Td>
+                              <Td width={60}>{operation.path}</Td>
                             </Tr>
                           );
                         } else {
@@ -371,12 +367,7 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
                         <Tr>
                           <Td colSpan={4}>
                             <Bullseye>
-                              <EmptyState variant={EmptyStateVariant.sm}>
-                                <EmptyStateHeader
-                                  icon={<EmptyStateIcon icon={SearchIcon} />}
-                                  titleText="No results found"
-                                  headingLevel="h2"
-                                />
+                              <EmptyState variant="sm" titleText="No results found" icon={SearchIcon} headingLevel="h2">
                                 <EmptyStateBody>Clear all filters and try again.</EmptyStateBody>
                                 <EmptyStateFooter>
                                   <EmptyStateActions>
@@ -397,7 +388,7 @@ export const OpenApiConfigure: FunctionComponent<Props> = (props) => {
                   id="host"
                   footer={<ConfigureHostFooter footerCallback={onConfigure} />}
                 >
-                  <Text>The hostname, where the Open API is exposed</Text>
+                  <Content component="p">The hostname, where the Open API is exposed</Content>
                   <TextInput id="hostName" value={hostName} onChange={(e, value) => updateHostName(value)} />
                 </WizardStep>
               </Wizard>

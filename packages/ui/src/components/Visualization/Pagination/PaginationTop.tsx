@@ -15,14 +15,6 @@ function PaginationTop({ itemCount, perPage, pageChangeCallback }: PaginationPro
     pageChangeCallback(newPage);
   };
 
-  const onPerPageSelect = (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
-    newPerPage: number,
-    newPage: number,
-  ) => {
-    setPage(newPage);
-  };
-
   return (
     <Pagination
       itemCount={itemCount}

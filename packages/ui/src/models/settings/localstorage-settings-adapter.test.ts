@@ -16,6 +16,7 @@ describe('LocalStorageSettingsAdapter', () => {
       nodeLabel: NodeLabelType.Description,
       nodeToolbarTrigger: NodeToolbarTrigger.onSelection,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'http://example.com/registry',
       experimentalFeatures: {
         enableDragAndDrop: true,
       },
@@ -43,6 +44,7 @@ describe('LocalStorageSettingsAdapter', () => {
       nodeLabel: NodeLabelType.Description,
       nodeToolbarTrigger: NodeToolbarTrigger.onSelection,
       colorScheme: ColorScheme.Auto,
+      apicurioRegistryUrl: 'http://example.com/registry',
       experimentalFeatures: {
         enableDragAndDrop: true,
       },

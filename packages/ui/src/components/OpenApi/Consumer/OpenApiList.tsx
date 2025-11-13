@@ -1,22 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  ActionList,
-  ActionListItem,
-  Bullseye,
-  Button,
-  EmptyState,
-  EmptyStateActions,
-  EmptyStateBody,
-  EmptyStateFooter,
-  EmptyStateHeader,
-  EmptyStateIcon,
-  EmptyStateVariant,
-  Icon,
-  SearchInput,
-  Text,
-  TextContent,
-  TextVariants,
-} from '@patternfly/react-core';
+import { ActionList, ActionListItem, Button, SearchInput, Content } from '@patternfly/react-core';
 import { Table, Thead, Th, Tbody, Td, Tr } from '@patternfly/react-table';
 import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
 import DeleteIcon from '@patternfly/react-icons/dist/esm/icons/trash-icon';
@@ -76,12 +59,12 @@ export default function OpenApis() {
   }, [openApiConfigureOpen]);
 
   const findRestOpenApiComponents = (contextNode: IVisualizationNode, newRestOpenApis: RestOpenApi[]) => {
-    if (contextNode.getTitle() == 'rest-openapi') {
+    if (contextNode.getNodeLabel() == 'rest-openapi') {
       const newRestOpenApi: RestOpenApi = {
         id: contextNode.getId()!,
-        specificationUri: contextNode.getComponentSchema()!.definition!.parameters.specificationUri,
-        operationId: contextNode.getComponentSchema()!.definition!.parameters.operationId,
-        host: contextNode.getComponentSchema()!.definition!.parameters.host,
+        specificationUri: contextNode.getNodeDefinition().parameters.specificationUri,
+        operationId: contextNode.getNodeDefinition().parameters.operationId,
+        host: contextNode.getNodeDefinition().parameters.host,
       };
 
       newRestOpenApis.push(newRestOpenApi);
@@ -130,9 +113,7 @@ export default function OpenApis() {
       )}
       {!openApiConfigureOpen && (
         <div>
-          <TextContent>
-            <Text component={TextVariants.h1}>Configure Open API Consumers</Text>
-          </TextContent>
+          <Content component="h1">Configure Open API Consumers</Content>
 
           <Table borders={false} variant="compact">
             <Thead noWrap>

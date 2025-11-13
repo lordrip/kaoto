@@ -1,50 +1,28 @@
-import { Rest, RouteDefinition } from '@kaoto/camel-catalog/types';
 import {
   ActionList,
   ActionListItem,
   Bullseye,
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Checkbox,
   DropEvent,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
-  EmptyStateHeader,
-  EmptyStateIcon,
-  EmptyStateVariant,
   FileUpload,
   Form,
   FormGroup,
-  HelperText,
-  HelperTextItem,
   InputGroup,
-  Popover,
   SearchInput,
   Tab,
   TabTitleText,
   Tabs,
-  Text,
   TextInput,
 } from '@patternfly/react-core';
-import { Table, Thead, Th, Tbody, Td, Tr } from '@patternfly/react-table';
-import { OpenApi, OpenApiOperation, OpenApiPath } from 'openapi-v3';
-import { FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
 import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
-import { useNavigate } from 'react-router-dom';
-import { parse } from 'yaml';
-import { BaseVisualCamelEntity, CamelRouteVisualEntity } from '../../models';
-import { EntityType } from '../../models/camel/entities';
-import { SourceSchemaType } from '../../models/camel/source-schema-type';
-import { CamelRestVisualEntity } from '../../models/visualization/flows/camel-rest-visual-entity';
-import { FlowTemplateService } from '../../models/visualization/flows/support/flow-templates-service';
-import { EntitiesContext } from '../../providers/entities.provider';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@patternfly/react-table';
+import { OpenApiOperation, OpenApiPath } from 'openapi-v3';
+import { FunctionComponent, useCallback, useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../providers';
-import { Links } from '../../router/links.models';
 import { isDefined } from '../../utils';
 import PaginationTop from '../Visualization/Pagination/PaginationTop';
 
@@ -113,7 +91,7 @@ export const OpenApiSpecification: FunctionComponent<Props> = (props) => {
     setActiveTabKey(tabIndex);
   };
 
-  const handleFileInputChange = (_, file: File) => {
+  const handleFileInputChange = (_: unknown, file: File) => {
     console.log('File Input Change called ' + file.name);
 
     setFileName(file.name);
@@ -315,12 +293,7 @@ export const OpenApiSpecification: FunctionComponent<Props> = (props) => {
               <Tr>
                 <Td colSpan={4}>
                   <Bullseye>
-                    <EmptyState variant={EmptyStateVariant.sm}>
-                      <EmptyStateHeader
-                        icon={<EmptyStateIcon icon={SearchIcon} />}
-                        titleText="No results found"
-                        headingLevel="h2"
-                      />
+                    <EmptyState variant="sm" titleText="No results found" icon={SearchIcon} headingLevel="h2">
                       <EmptyStateBody>Clear all filters and try again.</EmptyStateBody>
                       <EmptyStateFooter>
                         <EmptyStateActions>
