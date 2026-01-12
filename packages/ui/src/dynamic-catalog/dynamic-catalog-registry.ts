@@ -33,6 +33,11 @@ class CatalogsRegistry implements IDynamicCatalogRegistry {
     return catalog?.get(key, options) as Promise<DynamicCatalogTypeMap[K] | undefined>;
   }
 
+  getEntityFromCache<K extends CatalogKind>(kind: K, key: string): DynamicCatalogTypeMap[K] | undefined {
+    const catalog = this.getCatalog(kind);
+    return catalog?.getFromCache(key) as DynamicCatalogTypeMap[K] | undefined;
+  }
+
   clearRegistry(): void {
     this.catalogs.clear();
   }
