@@ -141,10 +141,8 @@ describe('EntitiesProvider', () => {
     expect(notifierSpy).toHaveBeenCalledWith(
       'entities:updated',
       `- route:
-    id: route-1234
     from:
       id: from-1234
-      uri: timer
       parameters:
         period: "1000"
         timerName: template
@@ -152,6 +150,8 @@ describe('EntitiesProvider', () => {
         - log:
             id: log-1234
             message: \${body}
+      uri: timer
+    id: route-1234
 `,
     );
   });
