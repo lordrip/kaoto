@@ -2,7 +2,9 @@
 
 .step-toolbar {
   @include custom.highligth {
-    display: inline-block;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
     position: relative;
     border: 1px solid var(--custom-node-BorderColor);
     border-radius: var(--custom-node-BorderRadius);
@@ -11,6 +13,7 @@
     padding: var(--pf-t--global--spacer--sm);
 
     &__button {
+      flex-shrink: 0;
       margin-right: 1rem;
     }
 

@@ -43,10 +43,12 @@ import { NodeInteractionAddonContext } from '../../../registers/interactions/nod
 import { CanvasDefaults } from '../../Canvas/canvas.defaults';
 import { CanvasNode, LayoutType } from '../../Canvas/canvas.models';
 import { StepToolbar } from '../../Canvas/StepToolbar/StepToolbar';
+import { getToolbarWidth } from '../../Canvas/StepToolbar/StepToolbar.utils';
 import { NodeContextMenuFn } from '../ContextMenu/NodeContextMenu';
 import { NODE_DRAG_TYPE } from '../customComponentUtils';
 import { AddStepIcon } from '../Edge/AddStepIcon';
 import { FloatingCircle } from '../FloatingCircle/FloatingCircle';
+import { useEnableAllSteps } from '../hooks/enable-all-steps.hook';
 import { TargetAnchor } from '../target-anchor';
 import { checkNodeDropCompatibility, handleValidNodeDrop } from './CustomNodeUtils';
 
@@ -83,6 +85,7 @@ const CustomNodeInner: FunctionComponent<CustomNodeProps> = observer(
       CanvasDefaults.HOVER_DELAY_OUT,
     );
     const childCount = element.getAllNodeChildren().length;
+    const { areMultipleStepsDisabled } = useEnableAllSteps();
     const boxRef = useRef<Rect | null>(null);
     const shouldShowToolbar =
       settingsAdapter.getSettings().nodeToolbarTrigger === NodeToolbarTrigger.onHover
@@ -203,14 +206,26 @@ const CustomNodeInner: FunctionComponent<CustomNodeProps> = observer(
     if (!dndDropProps.droppable || !boxRef.current) {
       boxRef.current = element.getBounds();
     }
-    const labelX = (boxRef.current.width - CanvasDefaults.DEFAULT_LABEL_WIDTH) / 2;
-    const toolbarWidth = CanvasDefaults.STEP_TOOLBAR_WIDTH;
-    const toolbarX = (boxRef.current.width - toolbarWidth) / 2;
-    const toolbarY = CanvasDefaults.STEP_TOOLBAR_HEIGHT * -1;
 
     if (!vizNode) {
       return null;
     }
+
+    const labelX = (boxRef.current.width - CanvasDefaults.DEFAULT_LABEL_WIDTH) / 2;
+    const nodeInteraction = vizNode.getNodeInteraction();
+    // Use canHaveNextStep as a heuristic for canDuplicate since the actual value
+    // depends on catalog compatibility checks that are expensive to compute here
+    const toolbarWidth = getToolbarWidth(
+      {
+        nodeInteraction,
+        isCollapsible: !!onCollapseToggle,
+        canDuplicate: nodeInteraction.canHaveNextStep,
+        areMultipleStepsDisabled,
+      },
+      boxRef.current.width,
+    );
+    const toolbarX = (boxRef.current.width - toolbarWidth) / 2;
+    const toolbarY = CanvasDefaults.STEP_TOOLBAR_HEIGHT * -1;
 
     return (
       <Layer id={DEFAULT_LAYER} data-lastupdate={lastUpdate}>

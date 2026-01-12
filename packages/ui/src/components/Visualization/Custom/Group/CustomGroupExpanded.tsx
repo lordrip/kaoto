@@ -30,9 +30,11 @@ import { IconResolver } from '../../../IconResolver';
 import { LayoutType } from '../../Canvas';
 import { CanvasDefaults } from '../../Canvas/canvas.defaults';
 import { StepToolbar } from '../../Canvas/StepToolbar/StepToolbar';
+import { getToolbarWidth } from '../../Canvas/StepToolbar/StepToolbar.utils';
 import { customGroupExpandedDropTargetSpec } from '../customComponentUtils';
 import { AddStepIcon } from '../Edge/AddStepIcon';
 import { FloatingCircle } from '../FloatingCircle/FloatingCircle';
+import { useEnableAllSteps } from '../hooks/enable-all-steps.hook';
 import { TargetAnchor } from '../target-anchor';
 import { CustomGroupProps } from './Group.models';
 
@@ -56,6 +58,7 @@ export const CustomGroupExpandedInner: FunctionComponent<CustomGroupProps> = obs
       CanvasDefaults.HOVER_DELAY_OUT,
     );
     const boxRef = useRef<Rect | null>(null);
+    const { areMultipleStepsDisabled } = useEnableAllSteps();
     const shouldShowToolbar =
       settingsAdapter.getSettings().nodeToolbarTrigger === NodeToolbarTrigger.onHover
         ? isGHover || isToolbarHover || selected
@@ -76,7 +79,18 @@ export const CustomGroupExpandedInner: FunctionComponent<CustomGroupProps> = obs
       boxRef.current = element.getBounds();
     }
 
-    const toolbarWidth = Math.max(CanvasDefaults.STEP_TOOLBAR_WIDTH, boxRef.current.width);
+    const nodeInteraction = vizNode.getNodeInteraction();
+    // Use canHaveNextStep as a heuristic for canDuplicate since the actual value
+    // depends on catalog compatibility checks that are expensive to compute here
+    const toolbarWidth = getToolbarWidth(
+      {
+        nodeInteraction,
+        isCollapsible: !!onCollapseToggle,
+        canDuplicate: nodeInteraction.canHaveNextStep,
+        areMultipleStepsDisabled,
+      },
+      boxRef.current.width,
+    );
     const toolbarX = boxRef.current.x + (boxRef.current.width - toolbarWidth) / 2;
     const toolbarY = boxRef.current.y - CanvasDefaults.STEP_TOOLBAR_HEIGHT;
     const addStepX = isHorizontal
