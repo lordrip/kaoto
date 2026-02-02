@@ -10,7 +10,7 @@ import {
   PrimitiveDocument,
 } from '../../../models/datamapper/document';
 import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { DeleteParameterButton } from './DeleteParameterButton';
 
 describe('DeleteParameterButton', () => {
@@ -33,13 +33,11 @@ describe('DeleteParameterButton', () => {
       return <>{children}</>;
     };
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <ParamTest>
-            <DeleteParameterButton parameterName="testparam1" parameterReferenceId="testparam1" />
-          </ParamTest>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <ParamTest>
+          <DeleteParameterButton parameterName="testparam1" parameterReferenceId="testparam1" />
+        </ParamTest>
+      </DataMapperTestWrapper>,
     );
     const deleteBtn = await screen.findByTestId('delete-parameter-testparam1-button');
     expect(parameterMap!.size).toEqual(1);

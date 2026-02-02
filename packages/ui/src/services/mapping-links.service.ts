@@ -9,12 +9,20 @@ import {
   LineProps,
   MappingItem,
   MappingTree,
-  NodeReference,
   PrimitiveDocument,
   ValueSelector,
 } from '../models/datamapper';
+import { useDocumentTreeStore } from '../store';
 import { DocumentService } from './document.service';
 import { XPathService } from './xpath/xpath.service';
+
+// NodeReference still used by calculateMappingLinkCoordinates - will be removed in next iteration
+interface NodeReference {
+  path: string;
+  isSource: boolean;
+  headerRef: HTMLDivElement | null;
+  containerRef: HTMLDivElement | null;
+}
 
 /**
  * A collection of the business logic for rendering mapping link lines.
@@ -24,7 +32,8 @@ export class MappingLinksService {
     item: MappingTree | MappingItem,
     sourceParameterMap: Map<string, IDocument>,
     sourceBody: IDocument,
-    selectedNodeRef: RefObject<NodeReference> | null = null,
+    selectedNodePath: string | null = null,
+    selectedNodeIsSource: boolean = false,
   ): IMappingLink[] {
     const answer = [] as IMappingLink[];
     const targetNodePath = item.nodePath.toString();
@@ -34,7 +43,8 @@ export class MappingLinksService {
         targetNodePath,
         sourceParameterMap,
         sourceBody,
-        selectedNodeRef,
+        selectedNodePath,
+        selectedNodeIsSource,
       );
       answer.push(...links);
     }
@@ -50,11 +60,18 @@ export class MappingLinksService {
             targetNodePath,
             sourceParameterMap,
             sourceBody,
-            selectedNodeRef,
+            selectedNodePath,
+            selectedNodeIsSource,
           );
           answer.push(...links);
         } else {
-          const links = MappingLinksService.extractMappingLinks(child, sourceParameterMap, sourceBody, selectedNodeRef);
+          const links = MappingLinksService.extractMappingLinks(
+            child,
+            sourceParameterMap,
+            sourceBody,
+            selectedNodePath,
+            selectedNodeIsSource,
+          );
           answer.push(...links);
         }
       });
@@ -67,7 +84,8 @@ export class MappingLinksService {
     targetNodePath: string,
     sourceParameterMap: Map<string, IDocument>,
     sourceBody: IDocument,
-    selectedNodeRef: RefObject<NodeReference> | null,
+    selectedNodePath: string | null,
+    selectedNodeIsSource: boolean,
   ) {
     const namespaces = sourceExpressionItem.mappingTree.namespaceMap;
     const sourceXPath = sourceExpressionItem.expression;
@@ -86,7 +104,12 @@ export class MappingLinksService {
 
       if (sourceNodePath) {
         const sourceNodePathString = sourceNodePath.toString();
-        const isSelected = MappingLinksService.isLinkSelected(sourceNodePathString, targetNodePath, selectedNodeRef);
+        const isSelected = MappingLinksService.isLinkSelected(
+          sourceNodePathString,
+          targetNodePath,
+          selectedNodePath,
+          selectedNodeIsSource,
+        );
         acc.push({ sourceNodePath: sourceNodePathString, targetNodePath: targetNodePath, isSelected });
       }
       return acc;
@@ -100,8 +123,8 @@ export class MappingLinksService {
   ): LineProps[] {
     return mappingLinks
       .reduce((acc, { sourceNodePath, targetNodePath, isSelected }) => {
-        const sourceClosestPath = MappingLinksService.getClosestExpandedPath(sourceNodePath, getNodeReference);
-        const targetClosestPath = MappingLinksService.getClosestExpandedPath(targetNodePath, getNodeReference);
+        const sourceClosestPath = MappingLinksService.getClosestExpandedPath(sourceNodePath);
+        const targetClosestPath = MappingLinksService.getClosestExpandedPath(targetNodePath);
         if (sourceClosestPath && targetClosestPath) {
           const sourceFieldRef = getNodeReference(sourceClosestPath);
           const targetFieldRef = getNodeReference(targetClosestPath);
@@ -121,26 +144,23 @@ export class MappingLinksService {
       });
   }
 
-  private static getClosestExpandedPath(
-    path: string,
-    getNodeReference: (path: string) => RefObject<NodeReference> | null,
-  ) {
+  private static getClosestExpandedPath(path: string): string | null {
+    const store = useDocumentTreeStore.getState();
     let tracedPath: string | null = path;
-    while (tracedPath && MappingLinksService.shouldTraceParent(tracedPath, getNodeReference)) {
+
+    while (tracedPath) {
+      // If port exists in store, node is visible
+      if (store.nodesConnectionPorts[tracedPath] !== undefined) {
+        return tracedPath;
+      }
+
+      // Node not visible, try parent
       const parentPath = MappingLinksService.getParentPath(tracedPath);
       if (parentPath === tracedPath) break;
       tracedPath = parentPath;
     }
-    return tracedPath;
-  }
 
-  private static shouldTraceParent(
-    tracedPath: string,
-    getNodeReference: (path: string) => RefObject<NodeReference> | null,
-  ): boolean {
-    if (getNodeReference(tracedPath)?.current == null) return true;
-    if (getNodeReference(tracedPath)?.current.headerRef == null) return true;
-    return getNodeReference(tracedPath)?.current.headerRef?.getClientRects().length === 0;
+    return tracedPath;
   }
 
   private static getParentPath(path: string) {
@@ -257,20 +277,21 @@ export class MappingLinksService {
   private static isLinkSelected(
     sourceNodePath: string,
     targetNodePath: string,
-    selectedNodeRef: RefObject<NodeReference> | null,
+    selectedNodePath: string | null,
+    selectedNodeIsSource: boolean,
   ): boolean {
-    if (!selectedNodeRef) return false;
+    if (!selectedNodePath) return false;
 
-    if (selectedNodeRef.current.isSource) {
-      return selectedNodeRef.current.path === sourceNodePath;
+    if (selectedNodeIsSource) {
+      return selectedNodePath === sourceNodePath;
     } else {
-      return selectedNodeRef.current.path === targetNodePath;
+      return selectedNodePath === targetNodePath;
     }
   }
 
-  static isInSelectedMapping(mappingLinks: IMappingLink[], ref: RefObject<NodeReference>): boolean {
+  static isNodeInSelectedMapping(mappingLinks: IMappingLink[], nodePath: string): boolean {
     return !!mappingLinks
       .filter((link) => link.isSelected)
-      .find((link) => MappingLinksService.isLinkSelected(link.sourceNodePath, link.targetNodePath, ref));
+      .find((link) => link.sourceNodePath === nodePath || link.targetNodePath === nodePath);
   }
 }

@@ -174,13 +174,6 @@ export interface IMappingLink {
   isSelected: boolean;
 }
 
-export interface NodeReference {
-  path: string;
-  isSource: boolean;
-  headerRef: HTMLDivElement | null;
-  containerRef: HTMLDivElement | null;
-}
-
 export type LineCoord = {
   x1: number;
   y1: number;

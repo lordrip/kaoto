@@ -1,19 +1,22 @@
 import './TargetPanel.scss';
 
 import { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
-import { useCanvas } from '../../hooks/useCanvas';
 import { useDataMapper } from '../../hooks/useDataMapper';
 import { DocumentType } from '../../models/datamapper/document';
 import { DocumentTree } from '../../models/datamapper/document-tree';
 import { TargetDocumentNodeData } from '../../models/datamapper/visualization';
 import { TreeUIService } from '../../services/tree-ui.service';
 import { VisualizationService } from '../../services/visualization.service';
+import { useDocumentTreeStore } from '../../store/document-tree.store';
+import { batchUpdateConnectionPorts } from '../../utils/batch-update-connection-ports';
+import { flattenTreeNodes } from '../../utils/flatten-tree-nodes';
 import { ConditionMenuAction } from '../Document/actions/ConditionMenuAction';
 import { DeleteMappingItemAction } from '../Document/actions/DeleteMappingItemAction';
 import { XPathEditorAction } from '../Document/actions/XPathEditorAction';
 import { XPathInputAction } from '../Document/actions/XPathInputAction';
-import { DocumentContent, DocumentHeader } from '../Document/BaseDocument';
+import { DocumentHeader } from '../Document/BaseDocument';
 import { TargetDocumentNode } from '../Document/TargetDocumentNode';
 import { ExpansionPanel } from '../ExpansionPanels/ExpansionPanel';
 import { ExpansionPanels } from '../ExpansionPanels/ExpansionPanels';
@@ -21,7 +24,6 @@ import { TARGET_PANEL_DEFAULT_HEIGHT, TARGET_PANEL_MIN_HEIGHT } from '../Expansi
 
 export const TargetPanel: FunctionComponent = () => {
   const { targetBodyDocument, mappingTree, refreshMappingTree } = useDataMapper();
-  const { reloadNodeReferences } = useCanvas();
 
   // Create tree for target body
   const targetBodyNodeData = useMemo(
@@ -34,14 +36,18 @@ export const TargetPanel: FunctionComponent = () => {
     setTargetBodyTree(TreeUIService.createTree(targetBodyNodeData));
   }, [targetBodyNodeData]);
 
+  // Optimize: Select only the expansion state for this document
+  const documentExpansionState = useDocumentTreeStore((state) => state.expansionState[targetBodyNodeData.id] || {});
+
+  // Flatten tree based on expansion state
+  const flattenedNodes = useMemo(() => {
+    if (!targetBodyTree) return [];
+    return flattenTreeNodes(targetBodyTree.root, (path) => documentExpansionState[path] ?? false);
+  }, [targetBodyTree, documentExpansionState]);
+
   const handleUpdate = useCallback(() => {
     refreshMappingTree();
   }, [refreshMappingTree]);
-
-  // Callback for layout changes (resize) - triggers mapping line refresh
-  const handleLayoutChange = useCallback(() => {
-    reloadNodeReferences();
-  }, [reloadNodeReferences]);
 
   // Get expression item for primitive target body (if it has a mapping)
   const expressionItem = useMemo(() => {
@@ -103,16 +109,25 @@ export const TargetPanel: FunctionComponent = () => {
               nodeData={targetBodyNodeData}
             />
           }
-          onScroll={reloadNodeReferences}
-          onLayoutChange={handleLayoutChange}
+          onLayoutChange={batchUpdateConnectionPorts}
         >
           {hasSchema && targetBodyTree && (
-            <DocumentContent
-              treeNode={targetBodyTree.root}
-              isReadOnly={false}
-              renderNodes={(childNode) => (
-                <TargetDocumentNode treeNode={childNode} documentId={targetBodyNodeData.id} rank={1} />
-              )}
+            <Virtuoso
+              style={{ height: '100%' }}
+              totalCount={flattenedNodes.length}
+              itemContent={(index) => {
+                const flattenedNode = flattenedNodes[index];
+                return (
+                  <TargetDocumentNode
+                    key={flattenedNode.path}
+                    treeNode={flattenedNode.treeNode}
+                    documentId={targetBodyNodeData.id}
+                    rank={flattenedNode.depth + 1}
+                  />
+                );
+              }}
+              overscan={200}
+              onScroll={batchUpdateConnectionPorts}
             />
           )}
         </ExpansionPanel>

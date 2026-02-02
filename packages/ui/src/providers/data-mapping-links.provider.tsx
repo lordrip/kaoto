@@ -11,16 +11,16 @@ import {
 } from 'react';
 
 import { useDataMapper } from '../hooks/useDataMapper';
-import { IMappingLink, NodeReference } from '../models/datamapper';
+import { IMappingLink } from '../models/datamapper';
 import { MappingLinksService } from '../services/mapping-links.service';
+import { useDocumentTreeStore } from '../store';
 
 export interface IMappingLinksContext {
   mappingLinkCanvasRef: RefObject<HTMLDivElement | null>;
   getMappingLinks: () => IMappingLink[];
-  getSelectedNodeReference: () => RefObject<NodeReference> | null;
-  setSelectedNodeReference: (ref: RefObject<NodeReference> | null) => void;
-  toggleSelectedNodeReference: (ref: RefObject<NodeReference> | null) => void;
-  isInSelectedMapping: (ref: RefObject<NodeReference>) => boolean;
+  setSelectedNode: (nodePath: string | null, isSource: boolean) => void;
+  toggleSelectedNode: (nodePath: string, isSource: boolean) => void;
+  isNodeInSelectedMapping: (nodePath: string) => boolean;
 }
 
 export const MappingLinksContext = createContext<IMappingLinksContext | undefined>(undefined);
@@ -28,42 +28,56 @@ export const MappingLinksContext = createContext<IMappingLinksContext | undefine
 export const MappingLinksProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const { mappingTree, sourceParameterMap, sourceBodyDocument } = useDataMapper();
   const [mappingLinks, setMappingLinks] = useState<IMappingLink[]>([]);
-  const [selectedNodeRef, setSelectedNodeRef] = useState<RefObject<NodeReference> | null>(null);
   const mappingLinkCanvasRef = useRef<HTMLDivElement | null>(null);
+
+  // Subscribe to store
+  const selectedNodePath = useDocumentTreeStore((state) => state.selectedNodePath);
+  const selectedNodeIsSource = useDocumentTreeStore((state) => state.selectedNodeIsSource);
+  const setSelectedNodeStore = useDocumentTreeStore((state) => state.setSelectedNode);
+  const toggleSelectedNodeStore = useDocumentTreeStore((state) => state.toggleSelectedNode);
 
   useEffect(() => {
     const links = MappingLinksService.extractMappingLinks(
       mappingTree,
       sourceParameterMap,
       sourceBodyDocument,
-      selectedNodeRef,
+      selectedNodePath,
+      selectedNodeIsSource,
     );
     setMappingLinks(links);
-  }, [mappingTree, selectedNodeRef, sourceBodyDocument, sourceParameterMap]);
+  }, [mappingTree, selectedNodePath, selectedNodeIsSource, sourceBodyDocument, sourceParameterMap]);
 
-  const toggleSelectedNodeReference = useCallback(
-    (ref: RefObject<NodeReference> | null) => {
-      setSelectedNodeRef(ref === selectedNodeRef ? null : ref);
+  const setSelectedNode = useCallback(
+    (nodePath: string | null, isSource: boolean) => {
+      setSelectedNodeStore(nodePath, isSource);
     },
-    [selectedNodeRef],
+    [setSelectedNodeStore],
   );
 
-  const isInSelectedMapping = useCallback(
-    (ref: RefObject<NodeReference>): boolean =>
-      selectedNodeRef === ref || MappingLinksService.isInSelectedMapping(mappingLinks, ref),
-    [mappingLinks, selectedNodeRef],
+  const toggleSelectedNode = useCallback(
+    (nodePath: string, isSource: boolean) => {
+      toggleSelectedNodeStore(nodePath, isSource);
+    },
+    [toggleSelectedNodeStore],
+  );
+
+  const isNodeInSelectedMapping = useCallback(
+    (nodePath: string): boolean => {
+      if (!selectedNodePath) return false;
+      return MappingLinksService.isNodeInSelectedMapping(mappingLinks, nodePath);
+    },
+    [mappingLinks, selectedNodePath],
   );
 
   const value = useMemo(() => {
     return {
       mappingLinkCanvasRef,
       getMappingLinks: () => mappingLinks,
-      getSelectedNodeReference: () => selectedNodeRef,
-      setSelectedNodeReference: setSelectedNodeRef,
-      toggleSelectedNodeReference,
-      isInSelectedMapping,
+      setSelectedNode,
+      toggleSelectedNode,
+      isNodeInSelectedMapping,
     };
-  }, [isInSelectedMapping, mappingLinkCanvasRef, mappingLinks, selectedNodeRef, toggleSelectedNodeReference]);
+  }, [isNodeInSelectedMapping, mappingLinkCanvasRef, mappingLinks, setSelectedNode, toggleSelectedNode]);
 
   return <MappingLinksContext.Provider value={value}>{children}</MappingLinksContext.Provider>;
 };

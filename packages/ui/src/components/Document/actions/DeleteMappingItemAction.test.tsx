@@ -4,9 +4,9 @@ import { BODY_DOCUMENT_ID, DocumentDefinitionType, DocumentType } from '../../..
 import { ForEachItem, MappingTree, ValueSelector } from '../../../models/datamapper/mapping';
 import { MappingNodeData, TargetDocumentNodeData } from '../../../models/datamapper/visualization';
 import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
 import { MappingSerializerService } from '../../../services/mapping-serializer.service';
 import { conditionalMappingsToShipOrderXslt, TestUtil } from '../../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { DeleteMappingItemAction } from './DeleteMappingItemAction';
 
 describe('DeleteMappingItemAction', () => {
@@ -17,11 +17,9 @@ describe('DeleteMappingItemAction', () => {
     const nodeData = new MappingNodeData(docData, new ValueSelector(mappingTree));
     const onDeleteMock = jest.fn();
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
+      </DataMapperTestWrapper>,
     );
     const deleteBtn = await screen.findByTestId('delete-mapping-btn');
     act(() => {
@@ -52,11 +50,9 @@ describe('DeleteMappingItemAction', () => {
     const nodeData = new MappingNodeData(docData, tree.children[0].children[0] as ForEachItem);
     const onDeleteMock = jest.fn();
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
+      </DataMapperTestWrapper>,
     );
     const deleteBtn = await screen.findByTestId('delete-mapping-btn');
     act(() => {

@@ -10,7 +10,7 @@ import {
   PrimitiveDocument,
 } from '../../../models/datamapper/document';
 import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { RenameParameterButton } from './RenameParameterButton';
 
 describe('RenameParameterButton', () => {
@@ -35,13 +35,11 @@ describe('RenameParameterButton', () => {
       return <>{children}</>;
     };
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <ParamTest>
-            <RenameParameterButton parameterName="testparam1" onRenameClick={renameAction} />
-          </ParamTest>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <ParamTest>
+          <RenameParameterButton parameterName="testparam1" onRenameClick={renameAction} />
+        </ParamTest>
+      </DataMapperTestWrapper>,
     );
     const renameBtn = await screen.findByTestId('rename-parameter-testparam1-button');
     expect(parameterMap!.size).toEqual(1);

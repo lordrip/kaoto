@@ -4,8 +4,8 @@ import { BODY_DOCUMENT_ID, DocumentDefinitionType, DocumentType } from '../../..
 import { MappingTree, ValueSelector } from '../../../models/datamapper/mapping';
 import { TargetDocumentNodeData } from '../../../models/datamapper/visualization';
 import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
 import { TestUtil } from '../../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { XPathEditorAction } from './XPathEditorAction';
 
 describe('XPathEditorAction', () => {
@@ -19,11 +19,9 @@ describe('XPathEditorAction', () => {
     const tree = new MappingTree(DocumentType.TARGET_BODY, BODY_DOCUMENT_ID, DocumentDefinitionType.XML_SCHEMA);
     const docData = new TargetDocumentNodeData(doc, tree);
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <XPathEditorAction mapping={new ValueSelector(tree)} nodeData={docData} onUpdate={jest.fn()} />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <XPathEditorAction mapping={new ValueSelector(tree)} nodeData={docData} onUpdate={jest.fn()} />
+      </DataMapperTestWrapper>,
     );
     const editBtn = await screen.findByTestId(`edit-xpath-button-${docData.id}`);
     act(() => {

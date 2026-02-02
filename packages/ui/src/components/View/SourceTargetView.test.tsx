@@ -1,9 +1,9 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { DataMapperProvider } from '../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../providers/datamapper-canvas.provider';
 import { BrowserFilePickerMetadataProvider } from '../../stubs/BrowserFilePickerMetadataProvider';
 import { camelYamlDslJsonSchema, shipOrderJsonSchema, shipOrderXsd } from '../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../tests/test-wrapper';
 import { SourceTargetView } from './SourceTargetView';
 
 // Mock ResizeObserver for ExpansionPanels
@@ -26,11 +26,9 @@ describe('SourceTargetView', () => {
     it('should attach and detach schema', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
       const attachButton = await screen.findByTestId('attach-schema-sourceBody-Body-button');
@@ -78,11 +76,9 @@ describe('SourceTargetView', () => {
     it('should not show JSON schema option for Source Body', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
       const attachButton = await screen.findByTestId('attach-schema-sourceBody-Body-button');
@@ -100,11 +96,9 @@ describe('SourceTargetView', () => {
     it('should attach and detach schema', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
       const attachButton = await screen.findByTestId('attach-schema-targetBody-Body-button');
@@ -156,11 +150,9 @@ describe('SourceTargetView', () => {
     it('should attach JSON schema', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
       const attachButton = await screen.findByTestId('attach-schema-targetBody-Body-button');
@@ -212,11 +204,9 @@ describe('SourceTargetView', () => {
     it('should attach Camel YAML JSON schema', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
       const attachButton = await screen.findByTestId('attach-schema-targetBody-Body-button');
@@ -262,11 +252,9 @@ describe('SourceTargetView', () => {
     it('should render zoom in and zoom out buttons', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -280,11 +268,9 @@ describe('SourceTargetView', () => {
     it('should increase scale factor when zoom in is clicked', async () => {
       const { container } = render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -307,11 +293,9 @@ describe('SourceTargetView', () => {
     it('should decrease scale factor when zoom out is clicked', async () => {
       const { container } = render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -334,11 +318,9 @@ describe('SourceTargetView', () => {
     it('should not zoom in beyond max scale (1.2x)', async () => {
       const { container } = render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -360,11 +342,9 @@ describe('SourceTargetView', () => {
     it('should not zoom out beyond min scale (0.7x)', async () => {
       const { container } = render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <SourceTargetView />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <SourceTargetView />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 

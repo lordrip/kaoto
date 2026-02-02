@@ -12,19 +12,17 @@ import { DocumentTree } from '../../models/datamapper/document-tree';
 import { DocumentTreeNode } from '../../models/datamapper/document-tree-node';
 import { DocumentNodeData } from '../../models/datamapper/visualization';
 import { DataMapperProvider } from '../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../providers/datamapper-canvas.provider';
 import { TreeParsingService } from '../../services/tree-parsing.service';
 import { TreeUIService } from '../../services/tree-ui.service';
 import { VisualizationService } from '../../services/visualization.service';
 import { useDocumentTreeStore } from '../../store';
 import { TestUtil } from '../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../tests/test-wrapper';
 import { SourceDocumentNode } from './SourceDocumentNode';
 
 describe('SourceDocumentNode', () => {
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
-    <DataMapperProvider>
-      <DataMapperCanvasProvider>{children}</DataMapperCanvasProvider>
-    </DataMapperProvider>
+    <DataMapperTestWrapper>{children}</DataMapperTestWrapper>
   );
 
   const findLeafNode = (node: DocumentTreeNode): DocumentTreeNode | undefined => {
@@ -557,11 +555,9 @@ describe('SourceDocumentNode', () => {
       expect(screen.getByTestId(`node-source-${documentNodeData.id}`)).toBeInTheDocument();
 
       rerender(
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <SourceDocumentNode treeNode={tree.root} documentId={documentNodeData.id} isReadOnly={false} rank={0} />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>,
+        <DataMapperTestWrapper>
+          <SourceDocumentNode treeNode={tree.root} documentId={documentNodeData.id} isReadOnly={false} rank={0} />
+        </DataMapperTestWrapper>,
       );
 
       expect(screen.getByTestId(`node-source-${documentNodeData.id}`)).toBeInTheDocument();
