@@ -35,7 +35,6 @@ import {
 import { FileImportIcon, ImportIcon } from '@patternfly/react-icons';
 import { FunctionComponent, useCallback, useContext, useMemo, useState } from 'react';
 
-import { useCanvas } from '../../../hooks/useCanvas';
 import { useDataMapper } from '../../../hooks/useDataMapper';
 import {
   CreateDocumentResult,
@@ -49,6 +48,7 @@ import { MetadataContext } from '../../../providers';
 import { DataMapperMetadataService } from '../../../services/datamapper-metadata.service';
 import { DataMapperStepService } from '../../../services/datamapper-step.service';
 import { DocumentService } from '../../../services/document.service';
+import { useDocumentTreeStore } from '../../../store';
 
 type AttachSchemaProps = {
   documentType: DocumentType;
@@ -65,7 +65,7 @@ export const AttachSchemaButton: FunctionComponent<AttachSchemaProps> = ({
 }) => {
   const api = useContext(MetadataContext)!;
   const { setIsLoading, updateDocument } = useDataMapper();
-  const { clearNodeReferencesForDocument, reloadNodeReferences } = useCanvas();
+  const refreshConnectionPorts = useDocumentTreeStore((state) => state.refreshConnectionPorts);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState<boolean>(false);
   const [selectedSchemaType, setSelectedSchemaType] = useState<DocumentDefinitionType>(
@@ -174,8 +174,7 @@ export const AttachSchemaButton: FunctionComponent<AttachSchemaProps> = ({
     setIsLoading(true);
     try {
       updateDocument(createDocumentResult.document, createDocumentResult.documentDefinition, documentReferenceId);
-      clearNodeReferencesForDocument(documentType, documentId);
-      reloadNodeReferences();
+      refreshConnectionPorts();
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (error: any) {
       const cause = error['message'] ? ': ' + error['message'] : '';
@@ -186,16 +185,7 @@ export const AttachSchemaButton: FunctionComponent<AttachSchemaProps> = ({
     setIsModalOpen(false);
     setCreateDocumentResult(null);
     setFilePaths([]);
-  }, [
-    clearNodeReferencesForDocument,
-    documentId,
-    documentType,
-    reloadNodeReferences,
-    setIsLoading,
-    updateDocument,
-    createDocumentResult,
-    documentReferenceId,
-  ]);
+  }, [refreshConnectionPorts, setIsLoading, updateDocument, createDocumentResult, documentReferenceId]);
 
   const onCancel = useCallback(() => {
     setIsModalOpen(false);

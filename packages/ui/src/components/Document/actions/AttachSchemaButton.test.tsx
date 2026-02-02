@@ -11,8 +11,6 @@ import {
 
 import { useDataMapper } from '../../../hooks/useDataMapper';
 import { BODY_DOCUMENT_ID, DocumentType } from '../../../models/datamapper/document';
-import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
 import { DocumentService } from '../../../services/document.service';
 import { BrowserFilePickerMetadataProvider } from '../../../stubs/BrowserFilePickerMetadataProvider';
 import {
@@ -24,6 +22,7 @@ import {
   shipOrderXsd,
 } from '../../../stubs/datamapper/data-mapper';
 import { readFileAsString } from '../../../stubs/read-file-as-string';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { AttachSchemaButton } from './AttachSchemaButton';
 
 jest.mock('../../../stubs/read-file-as-string');
@@ -37,15 +36,13 @@ describe('AttachSchemaButton', () => {
   it('should open attach schema modal when no schema is attached', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -64,16 +61,14 @@ describe('AttachSchemaButton', () => {
   it('should open update schema warning modal when schema is already attached', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              hasSchema={true}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            hasSchema={true}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -94,16 +89,14 @@ describe('AttachSchemaButton', () => {
   it('should cancel schema update when cancel button is clicked in warning modal', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              hasSchema={true}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            hasSchema={true}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -137,16 +130,14 @@ describe('AttachSchemaButton', () => {
   it('should open attach schema modal when continue button is clicked in warning modal', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              hasSchema={true}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            hasSchema={true}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -181,15 +172,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderXsd);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
     const attachButton = await screen.findByTestId('attach-schema-sourceBody-Body-button');
@@ -226,15 +215,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderJsonSchema);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.TARGET_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.TARGET_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
     const attachButton = await screen.findByTestId('attach-schema-targetBody-Body-button');
@@ -272,15 +259,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(noTopElementXsd);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -313,15 +298,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderEmptyFirstLineXsd);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -356,15 +339,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderJsonSchema);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -402,15 +383,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderJsonXslt);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -450,15 +429,13 @@ describe('AttachSchemaButton', () => {
     mockReadFileAsString.mockResolvedValue(shipOrderJsonXslt);
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.TARGET_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.TARGET_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -499,15 +476,13 @@ describe('AttachSchemaButton', () => {
   it('should close modal when cancel is clicked', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.SOURCE_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.SOURCE_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -533,15 +508,13 @@ describe('AttachSchemaButton', () => {
   it('should change schema type when radio button is clicked', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperProvider>
-          <DataMapperCanvasProvider>
-            <AttachSchemaButton
-              documentType={DocumentType.TARGET_BODY}
-              documentId={BODY_DOCUMENT_ID}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DataMapperCanvasProvider>
-        </DataMapperProvider>
+        <DataMapperTestWrapper>
+          <AttachSchemaButton
+            documentType={DocumentType.TARGET_BODY}
+            documentId={BODY_DOCUMENT_ID}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DataMapperTestWrapper>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -576,15 +549,13 @@ describe('AttachSchemaButton', () => {
       mockReadFileAsString.mockResolvedValue(multipleElementsXsd);
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <AttachSchemaButton
-                documentType={DocumentType.SOURCE_BODY}
-                documentId={BODY_DOCUMENT_ID}
-                documentReferenceId={BODY_DOCUMENT_ID}
-              />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <AttachSchemaButton
+              documentType={DocumentType.SOURCE_BODY}
+              documentId={BODY_DOCUMENT_ID}
+              documentReferenceId={BODY_DOCUMENT_ID}
+            />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -635,15 +606,13 @@ describe('AttachSchemaButton', () => {
       mockReadFileAsString.mockResolvedValue(shipOrderXsd);
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <AttachSchemaButton
-                documentType={DocumentType.SOURCE_BODY}
-                documentId={BODY_DOCUMENT_ID}
-                documentReferenceId={BODY_DOCUMENT_ID}
-              />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <AttachSchemaButton
+              documentType={DocumentType.SOURCE_BODY}
+              documentId={BODY_DOCUMENT_ID}
+              documentReferenceId={BODY_DOCUMENT_ID}
+            />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -690,15 +659,13 @@ describe('AttachSchemaButton', () => {
       mockReadFileAsString.mockResolvedValue(multipleElementsXsd);
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <AttachSchemaButton
-                documentType={DocumentType.TARGET_BODY}
-                documentId={BODY_DOCUMENT_ID}
-                documentReferenceId={BODY_DOCUMENT_ID}
-              />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <AttachSchemaButton
+              documentType={DocumentType.TARGET_BODY}
+              documentId={BODY_DOCUMENT_ID}
+              documentReferenceId={BODY_DOCUMENT_ID}
+            />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -763,11 +730,9 @@ describe('AttachSchemaButton', () => {
 
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <TestComponent />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <TestComponent />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -826,15 +791,13 @@ describe('AttachSchemaButton', () => {
       mockReadFileAsString.mockResolvedValue(shipOrderJsonSchema);
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperProvider>
-            <DataMapperCanvasProvider>
-              <AttachSchemaButton
-                documentType={DocumentType.TARGET_BODY}
-                documentId={BODY_DOCUMENT_ID}
-                documentReferenceId={BODY_DOCUMENT_ID}
-              />
-            </DataMapperCanvasProvider>
-          </DataMapperProvider>
+          <DataMapperTestWrapper>
+            <AttachSchemaButton
+              documentType={DocumentType.TARGET_BODY}
+              documentId={BODY_DOCUMENT_ID}
+              documentReferenceId={BODY_DOCUMENT_ID}
+            />
+          </DataMapperTestWrapper>
         </BrowserFilePickerMetadataProvider>,
       );
 

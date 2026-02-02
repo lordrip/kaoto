@@ -3,9 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { BODY_DOCUMENT_ID, DocumentDefinitionType, DocumentType } from '../../../models/datamapper/document';
 import { MappingTree, ValueSelector } from '../../../models/datamapper/mapping';
 import { MappingNodeData, TargetDocumentNodeData } from '../../../models/datamapper/visualization';
-import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
 import { TestUtil } from '../../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { TargetNodeActions } from './TargetNodeActions';
 
 describe('TargetNodeActions', () => {
@@ -23,11 +22,9 @@ describe('TargetNodeActions', () => {
     const docData = new TargetDocumentNodeData(targetDoc, tree);
     const mappingData = new MappingNodeData(docData, new ValueSelector(tree));
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <TargetNodeActions nodeData={mappingData} onUpdate={jest.fn()} />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <TargetNodeActions nodeData={mappingData} onUpdate={jest.fn()} />
+      </DataMapperTestWrapper>,
     );
     expect(await screen.findByTestId('transformation-xpath-input')).toBeTruthy();
     expect(screen.getByTestId(`edit-xpath-button-${mappingData.id}`)).toBeTruthy();

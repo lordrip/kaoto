@@ -2,8 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { BODY_DOCUMENT_ID, ExpressionItem, MappingTree, ValueSelector } from '../../models/datamapper';
 import { DocumentDefinitionType, DocumentType } from '../../models/datamapper/document';
-import { DataMapperProvider } from '../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../providers/datamapper-canvas.provider';
+import { DataMapperTestWrapper } from '../../tests/test-wrapper';
 import { XPathEditorModal } from './XPathEditorModal';
 
 describe('XPathEditorModal', () => {
@@ -20,11 +19,9 @@ describe('XPathEditorModal', () => {
 
   const setup = () => {
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <XPathEditorModal isOpen mapping={mapping} onClose={onClose} onUpdate={onUpdate} title="XPath Editor" />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <XPathEditorModal isOpen mapping={mapping} onClose={onClose} onUpdate={onUpdate} title="XPath Editor" />
+      </DataMapperTestWrapper>,
     );
   };
 

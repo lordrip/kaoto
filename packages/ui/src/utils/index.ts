@@ -1,6 +1,7 @@
 export * from './camel-uri-helper';
 export * from './catalog-schema-loader';
 export * from './event-notifier';
+export * from './flatten-tree-nodes';
 export * from './get-array-property';
 export * from './get-custom-schema-from-kamelet';
 export * from './get-serialized-model';

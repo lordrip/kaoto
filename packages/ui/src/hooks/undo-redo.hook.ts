@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 
 import { useSourceCodeStore } from '../store';
 import { EventNotifier } from '../utils';
@@ -11,12 +12,15 @@ export const useUndoRedo = () => {
     redo: storeRedo,
     pastStates,
     futureStates,
-  } = useStore(useSourceCodeStore.temporal, ({ undo, redo, pastStates, futureStates }) => ({
-    undo,
-    redo,
-    pastStates,
-    futureStates,
-  }));
+  } = useStore(
+    useSourceCodeStore.temporal,
+    useShallow(({ undo, redo, pastStates, futureStates }) => ({
+      undo,
+      redo,
+      pastStates,
+      futureStates,
+    })),
+  );
 
   const canUndo = pastStates.length > 0;
   const canRedo = futureStates.length > 0;

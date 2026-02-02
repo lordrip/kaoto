@@ -3,10 +3,9 @@ import { FunctionComponent, PropsWithChildren, useEffect } from 'react';
 
 import { useDataMapper } from '../../../hooks/useDataMapper';
 import { BODY_DOCUMENT_ID, DocumentType, IDocument, PrimitiveDocument } from '../../../models/datamapper/document';
-import { DataMapperProvider } from '../../../providers/datamapper.provider';
-import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.provider';
 import { DocumentService } from '../../../services/document.service';
 import { TestUtil } from '../../../stubs/datamapper/data-mapper';
+import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
 import { DetachSchemaButton } from './DetachSchemaButton';
 
 describe('DetachSchemaButton', () => {
@@ -27,17 +26,15 @@ describe('DetachSchemaButton', () => {
       return <div data-testid="detachtest">{children}</div>;
     };
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTest>
-            <DetachSchemaButton
-              documentId={BODY_DOCUMENT_ID}
-              documentType={DocumentType.SOURCE_BODY}
-              documentReferenceId="ShipOrder.xsd"
-            />
-          </DetachTest>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTest>
+          <DetachSchemaButton
+            documentId={BODY_DOCUMENT_ID}
+            documentType={DocumentType.SOURCE_BODY}
+            documentReferenceId="ShipOrder.xsd"
+          />
+        </DetachTest>
+      </DataMapperTestWrapper>,
     );
     const detachBtn = await screen.findByTestId('detach-schema-sourceBody-Body-button');
     expect(sourceDoc!.fields.length).toBe(1);
@@ -55,15 +52,13 @@ describe('DetachSchemaButton', () => {
 
   it('should open and close modal', async () => {
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachSchemaButton
-            documentId={BODY_DOCUMENT_ID}
-            documentType={DocumentType.SOURCE_BODY}
-            documentReferenceId="test"
-          />
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachSchemaButton
+          documentId={BODY_DOCUMENT_ID}
+          documentType={DocumentType.SOURCE_BODY}
+          documentReferenceId="test"
+        />
+      </DataMapperTestWrapper>,
     );
 
     let modal = screen.queryByTestId('detach-schema-modal');
@@ -97,17 +92,15 @@ describe('DetachSchemaButton', () => {
     };
 
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTestParam>
-            <DetachSchemaButton
-              documentId="testParam"
-              documentType={DocumentType.PARAM}
-              documentReferenceId="testParam"
-            />
-          </DetachTestParam>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTestParam>
+          <DetachSchemaButton
+            documentId="testParam"
+            documentType={DocumentType.PARAM}
+            documentReferenceId="testParam"
+          />
+        </DetachTestParam>
+      </DataMapperTestWrapper>,
     );
 
     const detachBtn = await screen.findByTestId('detach-schema-param-testParam-button');
@@ -136,17 +129,15 @@ describe('DetachSchemaButton', () => {
     };
 
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTestTarget>
-            <DetachSchemaButton
-              documentId={BODY_DOCUMENT_ID}
-              documentType={DocumentType.TARGET_BODY}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DetachTestTarget>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTestTarget>
+          <DetachSchemaButton
+            documentId={BODY_DOCUMENT_ID}
+            documentType={DocumentType.TARGET_BODY}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DetachTestTarget>
+      </DataMapperTestWrapper>,
     );
 
     const detachBtn = await screen.findByTestId('detach-schema-targetBody-Body-button');
@@ -180,17 +171,15 @@ describe('DetachSchemaButton', () => {
     };
 
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTestError>
-            <DetachSchemaButton
-              documentId={BODY_DOCUMENT_ID}
-              documentType={DocumentType.SOURCE_BODY}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DetachTestError>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTestError>
+          <DetachSchemaButton
+            documentId={BODY_DOCUMENT_ID}
+            documentType={DocumentType.SOURCE_BODY}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DetachTestError>
+      </DataMapperTestWrapper>,
     );
 
     const detachBtn = await screen.findByTestId('detach-schema-sourceBody-Body-button');
@@ -228,17 +217,15 @@ describe('DetachSchemaButton', () => {
     };
 
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTestWarning>
-            <DetachSchemaButton
-              documentId={BODY_DOCUMENT_ID}
-              documentType={DocumentType.SOURCE_BODY}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DetachTestWarning>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTestWarning>
+          <DetachSchemaButton
+            documentId={BODY_DOCUMENT_ID}
+            documentType={DocumentType.SOURCE_BODY}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DetachTestWarning>
+      </DataMapperTestWrapper>,
     );
 
     const detachBtn = await screen.findByTestId('detach-schema-sourceBody-Body-button');
@@ -277,17 +264,15 @@ describe('DetachSchemaButton', () => {
     };
 
     render(
-      <DataMapperProvider>
-        <DataMapperCanvasProvider>
-          <DetachTestMissing>
-            <DetachSchemaButton
-              documentId={BODY_DOCUMENT_ID}
-              documentType={DocumentType.SOURCE_BODY}
-              documentReferenceId={BODY_DOCUMENT_ID}
-            />
-          </DetachTestMissing>
-        </DataMapperCanvasProvider>
-      </DataMapperProvider>,
+      <DataMapperTestWrapper>
+        <DetachTestMissing>
+          <DetachSchemaButton
+            documentId={BODY_DOCUMENT_ID}
+            documentType={DocumentType.SOURCE_BODY}
+            documentReferenceId={BODY_DOCUMENT_ID}
+          />
+        </DetachTestMissing>
+      </DataMapperTestWrapper>,
     );
 
     const detachBtn = await screen.findByTestId('detach-schema-sourceBody-Body-button');
