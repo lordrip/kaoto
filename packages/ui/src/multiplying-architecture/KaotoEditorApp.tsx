@@ -54,6 +54,7 @@ export class KaotoEditorApp implements Editor {
     this.askUserForFileSelection = this.askUserForFileSelection.bind(this);
     this.getSuggestions = this.getSuggestions.bind(this);
     this.onStepUpdated = this.onStepUpdated.bind(this);
+    this.openFile = this.openFile.bind(this);
   }
 
   async setContent(path: string, content: string): Promise<void> {
@@ -157,6 +158,10 @@ export class KaotoEditorApp implements Editor {
     return this.envelopeContext.channelApi.requests.onStepUpdated(action, stepType, stepName);
   }
 
+  openFile(path: string): void {
+    this.envelopeContext.channelApi.notifications.kogitoWorkspace_openFile.send(path);
+  }
+
   af_onOpen(): void {
     setColorScheme(this.settingsAdapter.getSettings().colorScheme);
   }
@@ -184,6 +189,7 @@ export class KaotoEditorApp implements Editor {
                       getSuggestions={this.getSuggestions}
                       shouldSaveSchema={false}
                       onStepUpdated={this.onStepUpdated}
+                      openFile={this.openFile}
                     >
                       <RouterProvider router={kaotoEditorRouter} />
                     </KaotoBridge>

@@ -51,6 +51,7 @@ export const KaotoBridge: FunctionComponent<PropsWithChildren<KaotoBridgeProps>>
   getSuggestions,
   shouldSaveSchema,
   onStepUpdated,
+  openFile,
 }) => {
   const controller = useMemo(() => ControllerService.createController(), []);
   const metadataApi: IMetadataApi = useMemo(
@@ -64,6 +65,7 @@ export const KaotoBridge: FunctionComponent<PropsWithChildren<KaotoBridgeProps>>
       getSuggestions,
       shouldSaveSchema,
       onStepUpdated,
+      openFile,
     }),
     [
       getMetadata,
@@ -75,6 +77,7 @@ export const KaotoBridge: FunctionComponent<PropsWithChildren<KaotoBridgeProps>>
       getSuggestions,
       shouldSaveSchema,
       onStepUpdated,
+      openFile,
     ],
   );
 

@@ -23,11 +23,13 @@ import {
   FormGroup,
   HelperText,
   HelperTextItem,
+  InputGroup,
+  InputGroupItem,
   Popover,
   TextInput,
   ValidatedOptions,
 } from '@patternfly/react-core';
-import { HelpIcon, WrenchIcon } from '@patternfly/react-icons';
+import { ExternalLinkAltIcon, HelpIcon, WrenchIcon } from '@patternfly/react-icons';
 import { FunctionComponent, useCallback, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,6 +54,12 @@ export const DataMapperLauncher: FunctionComponent<{ vizNode?: IVisualizationNod
   const onClick = useCallback(() => {
     navigate(`${Links.DataMapper}/${vizNode?.getNodeDefinition()?.id}`);
   }, [navigate, vizNode]);
+
+  const onOpenFile = useCallback(() => {
+    if (xsltDocument) {
+      metadata?.openFile?.(xsltDocument);
+    }
+  }, [metadata, xsltDocument]);
 
   if (!isDefined(metadata)) {
     return (
@@ -83,13 +91,29 @@ export const DataMapperLauncher: FunctionComponent<{ vizNode?: IVisualizationNod
             </Popover>
           }
         >
-          <TextInput
-            readOnly
-            value={xsltDocument}
-            title="The name of the XSLT document that is used by the Kaoto DataMapper"
-            validated={isXsltDocumentDefined ? ValidatedOptions.default : ValidatedOptions.error}
-            id="xslt-document-path"
-          />
+          <InputGroup>
+            <InputGroupItem isFill>
+              <TextInput
+                readOnly
+                value={xsltDocument}
+                title="The name of the XSLT document that is used by the Kaoto DataMapper"
+                validated={isXsltDocumentDefined ? ValidatedOptions.default : ValidatedOptions.error}
+                id="xslt-document-path"
+              />
+            </InputGroupItem>
+            {isXsltDocumentDefined && isDefined(metadata?.openFile) && (
+              <InputGroupItem>
+                <Button
+                  variant="plain"
+                  aria-label="Open XSLT file"
+                  title="Open XSLT file"
+                  data-testid="open-xslt-file-button"
+                  icon={<ExternalLinkAltIcon />}
+                  onClick={onOpenFile}
+                />
+              </InputGroupItem>
+            )}
+          </InputGroup>
           {!isXsltDocumentDefined && (
             <HelperText>
               <HelperTextItem variant="error">

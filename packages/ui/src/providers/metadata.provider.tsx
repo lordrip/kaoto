@@ -74,6 +74,12 @@ export interface IMetadataApi {
    * @param stepName The name of the step that was added.
    */
   onStepUpdated(action: StepUpdateAction, stepType: CatalogKind, stepName: string): Promise<void>;
+
+  /**
+   * Open a file in the host editor.
+   * @param path The path of the file to open, relative to the workspace root
+   */
+  openFile?(path: string): void;
 }
 
 export const MetadataContext = createContext<IMetadataApi | undefined>(undefined);

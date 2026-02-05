@@ -161,5 +161,78 @@ describe('DataMapperLauncher', () => {
       expect(configureButton).toHaveClass('pf-m-primary');
       expect(configureButton).toHaveTextContent('Configure');
     });
+
+    describe('open file button', () => {
+      it('should render the open file button when XSLT document is defined and openFile is available', () => {
+        const vizNode = createMockVizNode('test-document.xsl');
+        (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+
+        const metadataWithOpenFile: IMetadataApi = {
+          ...mockMetadataContext,
+          openFile: jest.fn(),
+        };
+
+        const wrapperWithOpenFile: FunctionComponent<PropsWithChildren> = ({ children }) => (
+          <MemoryRouter>
+            <MetadataContext.Provider value={metadataWithOpenFile}>{children}</MetadataContext.Provider>
+          </MemoryRouter>
+        );
+
+        render(<DataMapperLauncher vizNode={vizNode} />, { wrapper: wrapperWithOpenFile });
+
+        expect(screen.getByTestId('open-xslt-file-button')).toBeInTheDocument();
+      });
+
+      it('should call metadata.openFile when the open file button is clicked', () => {
+        const vizNode = createMockVizNode('test-document.xsl');
+        (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+
+        const mockOpenFile = jest.fn();
+        const metadataWithOpenFile: IMetadataApi = {
+          ...mockMetadataContext,
+          openFile: mockOpenFile,
+        };
+
+        const wrapperWithOpenFile: FunctionComponent<PropsWithChildren> = ({ children }) => (
+          <MemoryRouter>
+            <MetadataContext.Provider value={metadataWithOpenFile}>{children}</MetadataContext.Provider>
+          </MemoryRouter>
+        );
+
+        render(<DataMapperLauncher vizNode={vizNode} />, { wrapper: wrapperWithOpenFile });
+
+        fireEvent.click(screen.getByTestId('open-xslt-file-button'));
+        expect(mockOpenFile).toHaveBeenCalledWith('test-document.xsl');
+      });
+
+      it('should not render the open file button when openFile is not available', () => {
+        const vizNode = createMockVizNode('test-document.xsl');
+        (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+
+        render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
+
+        expect(screen.queryByTestId('open-xslt-file-button')).not.toBeInTheDocument();
+      });
+
+      it('should not render the open file button when XSLT document is not defined', () => {
+        const vizNode = createMockVizNode();
+        (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue(undefined);
+
+        const metadataWithOpenFile: IMetadataApi = {
+          ...mockMetadataContext,
+          openFile: jest.fn(),
+        };
+
+        const wrapperWithOpenFile: FunctionComponent<PropsWithChildren> = ({ children }) => (
+          <MemoryRouter>
+            <MetadataContext.Provider value={metadataWithOpenFile}>{children}</MetadataContext.Provider>
+          </MemoryRouter>
+        );
+
+        render(<DataMapperLauncher vizNode={vizNode} />, { wrapper: wrapperWithOpenFile });
+
+        expect(screen.queryByTestId('open-xslt-file-button')).not.toBeInTheDocument();
+      });
+    });
   });
 });
