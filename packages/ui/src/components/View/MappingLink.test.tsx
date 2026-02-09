@@ -1,6 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
+import { useDocumentTreeStore } from '../../store';
 import { MappingLink } from './MappingLink';
 
 const mockToggleSelectedNode = jest.fn();
@@ -14,6 +15,14 @@ jest.mock('../../hooks/useMappingLinks', () => ({
 }));
 
 describe('MappingLink', () => {
+  beforeEach(() => {
+    useDocumentTreeStore.setState({ toggleSelectedNode: mockToggleSelectedNode });
+  });
+
+  afterEach(() => {
+    mockToggleSelectedNode.mockClear();
+  });
+
   const defaultProps = {
     x1: 10,
     y1: 20,
