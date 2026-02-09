@@ -5,7 +5,8 @@ import { ForEachItem, MappingTree, ValueSelector } from '../../../models/datamap
 import { MappingNodeData, TargetDocumentNodeData } from '../../../models/datamapper/visualization';
 import { MappingSerializerService } from '../../../services/mapping-serializer.service';
 import { conditionalMappingsToShipOrderXslt, TestUtil } from '../../../stubs/datamapper/data-mapper';
-import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../../providers/datamapper.provider';
 import { DeleteMappingItemAction } from './DeleteMappingItemAction';
 
 describe('DeleteMappingItemAction', () => {
@@ -16,9 +17,9 @@ describe('DeleteMappingItemAction', () => {
     const nodeData = new MappingNodeData(docData, new ValueSelector(mappingTree));
     const onDeleteMock = jest.fn();
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     const deleteBtn = await screen.findByTestId('delete-mapping-btn');
     act(() => {
@@ -49,9 +50,9 @@ describe('DeleteMappingItemAction', () => {
     const nodeData = new MappingNodeData(docData, tree.children[0].children[0] as ForEachItem);
     const onDeleteMock = jest.fn();
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <DeleteMappingItemAction nodeData={nodeData} onDelete={onDeleteMock} />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     const deleteBtn = await screen.findByTestId('delete-mapping-btn');
     act(() => {

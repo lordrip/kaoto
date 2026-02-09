@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import { FunctionComponent, PropsWithChildren, useEffect, useState } from 'react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import {
   BODY_DOCUMENT_ID,
@@ -12,17 +11,15 @@ import { MappingTree } from '../../models/datamapper/mapping';
 import { TargetDocumentNodeData } from '../../models/datamapper/visualization';
 import { DataMapperProvider } from '../../providers/datamapper.provider';
 import { TreeUIService } from '../../services/tree-ui.service';
+import { useDocumentTreeStore } from '../../store';
 import { TestUtil } from '../../stubs/datamapper/data-mapper';
 import { DocumentContent, DocumentHeader } from './BaseDocument';
 import { TargetDocumentNode } from './TargetDocumentNode';
 
-// TODO: These tests need to be rewritten for the new Zustand store-based architecture
-// The old NodeReference and useCanvas-based approach has been replaced with useDocumentTreeStore
-// See MIGRATION_PLAN.md for details
-describe.skip('DocumentHeader - TODO: Update for store-based architecture', () => {
-  const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
-    <DataMapperProvider>{children}</DataMapperProvider>
-  );
+describe('DocumentHeader', () => {
+  afterEach(() => {
+    useDocumentTreeStore.getState().clearSelection();
+  });
 
   it('should render with enableDnD=false (default)', () => {
     const document = new PrimitiveDocument(
@@ -30,17 +27,17 @@ describe.skip('DocumentHeader - TODO: Update for store-based architecture', () =
     );
 
     render(
-      <DocumentHeader
-        header={<div>Test Header</div>}
-        document={document}
-        documentType={DocumentType.TARGET_BODY}
-        isReadOnly={false}
-      />,
-      { wrapper },
+      <DataMapperProvider>
+        <DocumentHeader
+          header={<div>Test Header</div>}
+          document={document}
+          documentType={DocumentType.TARGET_BODY}
+          isReadOnly={false}
+        />
+      </DataMapperProvider>,
     );
 
     expect(screen.getByText('Test Header')).toBeInTheDocument();
-    // Should not have drag handler when enableDnD is false
     expect(screen.queryByTestId('drag-handler')).not.toBeInTheDocument();
   });
 
@@ -50,18 +47,18 @@ describe.skip('DocumentHeader - TODO: Update for store-based architecture', () =
     );
 
     const { container } = render(
-      <DocumentHeader
-        header={<div>Test Header</div>}
-        document={document}
-        documentType={DocumentType.TARGET_BODY}
-        isReadOnly={false}
-        enableDnD={true}
-      />,
-      { wrapper },
+      <DataMapperProvider>
+        <DocumentHeader
+          header={<div>Test Header</div>}
+          document={document}
+          documentType={DocumentType.TARGET_BODY}
+          isReadOnly={false}
+          enableDnD={true}
+        />
+      </DataMapperProvider>,
     );
 
     expect(screen.getByText('Test Header')).toBeInTheDocument();
-    // Should have drag handler when enableDnD is true
     const dragHandler = container.querySelector('[data-drag-handler]');
     expect(dragHandler).toBeInTheDocument();
   });
@@ -72,40 +69,24 @@ describe.skip('DocumentHeader - TODO: Update for store-based architecture', () =
     );
 
     render(
-      <DocumentHeader
-        header={<div>Test Header</div>}
-        document={document}
-        documentType={DocumentType.TARGET_BODY}
-        isReadOnly={false}
-      />,
-      { wrapper },
+      <DataMapperProvider>
+        <DocumentHeader
+          header={<div>Test Header</div>}
+          document={document}
+          documentType={DocumentType.TARGET_BODY}
+          isReadOnly={false}
+        />
+      </DataMapperProvider>,
     );
 
     expect(screen.getByTestId(`attach-schema-targetBody-${BODY_DOCUMENT_ID}-button`)).toBeInTheDocument();
     expect(screen.getByTestId(`detach-schema-targetBody-${BODY_DOCUMENT_ID}-button`)).toBeInTheDocument();
   });
 
-  it('should register node reference with accessible containerRef', () => {
+  it('should update store selection when clicking the header', () => {
     const document = new PrimitiveDocument(
       new DocumentDefinition(DocumentType.TARGET_BODY, DocumentDefinitionType.Primitive, BODY_DOCUMENT_ID),
     );
-    let capturedContainerRef: HTMLDivElement | null = null;
-
-    // TODO: Rewrite this helper for store-based architecture
-    // Use useDocumentTreeStore instead of useCanvas
-    const NodeRefChecker: FunctionComponent = () => {
-      const [checked, setChecked] = useState(false);
-
-      useEffect(() => {
-        if (!checked) {
-          // TODO: Access store to get node information
-          capturedContainerRef = null; // Placeholder
-          setChecked(true);
-        }
-      }, [checked]);
-
-      return null;
-    };
 
     render(
       <DataMapperProvider>
@@ -115,11 +96,16 @@ describe.skip('DocumentHeader - TODO: Update for store-based architecture', () =
           documentType={DocumentType.TARGET_BODY}
           isReadOnly={false}
         />
-        <NodeRefChecker />
       </DataMapperProvider>,
     );
 
-    expect(capturedContainerRef).toBeInstanceOf(HTMLDivElement);
+    const headerContainer = screen.getByTestId(`document-doc-targetBody-${BODY_DOCUMENT_ID}`);
+    act(() => {
+      fireEvent.click(headerContainer);
+    });
+
+    const store = useDocumentTreeStore.getState();
+    expect(store.selectedNodePath).toBeTruthy();
   });
 });
 
@@ -142,7 +128,6 @@ describe('DocumentContent', () => {
       </DataMapperProvider>,
     );
 
-    // Should render child nodes
     const nodes = container.querySelectorAll('[data-testid^="node-target-"]');
     expect(nodes.length).toBeGreaterThan(0);
   });

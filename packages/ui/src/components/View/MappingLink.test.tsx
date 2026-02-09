@@ -8,7 +8,8 @@ const mockToggleSelectedNode = jest.fn();
 jest.mock('../../hooks/useMappingLinks', () => ({
   useMappingLinks: () => ({
     mappingLinkCanvasRef: { current: { getBoundingClientRect: () => ({ left: 10, right: 110 }) } },
-    toggleSelectedNode: mockToggleSelectedNode,
+    getMappingLinks: jest.fn().mockReturnValue([]),
+    isNodeInSelectedMapping: jest.fn().mockReturnValue(false),
   }),
 }));
 

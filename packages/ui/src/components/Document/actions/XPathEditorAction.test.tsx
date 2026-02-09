@@ -4,7 +4,8 @@ import { BODY_DOCUMENT_ID, DocumentDefinitionType, DocumentType } from '../../..
 import { MappingTree, ValueSelector } from '../../../models/datamapper/mapping';
 import { TargetDocumentNodeData } from '../../../models/datamapper/visualization';
 import { TestUtil } from '../../../stubs/datamapper/data-mapper';
-import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../../providers/datamapper.provider';
 import { XPathEditorAction } from './XPathEditorAction';
 
 describe('XPathEditorAction', () => {
@@ -18,9 +19,9 @@ describe('XPathEditorAction', () => {
     const tree = new MappingTree(DocumentType.TARGET_BODY, BODY_DOCUMENT_ID, DocumentDefinitionType.XML_SCHEMA);
     const docData = new TargetDocumentNodeData(doc, tree);
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <XPathEditorAction mapping={new ValueSelector(tree)} nodeData={docData} onUpdate={jest.fn()} />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     const editBtn = await screen.findByTestId(`edit-xpath-button-${docData.id}`);
     act(() => {

@@ -2,7 +2,8 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { BrowserFilePickerMetadataProvider } from '../../stubs/BrowserFilePickerMetadataProvider';
 import { shipOrderJsonSchema, shipOrderXsd } from '../../stubs/datamapper/data-mapper';
-import { DataMapperTestWrapper } from '../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../providers/datamapper.provider';
 import { ExpansionPanels } from '../ExpansionPanels/ExpansionPanels';
 import { ParametersSection } from './Parameters';
 
@@ -13,15 +14,17 @@ describe('ParametersSection', () => {
     const mockRenameParameter = jest.fn();
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper
+        <DataMapperProvider
           onUpdateDocument={mockUpdateDocument}
           onDeleteParameter={mockDeleteParameter}
           onRenameParameter={mockRenameParameter}
         >
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
     expect(mockUpdateDocument.mock.calls.length).toEqual(0);
@@ -75,11 +78,13 @@ describe('ParametersSection', () => {
     const mockDeleteParameter = jest.fn();
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+        <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
     expect(mockUpdateDocument.mock.calls.length).toEqual(0);
@@ -121,11 +126,13 @@ describe('ParametersSection', () => {
   it('should attach and detach a schema', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper>
+        <DataMapperProvider>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
     const addButton = await screen.findByTestId('add-parameter-button');
@@ -188,11 +195,13 @@ describe('ParametersSection', () => {
   it('should attach JSON schema', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper>
+        <DataMapperProvider>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
     const addButton = await screen.findByTestId('add-parameter-button');
@@ -244,11 +253,13 @@ describe('ParametersSection', () => {
   it('should be read-only when isReadOnly is true', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper>
+        <DataMapperProvider>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={true} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -259,11 +270,13 @@ describe('ParametersSection', () => {
   it('should cancel adding new parameter', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper>
+        <DataMapperProvider>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -291,11 +304,13 @@ describe('ParametersSection', () => {
   it('should handle empty parameter name validation', async () => {
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper>
+        <DataMapperProvider>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -315,11 +330,13 @@ describe('ParametersSection', () => {
     const mockUpdateDocument = jest.fn();
     render(
       <BrowserFilePickerMetadataProvider>
-        <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+        <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
           <ExpansionPanels>
             <ParametersSection isReadOnly={false} />
           </ExpansionPanels>
-        </DataMapperTestWrapper>
+          </MappingLinksProvider>
+        </DataMapperProvider>
       </BrowserFilePickerMetadataProvider>,
     );
 
@@ -362,11 +379,13 @@ describe('ParametersSection', () => {
       const mockUpdateDocument = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -405,11 +424,13 @@ describe('ParametersSection', () => {
       const mockUpdateDocument = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -452,11 +473,13 @@ describe('ParametersSection', () => {
     it('should change toggle button icon and title when hiding/showing parameters', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper>
+          <DataMapperProvider>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -490,11 +513,13 @@ describe('ParametersSection', () => {
     it('should auto-show parameters when clicking add button while hidden', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper>
+          <DataMapperProvider>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -524,11 +549,13 @@ describe('ParametersSection', () => {
       const mockDeleteParameter = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -581,11 +608,13 @@ describe('ParametersSection', () => {
       const mockUpdateDocument = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -648,11 +677,13 @@ describe('ParametersSection', () => {
       const mockDeleteParameter = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -711,11 +742,13 @@ describe('ParametersSection', () => {
       const mockUpdateDocument = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -777,11 +810,13 @@ describe('ParametersSection', () => {
     it('should show only header and add button when no parameters exist', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper>
+          <DataMapperProvider>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -802,11 +837,13 @@ describe('ParametersSection', () => {
     it('should not show toggle button in read-only mode', async () => {
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper>
+          <DataMapperProvider>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={true} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 
@@ -826,11 +863,13 @@ describe('ParametersSection', () => {
       const mockUpdateDocument = jest.fn();
       render(
         <BrowserFilePickerMetadataProvider>
-          <DataMapperTestWrapper onUpdateDocument={mockUpdateDocument}>
+          <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
+          <MappingLinksProvider>
             <ExpansionPanels>
               <ParametersSection isReadOnly={false} />
             </ExpansionPanels>
-          </DataMapperTestWrapper>
+            </MappingLinksProvider>
+        </DataMapperProvider>
         </BrowserFilePickerMetadataProvider>,
       );
 

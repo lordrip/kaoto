@@ -4,19 +4,22 @@ import { FunctionComponent, PropsWithChildren, useEffect } from 'react';
 import { useDataMapper } from '../../../hooks/useDataMapper';
 import { MappingTree } from '../../../models/datamapper/mapping';
 import { IMappingLink } from '../../../models/datamapper/visualization';
+import { MappingLinksProvider } from '../../../providers/data-mapping-links.provider';
 import { DataMapperProvider } from '../../../providers/datamapper.provider';
 import { MappingLinksService } from '../../../services/mapping-links.service';
 import { MappingSerializerService } from '../../../services/mapping-serializer.service';
+import { useDocumentTreeStore } from '../../../store';
 import { shipOrderToShipOrderXslt, TestUtil } from '../../../stubs/datamapper/data-mapper';
 import { DebugLayout } from './DebugLayout';
 
-// TODO: These tests need to be rewritten for the new Zustand store-based architecture
-// The old NodeReference-based approach has been replaced with useDocumentTreeStore
-// See MIGRATION_PLAN.md for details
-describe.skip('DebugLayout', () => {
+describe('DebugLayout', () => {
   afterAll(() => {
     jest.resetModules();
     jest.resetAllMocks();
+  });
+
+  afterEach(() => {
+    useDocumentTreeStore.getState().clearSelection();
   });
 
   it('should render Documents and mappings', async () => {
@@ -44,13 +47,15 @@ describe.skip('DebugLayout', () => {
       }, [mappingTree, sourceBodyDocument, sourceParameterMap]);
       return <>{children}</>;
     };
-    const mockLog = jest.fn();
-    console.log = mockLog;
+    const mockDebug = jest.fn();
+    console.debug = mockDebug;
     render(
       <DataMapperProvider>
-        <LoadMappings>
-          <DebugLayout></DebugLayout>
-        </LoadMappings>
+        <MappingLinksProvider>
+          <LoadMappings>
+            <DebugLayout />
+          </LoadMappings>
+        </MappingLinksProvider>
       </DataMapperProvider>,
     );
     await screen.findAllByText('ShipOrder');
@@ -60,13 +65,11 @@ describe.skip('DebugLayout', () => {
     expect(targetNodes.length).toEqual(21);
     expect(mappingLinks.length).toEqual(11);
     expect(mappingLinks.filter((link) => link.isSelected).length).toEqual(0);
-    const nodeRefsLog = mockLog.mock.calls.filter((call) => call[0].startsWith('Node References: ['));
-    expect(nodeRefsLog.length).toBeGreaterThan(0);
+    const connectionPortsLog = mockDebug.mock.calls.filter((call) => call[0].startsWith('Connection Ports: ['));
+    expect(connectionPortsLog.length).toBeGreaterThan(0);
   });
 
-  it('should register selected node reference', async () => {
-    // TODO: Rewrite this test for store-based architecture
-    // Use useDocumentTreeStore to check selected node state
+  it('should update store selection when clicking a node', async () => {
     const LoadMappings: FunctionComponent<PropsWithChildren> = ({ children }) => {
       const { mappingTree, setMappingTree, sourceParameterMap, setSourceBodyDocument, setTargetBodyDocument } =
         useDataMapper();
@@ -81,12 +84,14 @@ describe.skip('DebugLayout', () => {
       }, []);
       return <>{children}</>;
     };
-    console.log = jest.fn();
+    console.debug = jest.fn();
     render(
       <DataMapperProvider>
-        <LoadMappings>
-          <DebugLayout />
-        </LoadMappings>
+        <MappingLinksProvider>
+          <LoadMappings>
+            <DebugLayout />
+          </LoadMappings>
+        </MappingLinksProvider>
       </DataMapperProvider>,
     );
 
@@ -94,10 +99,9 @@ describe.skip('DebugLayout', () => {
     act(() => {
       fireEvent.click(targetOrderId);
     });
-    // TODO: Add assertions using useDocumentTreeStore.getState().selectedNodePath
     await waitFor(() => {
-      // expect(store.selectedNodePath).toMatch(/targetBody:Body:\/\/fx-ShipOrder-.*\/fx-OrderId-.*/);
-      expect(true).toBe(true); // Placeholder
+      const store = useDocumentTreeStore.getState();
+      expect(store.selectedNodePath).toMatch(/targetBody:Body:\/\/fx-ShipOrder-.*\/fx-OrderId-.*/);
     });
 
     const sourceOrderId = await screen.findByTestId(/node-source-fx-OrderId-.*/);
@@ -105,8 +109,8 @@ describe.skip('DebugLayout', () => {
       fireEvent.click(sourceOrderId);
     });
     await waitFor(() => {
-      // expect(store.selectedNodePath).toMatch(/sourceBody:Body:\/\/fx-ShipOrder-.*\/fx-OrderId-.*/);
-      expect(true).toBe(true); // Placeholder
+      const store = useDocumentTreeStore.getState();
+      expect(store.selectedNodePath).toMatch(/sourceBody:Body:\/\/fx-ShipOrder-.*\/fx-OrderId-.*/);
     });
   });
 
@@ -127,13 +131,15 @@ describe.skip('DebugLayout', () => {
         }, [mappingTree]);
         return <>{children}</>;
       };
-      const mockLog = jest.fn();
-      console.log = mockLog;
+      const mockDebug = jest.fn();
+      console.debug = mockDebug;
       render(
         <DataMapperProvider>
-          <TestLoader>
-            <DebugLayout />
-          </TestLoader>
+          <MappingLinksProvider>
+            <TestLoader>
+              <DebugLayout />
+            </TestLoader>
+          </MappingLinksProvider>
         </DataMapperProvider>,
       );
       let mainMenuButton = await screen.findByTestId('dm-debug-main-menu-button');
@@ -169,8 +175,8 @@ describe.skip('DebugLayout', () => {
         fireEvent.click(closeModalButton);
       });
       expect(screen.queryByTestId('dm-debug-export-mappings-modal')).toBeFalsy();
-      const nodeRefsLog = mockLog.mock.calls.filter((call) => call[0].startsWith('Node References: ['));
-      expect(nodeRefsLog.length).toBeGreaterThan(0);
+      const connectionPortsLog = mockDebug.mock.calls.filter((call) => call[0].startsWith('Connection Ports: ['));
+      expect(connectionPortsLog.length).toBeGreaterThan(0);
     }, 15000);
   });
 
@@ -198,17 +204,21 @@ describe.skip('DebugLayout', () => {
         return <>{children}</>;
       };
       const mockLog = jest.fn();
+      const mockDebug = jest.fn();
       console.log = mockLog;
+      console.debug = mockDebug;
       render(
         <DataMapperProvider>
-          <TestLoader>
-            <DebugLayout />
-          </TestLoader>
+          <MappingLinksProvider>
+            <TestLoader>
+              <DebugLayout />
+            </TestLoader>
+          </MappingLinksProvider>
         </DataMapperProvider>,
       );
       await screen.findByTestId('dm-debug-main-menu-button');
-      const nodeRefsLog = mockLog.mock.calls.filter((call) => call[0].startsWith('Node References: ['));
-      expect(nodeRefsLog.length).toBeGreaterThan(0);
+      const connectionPortsLog = mockDebug.mock.calls.filter((call) => call[0].startsWith('Connection Ports: ['));
+      expect(connectionPortsLog.length).toBeGreaterThan(0);
       const mappingsLog = mockLog.mock.calls.filter((call) => call[0].startsWith('Mapping: ['));
       expect(mappingsLog.length).toBeGreaterThan(0);
     });

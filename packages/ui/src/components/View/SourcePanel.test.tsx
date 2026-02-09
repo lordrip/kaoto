@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 
-import { DataMapperTestWrapper } from '../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../providers/datamapper.provider';
 import { SourcePanel } from './SourcePanel';
 
 // Mock ResizeObserver for ExpansionPanels
@@ -21,9 +22,9 @@ beforeAll(() => {
 describe('SourcePanel', () => {
   it('should render action buttons by default', () => {
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <SourcePanel />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     expect(screen.getByTestId('add-parameter-button')).toBeInTheDocument();
     expect(screen.getByTestId('attach-schema-sourceBody-Body-button')).toBeInTheDocument();
@@ -31,9 +32,9 @@ describe('SourcePanel', () => {
   });
   it('should not render action buttons if isReadOnly=true', () => {
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <SourcePanel isReadOnly />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     expect(screen.queryByTestId('add-parameter-button')).toBeFalsy();
     expect(screen.queryByTestId('attach-schema-sourceBody-Body-button')).toBeFalsy();
@@ -43,9 +44,9 @@ describe('SourcePanel', () => {
   it('should trigger handleLayoutChange when panel is toggled', async () => {
     jest.useFakeTimers();
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <SourcePanel />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
 
     // Find the Body panel summary and click to collapse

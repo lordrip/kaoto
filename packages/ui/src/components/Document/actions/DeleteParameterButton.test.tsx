@@ -9,7 +9,8 @@ import {
   IDocument,
   PrimitiveDocument,
 } from '../../../models/datamapper/document';
-import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../../providers/datamapper.provider';
 import { DeleteParameterButton } from './DeleteParameterButton';
 
 describe('DeleteParameterButton', () => {
@@ -32,11 +33,11 @@ describe('DeleteParameterButton', () => {
       return <>{children}</>;
     };
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <ParamTest>
           <DeleteParameterButton parameterName="testparam1" parameterReferenceId="testparam1" />
         </ParamTest>
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     const deleteBtn = await screen.findByTestId('delete-parameter-testparam1-button');
     expect(parameterMap!.size).toEqual(1);

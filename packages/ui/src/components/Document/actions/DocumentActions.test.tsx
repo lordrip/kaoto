@@ -2,16 +2,17 @@ import { render, screen } from '@testing-library/react';
 
 import { DocumentNodeData } from '../../../models/datamapper/visualization';
 import { TestUtil } from '../../../stubs/datamapper/data-mapper';
-import { DataMapperTestWrapper } from '../../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../../providers/datamapper.provider';
 import { DocumentActions } from './DocumentActions';
 
 describe('DocumentActions', () => {
   it('should render', async () => {
     const docData = new DocumentNodeData(TestUtil.createSourceOrderDoc());
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <DocumentActions nodeData={docData} onRenameClick={jest.fn()} />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     expect(await screen.findByTestId('attach-schema-sourceBody-Body-button'));
   });
@@ -19,9 +20,9 @@ describe('DocumentActions', () => {
   it('should render for Parameters', async () => {
     const docData = new DocumentNodeData(TestUtil.createParamOrderDoc('testparam1'));
     render(
-      <DataMapperTestWrapper>
+      <DataMapperProvider><MappingLinksProvider>
         <DocumentActions nodeData={docData} onRenameClick={jest.fn()} />
-      </DataMapperTestWrapper>,
+      </MappingLinksProvider></DataMapperProvider>,
     );
     expect(await screen.findByTestId('attach-schema-param-testparam1-button'));
     expect(await screen.findByTestId('detach-schema-param-testparam1-button'));

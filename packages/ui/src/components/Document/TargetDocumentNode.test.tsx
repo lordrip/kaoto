@@ -16,12 +16,13 @@ import { TreeUIService } from '../../services/tree-ui.service';
 import { VisualizationService } from '../../services/visualization.service';
 import { useDocumentTreeStore } from '../../store';
 import { TestUtil } from '../../stubs/datamapper/data-mapper';
-import { DataMapperTestWrapper } from '../../tests/test-wrapper';
+import { MappingLinksProvider } from '../../providers/data-mapping-links.provider';
+import { DataMapperProvider } from '../../providers/datamapper.provider';
 import { TargetDocumentNode } from './TargetDocumentNode';
 
 describe('TargetDocumentNode', () => {
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
-    <DataMapperTestWrapper>{children}</DataMapperTestWrapper>
+    <DataMapperProvider><MappingLinksProvider>{children}</MappingLinksProvider></DataMapperProvider>
   );
 
   const findLeafNode = (node: DocumentTreeNode): DocumentTreeNode | undefined => {
@@ -423,7 +424,7 @@ describe('TargetDocumentNode', () => {
       expect(selectedContainer).toBeInTheDocument();
     });
 
-    it('should call toggleSelectedNodeReference when clicking field', () => {
+    it('should call toggleSelectedNode when clicking field', () => {
       const document = new PrimitiveDocument(
         new DocumentDefinition(DocumentType.TARGET_BODY, DocumentDefinitionType.Primitive, BODY_DOCUMENT_ID),
       );
@@ -517,9 +518,9 @@ describe('TargetDocumentNode', () => {
       expect(screen.getByTestId(`node-target-${documentNodeData.id}`)).toBeInTheDocument();
 
       rerender(
-        <DataMapperTestWrapper>
+        <DataMapperProvider><MappingLinksProvider>
           <TargetDocumentNode treeNode={tree.root} documentId={documentNodeData.id} rank={0} />
-        </DataMapperTestWrapper>,
+        </MappingLinksProvider></DataMapperProvider>,
       );
 
       expect(screen.getByTestId(`node-target-${documentNodeData.id}`)).toBeInTheDocument();
