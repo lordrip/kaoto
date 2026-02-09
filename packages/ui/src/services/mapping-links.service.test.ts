@@ -260,40 +260,4 @@ describe('MappingLinksService', () => {
     });
   });
 
-  describe.skip('calculateMappingLinkCoordinates() - TODO: Rewrite for store-based architecture', () => {
-    // These tests need complete rewrite for the new architecture
-    // The old NodeReference-based approach has been replaced with:
-    // - useDocumentTreeStore for managing connection ports
-    // - Direct coordinate calculation from stored port positions in MappingLinkContainer
-    // - No more ref chasing through DOM elements
-    // See MIGRATION_PLAN.md for details
-
-    it('should move selected mapping lines to last', () => {
-      // TODO: Implement using store-based approach
-      // 1. Register mock nodes using setConnectionPort
-      // 2. Get mapping links with selected node
-      // 3. Verify sorting logic (selected lines last)
-      expect(true).toBe(true); // Placeholder
-    });
-
-    it('should handle null source or target rect', () => {
-      // TODO: Implement using store-based approach
-      expect(true).toBe(true); // Placeholder
-    });
-
-    it('should calculate coordinates using node row rects when available', () => {
-      // TODO: Implement using store-based approach
-      expect(true).toBe(true); // Placeholder
-    });
-
-    it('should clamp y coordinates to scroll container boundaries', () => {
-      // TODO: Implement using store-based approach
-      expect(true).toBe(true); // Placeholder
-    });
-
-    it('should snap to summary center when panel is collapsed', () => {
-      // TODO: Implement using store-based approach
-      expect(true).toBe(true); // Placeholder
-    });
-  });
 });

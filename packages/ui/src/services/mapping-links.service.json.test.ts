@@ -134,20 +134,4 @@ describe('MappingLinksService : JSON', () => {
     });
   });
 
-  describe.skip('calculateMappingLinkCoordinates() - TODO: Rewrite for store-based architecture', () => {
-    // This test needs complete rewrite for the new architecture
-    // The old NodeReference-based approach has been replaced with:
-    // - useDocumentTreeStore for managing connection ports
-    // - Direct coordinate calculation from stored port positions
-    // - No more ref chasing through DOM elements
-
-    it('should move selected mapping lines to last', () => {
-      // TODO: Implement test using store-based approach
-      // 1. Register mock nodes in store using setConnectionPort
-      // 2. Get mapping links with selected node
-      // 3. Calculate coordinates using MappingLinksContainer logic
-      // 4. Verify selected lines are drawn last
-      expect(true).toBe(true); // Placeholder
-    });
-  });
 });
