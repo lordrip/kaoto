@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { FunctionComponent, MouseEvent, ReactNode, useCallback, useMemo } from 'react';
 
 import { useDataMapper } from '../../hooks/useDataMapper';
-import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { DocumentType, IDocument } from '../../models/datamapper/document';
 import { DocumentTreeNode } from '../../models/datamapper/document-tree-node';
 import { DocumentNodeData } from '../../models/datamapper/visualization';
@@ -68,7 +67,7 @@ export const DocumentHeader: FunctionComponent<DocumentHeaderProps> = ({
   nodeData: externalNodeData,
 }) => {
   const { mappingTree } = useDataMapper();
-  const { toggleSelectedNode } = useMappingLinks();
+  const toggleSelectedNode = useDocumentTreeStore((state) => state.toggleSelectedNode);
 
   const nodeData = useMemo(() => externalNodeData || new DocumentNodeData(document), [externalNodeData, document]);
   const documentReferenceId = document.getReferenceId(mappingTree.namespaceMap);

@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
 
 import { useConnectionPort } from '../../hooks/useConnectionPort';
-import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { DocumentTreeNode } from '../../models/datamapper/document-tree-node';
 import { TreeUIService } from '../../services/tree-ui.service';
 import { VisualizationService } from '../../services/visualization.service';
@@ -23,7 +22,7 @@ type TreeSourceNodeProps = {
  * for improved performance with large schemas
  */
 export const SourceDocumentNode: FunctionComponent<TreeSourceNodeProps> = memo(({ treeNode, documentId, rank }) => {
-  const { toggleSelectedNode } = useMappingLinks();
+  const toggleSelectedNode = useDocumentTreeStore((state) => state.toggleSelectedNode);
 
   // Select expansion state for this specific node
   const isExpanded = useDocumentTreeStore((state) => state.isExpanded(documentId, treeNode.path));

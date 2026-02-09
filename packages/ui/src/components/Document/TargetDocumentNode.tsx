@@ -3,7 +3,6 @@ import { FunctionComponent, memo, MouseEvent, useCallback, useMemo } from 'react
 
 import { useConnectionPort } from '../../hooks/useConnectionPort';
 import { useDataMapper } from '../../hooks/useDataMapper';
-import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { DocumentTreeNode } from '../../models/datamapper/document-tree-node';
 import { TargetDocumentNodeData, TargetNodeData } from '../../models/datamapper/visualization';
 import { TreeUIService } from '../../services/tree-ui.service';
@@ -26,7 +25,7 @@ type DocumentNodeProps = {
  * for improved performance with large schemas
  */
 export const TargetDocumentNode: FunctionComponent<DocumentNodeProps> = memo(({ treeNode, documentId, rank }) => {
-  const { toggleSelectedNode } = useMappingLinks();
+  const toggleSelectedNode = useDocumentTreeStore((state) => state.toggleSelectedNode);
 
   const isExpanded = useDocumentTreeStore((state) => state.isExpanded(documentId, treeNode.path));
   const nodeData = treeNode.nodeData;

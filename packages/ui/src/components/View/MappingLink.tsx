@@ -7,6 +7,7 @@ import { FunctionComponent, useCallback, useState } from 'react';
 
 import { useMappingLinks } from '../../hooks/useMappingLinks';
 import { LineProps } from '../../models/datamapper';
+import { useDocumentTreeStore } from '../../store';
 
 const getY = (d: number[]) => d[1];
 const getX = (d: number[]) => d[0];
@@ -21,7 +22,8 @@ export const MappingLink: FunctionComponent<LineProps> = ({
   isSelected = false,
   svgRef,
 }) => {
-  const { mappingLinkCanvasRef, toggleSelectedNode } = useMappingLinks();
+  const { mappingLinkCanvasRef } = useMappingLinks();
+  const toggleSelectedNode = useDocumentTreeStore((state) => state.toggleSelectedNode);
   const [isOver, setIsOver] = useState<boolean>(false);
   const dotRadius = isOver ? 6 : 3;
   const svgRect = svgRef?.current?.getBoundingClientRect();
