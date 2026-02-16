@@ -31,7 +31,7 @@ describe('NewFlow.tsx', () => {
     return render(
       <SourceCodeApiContext.Provider
         value={{
-          setCodeAndNotify: jest.fn(),
+          setCodeAndNotify: vi.fn(),
         }}
       >
         <EntitiesContext.Provider

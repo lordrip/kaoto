@@ -3,9 +3,9 @@ import { fireEvent, render } from '@testing-library/react';
 import { EntityType } from '../../../../models/camel/entities';
 import { generateEntityContextMenu } from './generateEntityContextMenu';
 
-jest.mock('@patternfly/react-topology', () => ({
-  ContextMenuItem: jest.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-  ContextSubMenuItem: jest.fn(({ label, children, ...props }) => (
+vi.mock('@patternfly/react-topology', () => ({
+  ContextMenuItem: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
+  ContextSubMenuItem: vi.fn(({ label, children, ...props }) => (
     <div {...props}>
       <span>{label}</span>
       {children}
@@ -14,7 +14,7 @@ jest.mock('@patternfly/react-topology', () => ({
 }));
 
 describe('generateEntityContextMenu', () => {
-  const createEntity = jest.fn();
+  const createEntity = vi.fn();
 
   const commonEntities = [
     {
@@ -52,7 +52,7 @@ describe('generateEntityContextMenu', () => {
   };
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders menu items for commonEntities', () => {

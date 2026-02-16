@@ -27,7 +27,7 @@ describe('LocalStorageSettingsAdapter', () => {
   });
 
   it('should retrieve the saved settings from localStorage after creating a new instance', () => {
-    const localStorageGetItemSpy = jest.spyOn(Storage.prototype, 'getItem');
+    const localStorageGetItemSpy = vi.spyOn(Storage.prototype, 'getItem');
 
     new LocalStorageSettingsAdapter();
 
@@ -35,7 +35,7 @@ describe('LocalStorageSettingsAdapter', () => {
   });
 
   it('should save the settings to localStorage', () => {
-    const localStorageSetItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+    const localStorageSetItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
     const adapter = new LocalStorageSettingsAdapter();
     const newSettings: SettingsModel = {

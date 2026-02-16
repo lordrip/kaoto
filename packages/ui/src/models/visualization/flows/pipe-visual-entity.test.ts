@@ -103,7 +103,7 @@ describe('Pipe', () => {
     });
 
     it('should delegate to KameletSchemaService for step paths', () => {
-      const spy = jest.spyOn(KameletSchemaService, 'getNodeLabel');
+      const spy = vi.spyOn(KameletSchemaService, 'getNodeLabel');
       pipeVisualEntity.getNodeLabel('source');
       expect(spy).toHaveBeenCalled();
     });
@@ -119,7 +119,7 @@ describe('Pipe', () => {
     });
 
     it('should delegate to KameletSchemaService for step paths', () => {
-      const spy = jest.spyOn(KameletSchemaService, 'getNodeTitle');
+      const spy = vi.spyOn(KameletSchemaService, 'getNodeTitle');
       pipeVisualEntity.getNodeTitle('source');
       expect(spy).toHaveBeenCalled();
     });
@@ -131,7 +131,7 @@ describe('Pipe', () => {
     });
 
     it('should delegate to KameletSchemaService for step paths', () => {
-      const spy = jest.spyOn(KameletSchemaService, 'getTooltipContent');
+      const spy = vi.spyOn(KameletSchemaService, 'getTooltipContent');
       pipeVisualEntity.getTooltipContent('source');
       expect(spy).toHaveBeenCalledWith(expect.anything(), 'source');
     });
@@ -154,7 +154,7 @@ describe('Pipe', () => {
     });
 
     it('should return the node schema', () => {
-      const spy = jest.spyOn(KameletSchemaService, 'getKameletCatalogEntry');
+      const spy = vi.spyOn(KameletSchemaService, 'getKameletCatalogEntry');
 
       pipeVisualEntity.getNodeSchema('source');
       expect(spy).toHaveBeenCalledTimes(1);
@@ -385,7 +385,7 @@ describe('Pipe', () => {
 
   describe('canDropOnNode', () => {
     it('should delegate to canDragNode', () => {
-      const spy = jest.spyOn(pipeVisualEntity, 'canDragNode');
+      const spy = vi.spyOn(pipeVisualEntity, 'canDragNode');
       pipeVisualEntity.canDropOnNode('steps.0');
       expect(spy).toHaveBeenCalledWith('steps.0');
     });

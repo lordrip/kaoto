@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Canvas Catalog button should NOT be present if \`CatalogModalContext\` is NOT provided 1`] = `
+exports[`Canvas > Catalog button > should NOT be present if \`CatalogModalContext\` is NOT provided 1`] = `
 <DocumentFragment>
   <div
     class="pf-v6-l-stack"
@@ -29,6 +29,7 @@ exports[`Canvas Catalog button should NOT be present if \`CatalogModalContext\` 
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -81,6 +82,10 @@ exports[`Canvas Catalog button should NOT be present if \`CatalogModalContext\` 
                                     class="custom-group__container__text"
                                     title="route"
                                   >
+                                    <img
+                                      alt="route"
+                                      src="/src/assets/eip/route.png"
+                                    />
                                     <span
                                       title="route-8888"
                                     >
@@ -142,6 +147,10 @@ exports[`Canvas Catalog button should NOT be present if \`CatalogModalContext\` 
                                     class="custom-group__container__text"
                                     title="choice"
                                   >
+                                    <img
+                                      alt="choice"
+                                      src="/src/assets/eip/choice.png"
+                                    />
                                     <span
                                       title="choice"
                                     >
@@ -931,7 +940,7 @@ exports[`Canvas Catalog button should NOT be present if \`CatalogModalContext\` 
 </DocumentFragment>
 `;
 
-exports[`Canvas Catalog button should be present if \`CatalogModalContext\` is provided 1`] = `
+exports[`Canvas > Catalog button > should be present if \`CatalogModalContext\` is provided 1`] = `
 <DocumentFragment>
   <div
     class="pf-v6-l-stack"
@@ -960,6 +969,7 @@ exports[`Canvas Catalog button should be present if \`CatalogModalContext\` is p
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -1012,6 +1022,10 @@ exports[`Canvas Catalog button should be present if \`CatalogModalContext\` is p
                                     class="custom-group__container__text"
                                     title="route"
                                   >
+                                    <img
+                                      alt="route"
+                                      src="/src/assets/eip/route.png"
+                                    />
                                     <span
                                       title="route-8888"
                                     >
@@ -1073,6 +1087,10 @@ exports[`Canvas Catalog button should be present if \`CatalogModalContext\` is p
                                     class="custom-group__container__text"
                                     title="choice"
                                   >
+                                    <img
+                                      alt="choice"
+                                      src="/src/assets/eip/choice.png"
+                                    />
                                     <span
                                       title="choice"
                                     >
@@ -1901,7 +1919,7 @@ exports[`Canvas Catalog button should be present if \`CatalogModalContext\` is p
 </DocumentFragment>
 `;
 
-exports[`Canvas Empty state should render empty state when there is no visible flows 1`] = `
+exports[`Canvas > Empty state > should render empty state when there is no visible flows 1`] = `
 <div>
   <div
     class="pf-v6-l-stack"
@@ -1930,6 +1948,7 @@ exports[`Canvas Empty state should render empty state when there is no visible f
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -2308,7 +2327,7 @@ exports[`Canvas Empty state should render empty state when there is no visible f
 </div>
 `;
 
-exports[`Canvas Empty state should render empty state when there is no visual entity 1`] = `
+exports[`Canvas > Empty state > should render empty state when there is no visual entity 1`] = `
 <DocumentFragment>
   <div
     class="pf-v6-l-stack"
@@ -2337,6 +2356,7 @@ exports[`Canvas Empty state should render empty state when there is no visual en
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -2749,7 +2769,7 @@ exports[`Canvas Empty state should render empty state when there is no visual en
 </DocumentFragment>
 `;
 
-exports[`Canvas should render correctly 1`] = `
+exports[`Canvas > should render correctly 1`] = `
 <DocumentFragment>
   <div
     class="pf-v6-l-stack"
@@ -2778,6 +2798,7 @@ exports[`Canvas should render correctly 1`] = `
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -2830,6 +2851,10 @@ exports[`Canvas should render correctly 1`] = `
                                     class="custom-group__container__text"
                                     title="route"
                                   >
+                                    <img
+                                      alt="route"
+                                      src="/src/assets/eip/route.png"
+                                    />
                                     <span
                                       title="route-8888"
                                     >
@@ -2891,6 +2916,10 @@ exports[`Canvas should render correctly 1`] = `
                                     class="custom-group__container__text"
                                     title="choice"
                                   >
+                                    <img
+                                      alt="choice"
+                                      src="/src/assets/eip/choice.png"
+                                    />
                                     <span
                                       title="choice"
                                     >
@@ -3680,7 +3709,7 @@ exports[`Canvas should render correctly 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Canvas should render correctly with more routes  1`] = `
+exports[`Canvas > should render correctly with more routes  1`] = `
 <DocumentFragment>
   <div
     class="pf-v6-l-stack"
@@ -3709,6 +3738,7 @@ exports[`Canvas should render correctly with more routes  1`] = `
                 >
                   <svg
                     class="pf-topology-visualization-surface__svg"
+                    style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
                   >
                     <g
                       data-id="g1"
@@ -3761,6 +3791,10 @@ exports[`Canvas should render correctly with more routes  1`] = `
                                     class="custom-group__container__text"
                                     title="route"
                                   >
+                                    <img
+                                      alt="route"
+                                      src="/src/assets/eip/route.png"
+                                    />
                                     <span
                                       title="route-8888"
                                     >
@@ -3822,6 +3856,10 @@ exports[`Canvas should render correctly with more routes  1`] = `
                                     class="custom-group__container__text"
                                     title="choice"
                                   >
+                                    <img
+                                      alt="choice"
+                                      src="/src/assets/eip/choice.png"
+                                    />
                                     <span
                                       title="choice"
                                     >

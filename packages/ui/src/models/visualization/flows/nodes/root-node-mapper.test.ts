@@ -30,7 +30,7 @@ describe('RootNodeMapper', () => {
     it('should delegate to the default mapper when no mapper is found', () => {
       const rootNodeMapper = new RootNodeMapper();
       rootNodeMapper.registerDefaultMapper(noopNodeMapper);
-      jest.spyOn(noopNodeMapper, 'getVizNodeFromProcessor');
+      vi.spyOn(noopNodeMapper, 'getVizNodeFromProcessor');
 
       const vizNode = rootNodeMapper.getVizNodeFromProcessor('path', { processorName: 'log' }, {});
 
@@ -41,7 +41,7 @@ describe('RootNodeMapper', () => {
     it('should delegate to the registered mapper', () => {
       const rootNodeMapper = new RootNodeMapper();
       rootNodeMapper.registerMapper('log', noopNodeMapper);
-      jest.spyOn(noopNodeMapper, 'getVizNodeFromProcessor');
+      vi.spyOn(noopNodeMapper, 'getVizNodeFromProcessor');
 
       const vizNode = rootNodeMapper.getVizNodeFromProcessor('path', { processorName: 'log' }, {});
 

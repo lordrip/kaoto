@@ -38,7 +38,7 @@ describe('useUndoRedo', () => {
   });
 
   it('should notify the code has changed upon undo', () => {
-    const eventNotifierSpy = jest.spyOn(EventNotifier.getInstance(), 'next');
+    const eventNotifierSpy = vi.spyOn(EventNotifier.getInstance(), 'next');
 
     const { result } = renderHook(() => useUndoRedo());
 
@@ -54,7 +54,7 @@ describe('useUndoRedo', () => {
   });
 
   it('should notify the code has changed upon redo', () => {
-    const eventNotifierSpy = jest.spyOn(EventNotifier.getInstance(), 'next');
+    const eventNotifierSpy = vi.spyOn(EventNotifier.getInstance(), 'next');
 
     const { result } = renderHook(() => useUndoRedo());
 

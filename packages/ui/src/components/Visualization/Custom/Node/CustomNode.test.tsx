@@ -7,11 +7,11 @@ import { CustomNodeObserver } from './CustomNode';
 
 describe('CustomNode', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should throw an error if not used on Node elements', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     const edgeElement = new BaseEdge();
 
     expect(() => {

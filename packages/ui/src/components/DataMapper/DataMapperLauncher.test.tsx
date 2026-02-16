@@ -9,25 +9,25 @@ import { DataMapperStepService } from '../../services/datamapper-step.service';
 import { DataMapperLauncher } from './DataMapperLauncher';
 
 // Mock the navigate function
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useNavigate: () => mockNavigate,
 }));
 
 // Mock the DataMapperStepService
-jest.mock('../../services/datamapper-step.service');
+vi.mock('../../services/datamapper-step.service');
 
 describe('DataMapperLauncher', () => {
   const mockMetadataContext: IMetadataApi = {
-    onStepUpdated: jest.fn(),
-    getMetadata: jest.fn(),
-    setMetadata: jest.fn(),
-    getResourceContent: jest.fn(),
-    saveResourceContent: jest.fn(),
-    deleteResource: jest.fn(),
-    askUserForFileSelection: jest.fn(),
-    getSuggestions: jest.fn(),
+    onStepUpdated: vi.fn(),
+    getMetadata: vi.fn(),
+    setMetadata: vi.fn(),
+    getResourceContent: vi.fn(),
+    saveResourceContent: vi.fn(),
+    deleteResource: vi.fn(),
+    askUserForFileSelection: vi.fn(),
+    getSuggestions: vi.fn(),
     shouldSaveSchema: false,
   };
 
@@ -43,7 +43,7 @@ describe('DataMapperLauncher', () => {
       : [];
 
     return {
-      getNodeDefinition: jest.fn().mockReturnValue({
+      getNodeDefinition: vi.fn().mockReturnValue({
         id: 'test-node-id',
         steps: mockSteps,
       }),
@@ -63,7 +63,7 @@ describe('DataMapperLauncher', () => {
   );
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('when metadata context is not available', () => {
@@ -92,7 +92,7 @@ describe('DataMapperLauncher', () => {
   describe('when metadata context is available', () => {
     it('should render the data mapper launcher form', () => {
       const vizNode = createMockVizNode('test-document.xsl');
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue('test-document.xsl');
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 
@@ -105,7 +105,7 @@ describe('DataMapperLauncher', () => {
 
     it('should display the XSLT document name when defined', () => {
       const vizNode = createMockVizNode('my-transformation.xsl');
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('my-transformation.xsl');
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue('my-transformation.xsl');
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 
@@ -118,7 +118,7 @@ describe('DataMapperLauncher', () => {
 
     it('should show error state when XSLT document is not defined', () => {
       const vizNode = createMockVizNode();
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue(undefined);
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue(undefined);
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 
@@ -131,7 +131,7 @@ describe('DataMapperLauncher', () => {
 
     it('should navigate to DataMapper page when Configure button is clicked', () => {
       const vizNode = createMockVizNode('test-document.xsl');
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue('test-document.xsl');
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 
@@ -143,7 +143,7 @@ describe('DataMapperLauncher', () => {
 
     it('should render help icon with popover', () => {
       const vizNode = createMockVizNode('test-document.xsl');
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue('test-document.xsl');
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 
@@ -153,7 +153,7 @@ describe('DataMapperLauncher', () => {
 
     it('should render Configure button with wrench icon', () => {
       const vizNode = createMockVizNode('test-document.xsl');
-      (DataMapperStepService.getXsltFileName as jest.Mock).mockReturnValue('test-document.xsl');
+      (DataMapperStepService.getXsltFileName as vi.Mock).mockReturnValue('test-document.xsl');
 
       render(<DataMapperLauncher vizNode={vizNode} />, { wrapper });
 

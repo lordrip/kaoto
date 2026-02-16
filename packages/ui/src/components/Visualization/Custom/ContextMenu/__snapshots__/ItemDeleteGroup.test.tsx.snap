@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ItemDeleteGroup should render delete ContextMenuItem 1`] = `
+exports[`ItemDeleteGroup > should render delete ContextMenuItem 1`] = `
 <div>
   <li
     class="pf-v6-c-menu__list-item"

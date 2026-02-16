@@ -1,5 +1,5 @@
-jest.mock('./KaotoEditorApp');
-jest.mock('react-router-dom');
+vi.mock('./KaotoEditorApp');
+vi.mock('react-router-dom');
 import { EditorInitArgs, KogitoEditorEnvelopeContextType } from '@kie-tools-core/editor/dist/api';
 
 import { ColorScheme, ISettingsModel, NodeLabelType, NodeToolbarTrigger } from '../models';
@@ -9,7 +9,7 @@ import { KaotoEditorFactory } from './KaotoEditorFactory';
 
 describe('KaotoEditorFactory', () => {
   afterAll(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should create editor', async () => {
@@ -52,8 +52,8 @@ describe('KaotoEditorFactory', () => {
       },
     };
 
-    const getVSCodeKaotoSettingsSpy = jest.fn().mockResolvedValue(settingsModel);
-    const getCatalogURLSpy = jest.fn().mockRejectedValue(settingsModel);
+    const getVSCodeKaotoSettingsSpy = vi.fn().mockResolvedValue(settingsModel);
+    const getCatalogURLSpy = vi.fn().mockRejectedValue(settingsModel);
 
     const envelopeContext = {
       channelApi: {
@@ -74,8 +74,8 @@ describe('KaotoEditorFactory', () => {
   });
 
   it('should fallback to previous API if getVSCodeKaotoSettings is not implemented', async () => {
-    const getVSCodeKaotoSettingsSpy = jest.fn().mockImplementation(() => new Promise(() => {}));
-    const getCatalogURLSpy = jest.fn().mockResolvedValue('');
+    const getVSCodeKaotoSettingsSpy = vi.fn().mockImplementation(() => new Promise(() => {}));
+    const getCatalogURLSpy = vi.fn().mockResolvedValue('');
 
     const envelopeContext = {
       channelApi: {
@@ -115,8 +115,8 @@ describe('KaotoEditorFactory', () => {
       },
     };
 
-    const getVSCodeKaotoSettingsSpy = jest.fn().mockResolvedValue(settingsModel);
-    const getCatalogURLSpy = jest.fn().mockRejectedValue(settingsModel);
+    const getVSCodeKaotoSettingsSpy = vi.fn().mockResolvedValue(settingsModel);
+    const getCatalogURLSpy = vi.fn().mockRejectedValue(settingsModel);
 
     const envelopeContext = {
       channelApi: {

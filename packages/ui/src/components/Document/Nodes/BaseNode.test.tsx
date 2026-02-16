@@ -68,7 +68,7 @@ describe('BaseNode', () => {
     });
 
     it('should call onExpandChange when expand icon is clicked', () => {
-      const onExpandChange = jest.fn();
+      const onExpandChange = vi.fn();
       render(
         <BaseNode
           title="Title"

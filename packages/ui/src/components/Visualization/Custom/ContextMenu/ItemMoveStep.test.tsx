@@ -7,21 +7,21 @@ import { useMoveStep } from '../hooks/move-step.hook';
 import { ItemMoveStep } from './ItemMoveStep';
 
 // Mock the `useMoveStep` hook
-jest.mock('../hooks/move-step.hook', () => ({
-  useMoveStep: jest.fn(),
+vi.mock('../hooks/move-step.hook', () => ({
+  useMoveStep: vi.fn(),
 }));
 
 describe('ItemMoveStep', () => {
   const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-  const mockOnMoveStep = jest.fn();
+  const mockOnMoveStep = vi.fn();
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render Move Next ContextMenuItem', () => {
     // Mock the `useMoveStep` hook to return compatible state
-    (useMoveStep as jest.Mock).mockReturnValue({
+    (useMoveStep as vi.Mock).mockReturnValue({
       onMoveStep: mockOnMoveStep,
       canBeMoved: true,
     });
@@ -37,7 +37,7 @@ describe('ItemMoveStep', () => {
 
   it('should not render Move Before ContextMenuItem', () => {
     // Mock the `useMoveStep` hook to return compatible state
-    (useMoveStep as jest.Mock).mockReturnValue({
+    (useMoveStep as vi.Mock).mockReturnValue({
       onMoveStep: mockOnMoveStep,
       canBeMoved: false,
     });
@@ -53,7 +53,7 @@ describe('ItemMoveStep', () => {
 
   it('should call onMoveStep when the context menu item is clicked', () => {
     // Mock the `useMoveStep` hook to return compatible state
-    (useMoveStep as jest.Mock).mockReturnValue({
+    (useMoveStep as vi.Mock).mockReturnValue({
       onMoveStep: mockOnMoveStep,
       canBeMoved: true,
     });

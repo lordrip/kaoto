@@ -1,8 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ItemMoveStep should not render Move Before ContextMenuItem 1`] = `<div />`;
+exports[`ItemMoveStep > should not render Move Before ContextMenuItem 1`] = `<div />`;
 
-exports[`ItemMoveStep should render Move Next ContextMenuItem 1`] = `
+exports[`ItemMoveStep > should render Move Next ContextMenuItem 1`] = `
 <div>
   <li
     class="pf-v6-c-menu__list-item"

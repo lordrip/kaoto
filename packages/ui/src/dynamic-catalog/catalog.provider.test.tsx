@@ -10,9 +10,9 @@ import { CatalogSchemaLoader } from '../utils/catalog-schema-loader';
 import { CatalogLoaderProvider } from './catalog.provider';
 
 describe('CatalogLoaderProvider', () => {
-  let fetchMock: jest.SpyInstance;
-  let fetchFileMock: jest.SpyInstance;
-  let setCatalogKeySpy: jest.SpyInstance;
+  let fetchMock: vi.SpyInstance;
+  let fetchFileMock: vi.SpyInstance;
+  let setCatalogKeySpy: vi.SpyInstance;
   let fetchResolve: () => void;
   let fetchReject: () => void;
   let catalogDefinition: CatalogDefinition;
@@ -25,7 +25,7 @@ describe('CatalogLoaderProvider', () => {
   });
 
   beforeEach(() => {
-    fetchMock = jest.spyOn(globalThis, 'fetch');
+    fetchMock = vi.spyOn(globalThis, 'fetch');
     fetchMock.mockImplementationOnce((file) => {
       return new Promise((resolve, reject) => {
         fetchResolve = () => {
@@ -40,15 +40,15 @@ describe('CatalogLoaderProvider', () => {
       });
     });
 
-    fetchFileMock = jest.spyOn(CatalogSchemaLoader, 'fetchFile');
+    fetchFileMock = vi.spyOn(CatalogSchemaLoader, 'fetchFile');
     fetchFileMock.mockImplementation((uri: string) => {
       return Promise.resolve({ body: { [uri]: 'dummy-data' } });
     });
-    setCatalogKeySpy = jest.spyOn(CamelCatalogService, 'setCatalogKey');
+    setCatalogKeySpy = vi.spyOn(CamelCatalogService, 'setCatalogKey');
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should start in loading mode', async () => {
@@ -67,11 +67,11 @@ describe('CatalogLoaderProvider', () => {
   });
 
   it('should stay in Error mode when there is an error', async () => {
-    jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {});
     const { Provider } = TestRuntimeProviderWrapper();
     await act(async () => {
       render(
-        <ReloadContext.Provider value={{ reloadPage: jest.fn(), lastRender: 0 }}>
+        <ReloadContext.Provider value={{ reloadPage: vi.fn(), lastRender: 0 }}>
           <Provider>
             <CatalogLoaderProvider>
               <span data-testid="catalogs-loaded">Loaded</span>

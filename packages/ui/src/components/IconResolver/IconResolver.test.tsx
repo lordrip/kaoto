@@ -4,13 +4,13 @@ import { CatalogKind } from '../../models/catalog-kind';
 import { IconResolver } from './IconResolver';
 import { NodeIconResolver } from './node-icon-resolver';
 
-jest.mock('./node-icon-resolver');
+vi.mock('./node-icon-resolver');
 
 describe('IconResolver', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    (NodeIconResolver.getIcon as jest.Mock).mockResolvedValue('mock-icon-url');
-    (NodeIconResolver.getDefaultCamelIcon as jest.Mock).mockReturnValue('default-camel-icon-url');
+    vi.clearAllMocks();
+    (NodeIconResolver.getIcon as vi.Mock).mockResolvedValue('mock-icon-url');
+    (NodeIconResolver.getDefaultCamelIcon as vi.Mock).mockReturnValue('default-camel-icon-url');
   });
 
   describe('CatalogKind.Component', () => {

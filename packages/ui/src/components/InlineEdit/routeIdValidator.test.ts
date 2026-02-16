@@ -20,7 +20,7 @@ describe('routeIdValidator', () => {
   it('should return sucess if the name is unique', () => {
     const resource = new CamelRouteResource([camelRouteJson]);
     const visualEntities = resource.getVisualEntities();
-    jest.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
+    vi.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
 
     const result = RouteIdValidator.validateUniqueName('unique-name', visualEntities);
     expect(result.status).toEqual(ValidationStatus.Success);
@@ -30,7 +30,7 @@ describe('routeIdValidator', () => {
   it('should return an error if the name is not unique', () => {
     const resource = new CamelRouteResource([camelRouteJson]);
     const visualEntities = resource.getVisualEntities();
-    jest.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
+    vi.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
 
     const result = RouteIdValidator.validateUniqueName('flow-1234', visualEntities);
 
@@ -41,7 +41,7 @@ describe('routeIdValidator', () => {
   it('should return an error if the name is not a valid URI', () => {
     const resource = new CamelRouteResource([camelRouteJson]);
     const visualEntities = resource.getVisualEntities();
-    jest.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
+    vi.spyOn(visualEntities[0], 'getId').mockReturnValue('flow-1234');
 
     const result = RouteIdValidator.validateUniqueName('The amazing Route', visualEntities);
 
@@ -52,7 +52,7 @@ describe('routeIdValidator', () => {
   it('should return an error if the name is not unique neither a valid URI', () => {
     const resource = new CamelRouteResource([camelRouteJson]);
     const visualEntities = resource.getVisualEntities();
-    jest.spyOn(visualEntities[0], 'getId').mockReturnValue('The amazing Route');
+    vi.spyOn(visualEntities[0], 'getId').mockReturnValue('The amazing Route');
 
     const result = RouteIdValidator.validateUniqueName('The amazing Route', visualEntities);
 

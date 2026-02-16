@@ -2,8 +2,8 @@ import { getCamelRandomId } from '../camel-utils/camel-random-id';
 import { updateIds } from './update-ids';
 
 // Mock the getCamelRandomId function
-jest.mock('../camel-utils/camel-random-id', () => ({
-  getCamelRandomId: jest.fn((id) => `random-${id}`),
+vi.mock('../camel-utils/camel-random-id', () => ({
+  getCamelRandomId: vi.fn((id) => `random-${id}`),
 }));
 
 describe('updateIds', () => {

@@ -3,7 +3,7 @@ import { EventNotifier } from './event-notifier';
 describe('EventNotifier', () => {
   it('should notify subscribers', () => {
     const eventNotifier = new EventNotifier();
-    const listener = jest.fn();
+    const listener = vi.fn();
 
     eventNotifier.subscribe('code:updated', listener);
     eventNotifier.next('code:updated', { code: 'my source code' });
@@ -13,7 +13,7 @@ describe('EventNotifier', () => {
 
   it('should unsubscribe', () => {
     const eventNotifier = new EventNotifier();
-    const listener = jest.fn();
+    const listener = vi.fn();
 
     const unsubscribe = eventNotifier.subscribe('code:updated', listener);
     unsubscribe();

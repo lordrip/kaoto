@@ -230,7 +230,7 @@ describe('TargetDocumentNode', () => {
       const tree = new DocumentTree(documentNodeData);
       TreeParsingService.parseTree(tree);
 
-      const toggleNodeSpy = jest.spyOn(TreeUIService, 'toggleNode');
+      const toggleNodeSpy = vi.spyOn(TreeUIService, 'toggleNode');
 
       act(() => {
         useDocumentTreeStore.setState({
@@ -346,7 +346,7 @@ describe('TargetDocumentNode', () => {
       const tree = new DocumentTree(documentNodeData);
       TreeParsingService.parseTree(tree);
 
-      const toggleNodeSpy = jest.spyOn(TreeUIService, 'toggleNode');
+      const toggleNodeSpy = vi.spyOn(TreeUIService, 'toggleNode');
 
       act(() => {
         useDocumentTreeStore.setState({
@@ -462,7 +462,7 @@ describe('TargetDocumentNode', () => {
       const tree = new DocumentTree(documentNodeData);
       TreeParsingService.parseTree(tree);
 
-      const parentClickHandler = jest.fn();
+      const parentClickHandler = vi.fn();
 
       act(() => {
         render(
@@ -710,7 +710,7 @@ describe('TargetDocumentNode', () => {
       const tree = new DocumentTree(documentNodeData);
       TreeParsingService.parseTree(tree);
 
-      const parentClickHandler = jest.fn();
+      const parentClickHandler = vi.fn();
 
       act(() => {
         useDocumentTreeStore.setState({
@@ -746,7 +746,7 @@ describe('TargetDocumentNode', () => {
       const documentNodeData = new DocumentNodeData(document);
       const tree = new DocumentTree(documentNodeData);
 
-      const parentClickHandler = jest.fn();
+      const parentClickHandler = vi.fn();
 
       render(
         <div onClick={parentClickHandler}>

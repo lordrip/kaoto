@@ -69,9 +69,9 @@ describe('VisualizationService', () => {
 
     describe('generateNodeDataChildren', () => {
       it('should generate primitive document children', () => {
-        const primitiveSpy = jest.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
-        const structuredSpy = jest.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
-        const nonDocumentSpy = jest.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
+        const primitiveSpy = vi.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
+        const structuredSpy = vi.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
+        const nonDocumentSpy = vi.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
         sourceDocNode.isPrimitive = true;
         VisualizationService.generateNodeDataChildren(sourceDocNode);
 
@@ -81,9 +81,9 @@ describe('VisualizationService', () => {
       });
 
       it('should generate structured document children', () => {
-        const primitiveSpy = jest.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
-        const structuredSpy = jest.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
-        const nonDocumentSpy = jest.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
+        const primitiveSpy = vi.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
+        const structuredSpy = vi.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
+        const nonDocumentSpy = vi.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
         sourceDocNode.isPrimitive = false;
         VisualizationService.generateNodeDataChildren(sourceDocNode);
 
@@ -93,9 +93,9 @@ describe('VisualizationService', () => {
       });
 
       it('should generate non document children', () => {
-        const primitiveSpy = jest.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
-        const structuredSpy = jest.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
-        const nonDocumentSpy = jest.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
+        const primitiveSpy = vi.spyOn(VisualizationService, 'generatePrimitiveDocumentChildren');
+        const structuredSpy = vi.spyOn(VisualizationService, 'generateStructuredDocumentChildren');
+        const nonDocumentSpy = vi.spyOn(VisualizationService, 'generateNonDocumentNodeDataChildren');
 
         VisualizationService.generateNodeDataChildren(new FieldNodeData(sourceDocNode, sourceDoc.fields[0]));
 
@@ -1033,8 +1033,7 @@ describe('VisualizationService', () => {
   });
 
   it('should generate for multiple indexed collection mappings on a same collection target field', () => {
-    jest
-      .spyOn(global, 'crypto', 'get')
+    vi.spyOn(global, 'crypto', 'get')
       .mockImplementation(() => ({ getRandomValues: () => [Math.random() * 10000] }) as unknown as Crypto);
 
     MappingSerializerService.deserialize(shipOrderToShipOrderCollectionIndexXslt, targetDoc, tree, paramsMap);

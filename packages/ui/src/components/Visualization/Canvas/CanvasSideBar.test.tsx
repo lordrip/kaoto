@@ -50,7 +50,7 @@ describe('CanvasSideBar', () => {
   });
 
   it('should propagate onClose callback', async () => {
-    const onCloseSpy = jest.fn();
+    const onCloseSpy = vi.fn();
 
     const wrapper = await act(async () =>
       render(

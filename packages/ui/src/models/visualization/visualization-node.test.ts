@@ -29,7 +29,7 @@ describe('VisualizationNode', () => {
   describe('getNodeTitle', () => {
     it('should delegate to the base entity to get the title', () => {
       const visualEntity = new CamelRouteVisualEntity(camelRouteJson);
-      const getNodeTitleSpy = jest.spyOn(visualEntity, 'getNodeTitle');
+      const getNodeTitleSpy = vi.spyOn(visualEntity, 'getNodeTitle');
 
       node = createVisualizationNode('test', {
         catalogKind: CatalogKind.Component,
@@ -55,7 +55,7 @@ describe('VisualizationNode', () => {
   });
 
   it('should return the node schema from the underlying BaseVisualCamelEntity', () => {
-    const getNodeSchemaSpy = jest.fn();
+    const getNodeSchemaSpy = vi.fn();
     const visualEntity = {
       getNodeSchema: getNodeSchemaSpy,
     } as unknown as BaseVisualCamelEntity;
@@ -72,7 +72,7 @@ describe('VisualizationNode', () => {
   });
 
   it('should return the node definition from the underlying BaseVisualCamelEntity', () => {
-    const getNodeDefinitionSpy = jest.fn();
+    const getNodeDefinitionSpy = vi.fn();
     const visualEntity = {
       getNodeDefinition: getNodeDefinitionSpy,
     } as unknown as BaseVisualCamelEntity;
@@ -89,7 +89,7 @@ describe('VisualizationNode', () => {
   });
 
   it('should delegate getOmitFormFields() to the underlying BaseVisualCamelEntity', () => {
-    const getOmitFormFieldsSpy = jest.fn();
+    const getOmitFormFieldsSpy = vi.fn();
     const visualEntity = {
       getOmitFormFields: getOmitFormFieldsSpy,
     } as unknown as BaseVisualCamelEntity;
@@ -107,7 +107,7 @@ describe('VisualizationNode', () => {
 
   describe('getNodeLabel', () => {
     it('should return the label from the underlying BaseVisualCamelEntity', () => {
-      const getNodeLabelSpy = jest.fn().mockReturnValue('test-label');
+      const getNodeLabelSpy = vi.fn().mockReturnValue('test-label');
       const visualEntity = {
         getNodeLabel: getNodeLabelSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -134,7 +134,7 @@ describe('VisualizationNode', () => {
 
   describe('getTooltipContent', () => {
     it('should return the tootltip content from the underlying BaseVisualCamelEntity', () => {
-      const getTooltipContentSpy = jest.fn().mockReturnValue('test-description');
+      const getTooltipContentSpy = vi.fn().mockReturnValue('test-description');
       const visualEntity = {
         getTooltipContent: getTooltipContentSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -161,7 +161,7 @@ describe('VisualizationNode', () => {
 
   it('should return the node schema from the root node', () => {
     /** Arrange */
-    const getNodeSchemaSpy = jest.fn();
+    const getNodeSchemaSpy = vi.fn();
     const visualEntity = {
       getNodeSchema: getNodeSchemaSpy,
     } as unknown as BaseVisualCamelEntity;
@@ -183,7 +183,7 @@ describe('VisualizationNode', () => {
 
   it('should return the node definition from the root node', () => {
     /** Arrange */
-    const getNodeDefinitionSpy = jest.fn();
+    const getNodeDefinitionSpy = vi.fn();
     const visualEntity = {
       getNodeDefinition: getNodeDefinitionSpy,
     } as unknown as BaseVisualCamelEntity;
@@ -212,7 +212,7 @@ describe('VisualizationNode', () => {
     });
 
     it('should update the model on the underlying BaseVisualCamelEntity', () => {
-      const updateModelSpy = jest.fn();
+      const updateModelSpy = vi.fn();
       const visualEntity = {
         updateModel: updateModelSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -230,7 +230,7 @@ describe('VisualizationNode', () => {
 
     it('should update the model on the root node', () => {
       /** Arrange */
-      const updateModelSpy = jest.fn();
+      const updateModelSpy = vi.fn();
       const visualEntity = {
         updateModel: updateModelSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -291,7 +291,7 @@ describe('VisualizationNode', () => {
         canRemoveFlow: false,
         canBeDisabled: true,
       };
-      const getNodeInteractionSpy = jest.fn().mockReturnValue(mockNodeInteraction);
+      const getNodeInteractionSpy = vi.fn().mockReturnValue(mockNodeInteraction);
       const visualEntity = {
         getNodeInteraction: getNodeInteractionSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -359,7 +359,7 @@ describe('VisualizationNode', () => {
     });
 
     it('should return the validation text from the underlying BaseVisualCamelEntity', () => {
-      const getNodeValidationTextSpy = jest.fn().mockReturnValue('test-validation-text');
+      const getNodeValidationTextSpy = vi.fn().mockReturnValue('test-validation-text');
       const visualEntity = {
         getNodeValidationText: getNodeValidationTextSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -386,7 +386,7 @@ describe('VisualizationNode', () => {
     });
 
     it('should return the validation text from the underlying BaseVisualCamelEntity', () => {
-      const getCopiedContentSpy = jest.fn().mockReturnValue('test-copied-content');
+      const getCopiedContentSpy = vi.fn().mockReturnValue('test-copied-content');
       const visualEntity = {
         getCopiedContent: getCopiedContentSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -422,7 +422,7 @@ describe('VisualizationNode', () => {
     });
 
     it('should delegate to the BaseVisualCamelEntity to paste the step', () => {
-      const pasteStepSpy = jest.fn();
+      const pasteStepSpy = vi.fn();
       const visualEntity = {
         pasteStep: pasteStepSpy,
       } as unknown as BaseVisualCamelEntity;
@@ -476,7 +476,7 @@ describe('VisualizationNode', () => {
   describe('getGroupIcons', () => {
     it('should delegate to base entity', () => {
       const mockEntity = {
-        getGroupIcons: jest.fn().mockReturnValue([{ icon: 'play', title: 'Enabled' }]),
+        getGroupIcons: vi.fn().mockReturnValue([{ icon: 'play', title: 'Enabled' }]),
       } as unknown as BaseVisualCamelEntity;
 
       const node = createVisualizationNode('test-node', {

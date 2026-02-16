@@ -83,7 +83,7 @@ describe('KameletResource', () => {
 
   describe('getCompatibleComponents', () => {
     it('should delegate to the CamelComponentFilterService', () => {
-      const filterSpy = jest.spyOn(CamelComponentFilterService, 'getKameletCompatibleComponents');
+      const filterSpy = vi.spyOn(CamelComponentFilterService, 'getKameletCompatibleComponents');
 
       const resource = CamelKResourceFactory.getCamelKResource(kameletJson)!;
       resource.getCompatibleComponents(AddStepMode.ReplaceStep, {

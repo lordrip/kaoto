@@ -6,7 +6,7 @@ import { ClipboardManager } from '../../../../utils/ClipboardManager';
 import { useCopyStep } from './copy-step.hook';
 
 describe('useCopyStep', () => {
-  const copySpy = jest.spyOn(ClipboardManager, 'copy').mockImplementation(async (__object) => undefined);
+  const copySpy = vi.spyOn(ClipboardManager, 'copy').mockImplementation(async (__object) => undefined);
   const copiedContent = {
     type: SourceSchemaType.Route,
     name: 'exampleNode',
@@ -14,12 +14,12 @@ describe('useCopyStep', () => {
   };
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should call ClipboardManager.copy with the copied node content', async () => {
     const mockVizNode = {
-      getCopiedContent: jest.fn().mockReturnValue(copiedContent),
+      getCopiedContent: vi.fn().mockReturnValue(copiedContent),
     } as unknown as IVisualizationNode;
 
     const { result } = renderHook(() => useCopyStep(mockVizNode));
@@ -32,7 +32,7 @@ describe('useCopyStep', () => {
 
   it('should not call ClipboardManager.copy if getCopiedContent returns null', async () => {
     const mockVizNode = {
-      getCopiedContent: jest.fn().mockReturnValue(null),
+      getCopiedContent: vi.fn().mockReturnValue(null),
     } as unknown as IVisualizationNode;
 
     const { result } = renderHook(() => useCopyStep(mockVizNode));

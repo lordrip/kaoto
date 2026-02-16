@@ -25,8 +25,8 @@ describe('NewBeanModal', () => {
       javaType: 'java.lang.String',
       propertyTitle: 'Test Property',
       beanSchema,
-      onCreateBean: jest.fn(),
-      onCancelCreateBean: jest.fn(),
+      onCreateBean: vi.fn(),
+      onCancelCreateBean: vi.fn(),
     };
   });
 

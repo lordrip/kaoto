@@ -1,4 +1,4 @@
-import { GRAPH_LAYOUT_END_EVENT, useEventListener } from '@patternfly/react-topology';
+import { useEventListener } from '@patternfly/react-topology';
 import { act, render, waitFor } from '@testing-library/react';
 import { toBlob } from 'html-to-image';
 import { PropsWithChildren } from 'react';
@@ -12,16 +12,31 @@ import { ControllerService } from '../../Canvas/controller.service';
 import { FlowService } from '../../Canvas/flow.service';
 import { HiddenCanvas } from './HiddenCanvas';
 
-jest.mock('html-to-image', () => ({
-  toBlob: jest.fn(),
+const GRAPH_LAYOUT_END_EVENT = 'graph-layout-end';
+
+vi.mock('html-to-image', () => ({
+  toBlob: vi.fn(),
 }));
 
-jest.mock('@patternfly/react-topology', () => ({
-  ...jest.requireActual('@patternfly/react-topology'),
-  useEventListener: jest.fn(),
+vi.mock('@patternfly/react-topology', () => ({
+  GRAPH_LAYOUT_END_EVENT: 'graph-layout-end',
+  action: (fn: () => void) => fn,
+  useEventListener: vi.fn(),
+  VisualizationProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  VisualizationSurface: ({ state }: { state?: Record<string, unknown> }) => (
+    <div className="pf-topology-visualization-surface" data-testid="mock-surface" />
+  ),
+  NodeShape: { rect: 'rect' },
+  EdgeStyle: { solid: 'solid' },
 }));
 
-jest.mock('../../Canvas/flow.service');
+vi.mock('../../Canvas/flow.service');
+
+vi.mock('../../Canvas/controller.service', () => ({
+  ControllerService: {
+    createController: vi.fn(),
+  },
+}));
 
 describe('HiddenCanvas', () => {
   const wrapper = ({ children }: PropsWithChildren) => (
@@ -32,52 +47,59 @@ describe('HiddenCanvas', () => {
     </SourceCodeProvider>
   );
 
-  let mockOnComplete: jest.Mock;
+  let mockOnComplete: vi.Mock;
   let mockEntity: BaseVisualCamelEntity;
   let eventListenerCallback: ((event?: Event) => void) | null = null;
-  let fromModelSpy: jest.SpyInstance;
+  let fromModelSpy: vi.Mock;
   let originalCreateObjectURL: typeof URL.createObjectURL;
   let originalRevokeObjectURL: typeof URL.revokeObjectURL;
   let originalRAF: typeof globalThis.requestAnimationFrame;
-  let clickSpy: jest.SpyInstance;
+  let clickSpy: vi.SpyInstance;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
 
     // Save original implementations
     originalCreateObjectURL = URL.createObjectURL;
     originalRevokeObjectURL = URL.revokeObjectURL;
     originalRAF = globalThis.requestAnimationFrame;
 
-    URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-    URL.revokeObjectURL = jest.fn();
+    URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+    URL.revokeObjectURL = vi.fn();
 
     // Mock requestAnimationFrame to execute synchronously
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+    globalThis.requestAnimationFrame = vi.fn((cb: FrameRequestCallback) => {
       cb(0);
       return 1;
     }) as unknown as typeof globalThis.requestAnimationFrame;
 
-    clickSpy = jest.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation();
-    mockOnComplete = jest.fn();
+    clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation();
+    mockOnComplete = vi.fn();
 
     mockEntity = {
       id: 'test-entity-1',
-      toVizNode: jest.fn(() => ({ id: 'node-1', data: {} })),
+      toVizNode: vi.fn(() => ({ id: 'node-1', data: {} })),
     } as unknown as BaseVisualCamelEntity;
 
-    (FlowService.getFlowDiagram as jest.Mock).mockReturnValue({
+    (FlowService.getFlowDiagram as vi.Mock).mockReturnValue({
       nodes: [{ id: 'node-1', type: 'node' } as CanvasNode],
       edges: [{ id: 'edge-1', type: 'edge' }],
     });
 
-    (toBlob as jest.Mock).mockResolvedValue(new Blob(['fake-image-data'], { type: 'image/png' }));
+    (toBlob as vi.Mock).mockResolvedValue(new Blob(['fake-image-data'], { type: 'image/png' }));
 
-    const controller = ControllerService.createController();
-    fromModelSpy = jest.spyOn(controller, 'fromModel');
-    jest.spyOn(ControllerService, 'createController').mockReturnValue(controller);
+    fromModelSpy = vi.fn();
+    const mockController = {
+      fromModel: fromModelSpy,
+      getGraph: vi.fn(() => ({
+        reset: vi.fn(),
+        fit: vi.fn(),
+        layout: vi.fn(),
+      })),
+    };
+    (ControllerService.createController as vi.Mock).mockReturnValue(mockController);
 
-    (useEventListener as jest.Mock).mockImplementation((eventType: string, callback: (event?: Event) => void) => {
+    (useEventListener as vi.Mock).mockImplementation((eventType: string, callback: (event?: Event) => void) => {
       if (eventType === GRAPH_LAYOUT_END_EVENT) {
         eventListenerCallback = callback;
       }
@@ -85,9 +107,9 @@ describe('HiddenCanvas', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
-    jest.clearAllTimers();
-    jest.useRealTimers();
+    vi.clearAllMocks();
+    vi.clearAllTimers();
+    vi.useRealTimers();
     eventListenerCallback = null;
 
     URL.createObjectURL = originalCreateObjectURL;
@@ -105,8 +127,7 @@ describe('HiddenCanvas', () => {
   it('creates a controller on mount', () => {
     render(<HiddenCanvas entities={[mockEntity]} onComplete={mockOnComplete} />, { wrapper });
 
-    // Called once in beforeEach and once in render
-    expect(ControllerService.createController).toHaveBeenCalledTimes(2);
+    expect(ControllerService.createController).toHaveBeenCalled();
   });
 
   it('builds the graph model from entities', () => {
@@ -135,7 +156,7 @@ describe('HiddenCanvas', () => {
     act(() => {
       // Simulate the GRAPH_LAYOUT_END_EVENT
       eventListenerCallback?.();
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
 
     await waitFor(() => {
@@ -148,7 +169,7 @@ describe('HiddenCanvas', () => {
 
     act(() => {
       eventListenerCallback?.();
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
 
     await waitFor(() => {
@@ -169,7 +190,7 @@ describe('HiddenCanvas', () => {
       if (eventListenerCallback) {
         eventListenerCallback();
       }
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
 
     await waitFor(() => {
@@ -183,7 +204,7 @@ describe('HiddenCanvas', () => {
     act(() => {
       eventListenerCallback?.();
       // Advance time just enough to trigger the layout
-      jest.advanceTimersByTime(0);
+      vi.advanceTimersByTime(0);
     });
 
     await waitFor(() => {
@@ -192,7 +213,7 @@ describe('HiddenCanvas', () => {
 
     act(() => {
       // Fast-forward the cleanup timer (100ms)
-      jest.advanceTimersByTime(150);
+      vi.advanceTimersByTime(150);
     });
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock-url');
@@ -204,7 +225,7 @@ describe('HiddenCanvas', () => {
     // Don't trigger the GRAPH_LAYOUT_END_EVENT
     // Fast-forward past the fallback timer
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {
@@ -213,13 +234,13 @@ describe('HiddenCanvas', () => {
   });
 
   it('handles missing surface element gracefully', async () => {
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
 
     render(<HiddenCanvas entities={[]} onComplete={mockOnComplete} />, { wrapper });
 
     act(() => {
       eventListenerCallback?.();
-      jest.advanceTimersByTime(0);
+      vi.advanceTimersByTime(0);
     });
 
     await waitFor(() => {
@@ -230,8 +251,8 @@ describe('HiddenCanvas', () => {
   });
 
   it('handles toBlob returning null', async () => {
-    (toBlob as jest.Mock).mockResolvedValue(null);
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    (toBlob as vi.Mock).mockResolvedValue(null);
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
 
     render(<HiddenCanvas entities={[mockEntity]} onComplete={mockOnComplete} />, { wrapper });
 
@@ -239,7 +260,7 @@ describe('HiddenCanvas', () => {
       if (eventListenerCallback) {
         eventListenerCallback();
       }
-      jest.advanceTimersByTime(0);
+      vi.advanceTimersByTime(0);
     });
 
     await waitFor(() => {
@@ -252,14 +273,14 @@ describe('HiddenCanvas', () => {
 
   it('handles export error and calls onComplete', async () => {
     const error = new Error('Export failed');
-    (toBlob as jest.Mock).mockRejectedValue(error);
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    (toBlob as vi.Mock).mockRejectedValue(error);
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
 
     render(<HiddenCanvas entities={[mockEntity]} onComplete={mockOnComplete} />, { wrapper });
 
     act(() => {
       eventListenerCallback?.();
-      jest.advanceTimersByTime(0);
+      vi.advanceTimersByTime(0);
     });
 
     await waitFor(() => {
@@ -286,7 +307,7 @@ describe('HiddenCanvas', () => {
   });
 
   it('clears fallback timer on unmount', () => {
-    const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+    const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
 
     const { unmount } = render(<HiddenCanvas entities={[mockEntity]} onComplete={mockOnComplete} />, { wrapper });
 

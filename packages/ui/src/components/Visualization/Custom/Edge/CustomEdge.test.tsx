@@ -7,11 +7,11 @@ import { CustomEdge } from './CustomEdge';
 
 describe('CustomEdge', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should throw an error if not used on Edge elements', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     const NodeElement = new BaseNode();
 
     expect(() => {

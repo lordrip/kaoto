@@ -48,7 +48,7 @@ describe('TargetAnchor', () => {
   });
 
   it('should delegate to the super class to get the reference point', () => {
-    const superSpy = jest.spyOn(TargetAnchor.prototype, 'getReferencePoint');
+    const superSpy = vi.spyOn(TargetAnchor.prototype, 'getReferencePoint');
     const element = {
       getBounds: () => new Rect(0, 0, 50, 50),
     } as Node;

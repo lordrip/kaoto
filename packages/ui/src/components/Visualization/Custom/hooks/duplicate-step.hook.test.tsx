@@ -14,16 +14,16 @@ import { NodeInteractionAddonContext } from '../../../registers/interactions/nod
 import { useDuplicateStep } from './duplicate-step.hook';
 
 const mockController = {
-  fromModel: jest.fn(),
+  fromModel: vi.fn(),
 };
 
-jest.mock('@patternfly/react-topology', () => ({
+vi.mock('@patternfly/react-topology', () => ({
   useVisualizationController: () => mockController,
 }));
 
 // Mock the `updateIds` function
-jest.mock('../../../../utils/update-ids', () => ({
-  updateIds: jest.fn((node) => node),
+vi.mock('../../../../utils/update-ids', () => ({
+  updateIds: vi.fn((node) => node),
 }));
 
 describe('useDuplicateStep', () => {
@@ -70,21 +70,21 @@ describe('useDuplicateStep', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   // Mock CatalogModalContext
   const mockCatalogModalContext = {
-    setIsModalOpen: jest.fn(),
-    getNewComponent: jest.fn(),
-    checkCompatibility: jest.fn(),
+    setIsModalOpen: vi.fn(),
+    getNewComponent: vi.fn(),
+    checkCompatibility: vi.fn(),
   };
 
   // Mock NodeInteractionAddonContext
   const mockNodeInteractionAddonContext = {
-    registerInteractionAddon: jest.fn(),
-    getRegisteredInteractionAddons: jest.fn().mockReturnValue([]),
+    registerInteractionAddon: vi.fn(),
+    getRegisteredInteractionAddons: vi.fn().mockReturnValue([]),
   };
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -98,13 +98,13 @@ describe('useDuplicateStep', () => {
   );
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('canDuplicate logic', () => {
     it('should return false when viznode has no content', () => {
       // Mock the getCopiedContent method to return undefined
-      jest.spyOn(vizNode, 'getCopiedContent').mockReturnValueOnce(undefined);
+      vi.spyOn(vizNode, 'getCopiedContent').mockReturnValueOnce(undefined);
       const { result } = renderHook(() => useDuplicateStep(vizNode), { wrapper });
 
       expect(result.current.canDuplicate).toBe(false);
@@ -112,7 +112,7 @@ describe('useDuplicateStep', () => {
 
     it('should return true when current node can have a next node', () => {
       // Mock the compatibility check to return true
-      jest.spyOn(mockCatalogModalContext, 'checkCompatibility').mockReturnValue(true);
+      vi.spyOn(mockCatalogModalContext, 'checkCompatibility').mockReturnValue(true);
       const { result } = renderHook(() => useDuplicateStep(vizNode), { wrapper });
 
       expect(result.current.canDuplicate).toBe(true);
@@ -120,7 +120,7 @@ describe('useDuplicateStep', () => {
 
     it('should return true when current node parent can have special children', () => {
       // Mock the compatibility check to return true
-      jest.spyOn(mockCatalogModalContext, 'checkCompatibility').mockReturnValue(true);
+      vi.spyOn(mockCatalogModalContext, 'checkCompatibility').mockReturnValue(true);
       const { result } = renderHook(() => useDuplicateStep(whenVizNode), { wrapper });
 
       expect(result.current.canDuplicate).toBe(true);
@@ -135,7 +135,7 @@ describe('useDuplicateStep', () => {
     it('should return false when no previous conditions match', () => {
       // set up the vizNode so that it does not have next step capability
       /* eslint-disable @typescript-eslint/no-explicit-any */
-      jest.spyOn(vizNode, 'getNodeInteraction').mockReturnValueOnce({ canHaveNextStep: false } as any);
+      vi.spyOn(vizNode, 'getNodeInteraction').mockReturnValueOnce({ canHaveNextStep: false } as any);
 
       const { result } = renderHook(() => useDuplicateStep(vizNode), { wrapper });
 
@@ -145,19 +145,19 @@ describe('useDuplicateStep', () => {
 
   describe('onDuplicate functionality', () => {
     it('should return without calling pasteBaseEntityStep() and updateEntitiesFromCamelResource()', async () => {
-      const VizNodeGetCopiedContentSpy = jest.spyOn(vizNode, 'getCopiedContent').mockReturnValueOnce(undefined);
-      const VizNodePasteBaseEntityStepSpy = jest.spyOn(vizNode, 'pasteBaseEntityStep');
+      const VizNodeGetCopiedContentSpy = vi.spyOn(vizNode, 'getCopiedContent').mockReturnValueOnce(undefined);
+      const VizNodePasteBaseEntityStepSpy = vi.spyOn(vizNode, 'pasteBaseEntityStep');
 
       const { result } = renderHook(() => useDuplicateStep(vizNode), { wrapper });
       await result.current.onDuplicate();
 
       expect(VizNodeGetCopiedContentSpy).toHaveBeenCalledTimes(1);
       expect(VizNodePasteBaseEntityStepSpy).not.toHaveBeenCalled();
-      expect(mockEntitiesContext.updateEntitiesFromCamelResource as jest.Mock).not.toHaveBeenCalled();
+      expect(mockEntitiesContext.updateEntitiesFromCamelResource as vi.Mock).not.toHaveBeenCalled();
     });
 
     it('should call pasteBaseEntityStep() and finally updateEntitiesFromCamelResource()', async () => {
-      const VizNodePasteBaseEntityStepSpy = jest.spyOn(vizNode, 'pasteBaseEntityStep');
+      const VizNodePasteBaseEntityStepSpy = vi.spyOn(vizNode, 'pasteBaseEntityStep');
 
       const { result } = renderHook(() => useDuplicateStep(vizNode), { wrapper });
       await result.current.onDuplicate();
@@ -167,11 +167,11 @@ describe('useDuplicateStep', () => {
         updateIds(vizNode.getCopiedContent()!),
         AddStepMode.AppendStep,
       );
-      expect(mockEntitiesContext.updateEntitiesFromCamelResource as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(mockEntitiesContext.updateEntitiesFromCamelResource as vi.Mock).toHaveBeenCalledTimes(1);
     });
 
     it('should call controller.fromModel() when parent node can have special children and conditions are met', async () => {
-      const VizNodePasteBaseEntityStepSpy = jest.spyOn(whenVizNode, 'pasteBaseEntityStep');
+      const VizNodePasteBaseEntityStepSpy = vi.spyOn(whenVizNode, 'pasteBaseEntityStep');
 
       const { result } = renderHook(() => useDuplicateStep(whenVizNode), { wrapper });
       await result.current.onDuplicate();
@@ -185,11 +185,11 @@ describe('useDuplicateStep', () => {
         nodes: [],
         edges: [],
       });
-      expect(mockEntitiesContext.updateEntitiesFromCamelResource as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(mockEntitiesContext.updateEntitiesFromCamelResource as vi.Mock).toHaveBeenCalledTimes(1);
     });
 
     it('should call entitiesContext.camelResource.addNewEntity() and finally updateEntitiesFromCamelResource()', async () => {
-      const camelResourceAddNewEntitySpy = jest.spyOn(camelResource, 'addNewEntity');
+      const camelResourceAddNewEntitySpy = vi.spyOn(camelResource, 'addNewEntity');
       const routeVizNodeContent = updateIds(routeVizNode.getCopiedContent()!);
       const { result } = renderHook(() => useDuplicateStep(routeVizNode), { wrapper });
       await result.current.onDuplicate();
@@ -198,7 +198,7 @@ describe('useDuplicateStep', () => {
       expect(camelResourceAddNewEntitySpy).toHaveBeenCalledWith(routeVizNodeContent.name as string, {
         [routeVizNodeContent.name]: routeVizNodeContent.definition,
       });
-      expect(mockEntitiesContext.updateEntitiesFromCamelResource as jest.Mock).toHaveBeenCalledTimes(1);
+      expect(mockEntitiesContext.updateEntitiesFromCamelResource as vi.Mock).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -182,7 +182,7 @@ describe('step-xml-serializer tests', () => {
     });
 
     it('should not call decorateDoTry when doCatch and doFinally are in the catalog', () => {
-      const decorateDoTrySpy = jest.spyOn(StepXmlSerializer, 'decorateDoTry');
+      const decorateDoTrySpy = vi.spyOn(StepXmlSerializer, 'decorateDoTry');
       StepXmlSerializer.serialize('doTry', doTryEntity, getDocument());
 
       expect(decorateDoTrySpy).not.toHaveBeenCalled();
@@ -233,7 +233,7 @@ describe('step-xml-serializer tests', () => {
     });
 
     it('should call decorateDoTry when doCatch and doFinally are not in the catalog', () => {
-      const decorateDoTrySpy = jest.spyOn(StepXmlSerializer, 'decorateDoTry');
+      const decorateDoTrySpy = vi.spyOn(StepXmlSerializer, 'decorateDoTry');
       const document = getDocument();
       StepXmlSerializer.serialize('doTry', doTryEntity, document);
 

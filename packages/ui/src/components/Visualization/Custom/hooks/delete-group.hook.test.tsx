@@ -19,9 +19,9 @@ import {
 } from '../ContextMenu/item-interaction-helper';
 import { useDeleteGroup } from './delete-group.hook';
 
-jest.mock('../ContextMenu/item-interaction-helper', () => ({
-  findOnDeleteModalCustomizationRecursively: jest.fn(),
-  processOnDeleteAddonRecursively: jest.fn(),
+vi.mock('../ContextMenu/item-interaction-helper', () => ({
+  findOnDeleteModalCustomizationRecursively: vi.fn(),
+  processOnDeleteAddonRecursively: vi.fn(),
 }));
 
 describe('useDeleteGroup', () => {
@@ -33,27 +33,27 @@ describe('useDeleteGroup', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   const mockActionConfirmationModalContext = {
-    actionConfirmation: jest.fn(),
+    actionConfirmation: vi.fn(),
   };
 
   const mockNodeInteractionAddonContext: INodeInteractionAddonContext = {
-    registerInteractionAddon: jest.fn(),
-    getRegisteredInteractionAddons: jest.fn().mockReturnValue([]),
+    registerInteractionAddon: vi.fn(),
+    getRegisteredInteractionAddons: vi.fn().mockReturnValue([]),
   };
 
   beforeEach(() => {
     mockVizNode = createVisualizationNode('test-group', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    (findOnDeleteModalCustomizationRecursively as jest.Mock).mockReturnValue([]);
-    (processOnDeleteAddonRecursively as jest.Mock).mockImplementation(() => {});
+    (findOnDeleteModalCustomizationRecursively as vi.Mock).mockReturnValue([]);
+    (processOnDeleteAddonRecursively as vi.Mock).mockImplementation(() => {});
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -83,8 +83,8 @@ describe('useDeleteGroup', () => {
   });
 
   it('should show confirmation modal and delete group when confirmed', async () => {
-    const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
-    jest.spyOn(mockVizNode, 'getId').mockReturnValue('test-group');
+    const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
+    vi.spyOn(mockVizNode, 'getId').mockReturnValue('test-group');
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
 
     const { result } = renderHook(() => useDeleteGroup(mockVizNode), { wrapper });
@@ -103,7 +103,7 @@ describe('useDeleteGroup', () => {
   });
 
   it('should not delete group when modal is cancelled', async () => {
-    const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
+    const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CANCEL);
 
     const { result } = renderHook(() => useDeleteGroup(mockVizNode), { wrapper });
@@ -117,7 +117,7 @@ describe('useDeleteGroup', () => {
   });
 
   it('should not delete group when modal returns undefined', async () => {
-    const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
+    const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useDeleteGroup(mockVizNode), { wrapper });
@@ -133,8 +133,8 @@ describe('useDeleteGroup', () => {
       additionalText: 'Custom additional text',
       buttonOptions: { confirm: 'Delete Now', cancel: 'Keep It' },
     };
-    jest.spyOn(mockVizNode, 'getId').mockReturnValue('test-group');
-    (findOnDeleteModalCustomizationRecursively as jest.Mock).mockReturnValue([mockModalCustomization]);
+    vi.spyOn(mockVizNode, 'getId').mockReturnValue('test-group');
+    (findOnDeleteModalCustomizationRecursively as vi.Mock).mockReturnValue([mockModalCustomization]);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
 
     const { result } = renderHook(() => useDeleteGroup(mockVizNode), { wrapper });
@@ -158,7 +158,7 @@ describe('useDeleteGroup', () => {
 
     expect(findOnDeleteModalCustomizationRecursively).toHaveBeenCalledWith(mockVizNode, expect.any(Function));
 
-    const callback = (findOnDeleteModalCustomizationRecursively as jest.Mock).mock.calls[0][1];
+    const callback = (findOnDeleteModalCustomizationRecursively as vi.Mock).mock.calls[0][1];
     callback(mockVizNode);
     expect(mockNodeInteractionAddonContext.getRegisteredInteractionAddons).toHaveBeenCalledWith(
       IInteractionType.ON_DELETE,
@@ -167,9 +167,9 @@ describe('useDeleteGroup', () => {
   });
 
   it('should handle vizNode without ID', async () => {
-    const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
+    const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
     const vizNodeWithoutId = createVisualizationNode('id', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    jest.spyOn(vizNodeWithoutId, 'getId').mockReturnValueOnce(undefined);
+    vi.spyOn(vizNodeWithoutId, 'getId').mockReturnValueOnce(undefined);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
 
     const { result } = renderHook(() => useDeleteGroup(vizNodeWithoutId), { wrapper });

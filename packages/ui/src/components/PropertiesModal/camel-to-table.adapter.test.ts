@@ -510,7 +510,7 @@ describe('getClassNameOnly', () => {
 
   it('should report warning in console log if does not know', () => {
     const invalidName = 'java.^#&.p@ckage.Cla$$';
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     expect(getClassNameOnlyFunctionExportedForTesting(invalidName)).toEqual(invalidName);
     expect(consoleSpy).toHaveBeenCalledWith('[WARN] Not able to parse this fully qualified name: ' + invalidName);
   });

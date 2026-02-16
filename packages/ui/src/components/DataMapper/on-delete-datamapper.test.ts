@@ -4,30 +4,30 @@ import { DataMapperMetadataService } from '../../services/datamapper-metadata.se
 import { DataMapperStepService } from '../../services/datamapper-step.service';
 import { ACTION_ID_DELETE_STEP_AND_FILE, ACTION_ID_DELETE_STEP_ONLY, onDeleteDataMapper } from './on-delete-datamapper';
 
-jest.mock('../../services/datamapper-metadata.service');
-jest.mock('../../services/datamapper-step.service');
+vi.mock('../../services/datamapper-metadata.service');
+vi.mock('../../services/datamapper-step.service');
 
 describe('onDeleteDataMapper', () => {
-  let mockApi: jest.Mocked<IMetadataApi>;
+  let mockApi: vi.Mocked<IMetadataApi>;
   const metadataId = 'test-metadata-id';
 
   beforeEach(() => {
     mockApi = {
-      getMetadata: jest.fn(),
-      setMetadata: jest.fn(),
-      deleteMetadata: jest.fn(),
-      getResourceContent: jest.fn(),
-      saveResourceContent: jest.fn(),
-      deleteResourceContent: jest.fn(),
-    } as unknown as jest.Mocked<IMetadataApi>;
+      getMetadata: vi.fn(),
+      setMetadata: vi.fn(),
+      deleteMetadata: vi.fn(),
+      getResourceContent: vi.fn(),
+      saveResourceContent: vi.fn(),
+      deleteResourceContent: vi.fn(),
+    } as unknown as vi.Mocked<IMetadataApi>;
 
-    jest.spyOn(DataMapperStepService, 'getDataMapperMetadataId').mockReturnValue(metadataId);
-    jest.spyOn(DataMapperMetadataService, 'deleteXsltFile').mockResolvedValue(undefined);
-    jest.spyOn(DataMapperMetadataService, 'deleteMetadata').mockResolvedValue(undefined);
+    vi.spyOn(DataMapperStepService, 'getDataMapperMetadataId').mockReturnValue(metadataId);
+    vi.spyOn(DataMapperMetadataService, 'deleteXsltFile').mockResolvedValue(undefined);
+    vi.spyOn(DataMapperMetadataService, 'deleteMetadata').mockResolvedValue(undefined);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should delete step and file when modal answer is ACTION_ID_DELETE_STEP_AND_FILE', async () => {

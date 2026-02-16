@@ -6,8 +6,8 @@ import { CamelCatalogService, CatalogKind, IVisualizationNode } from '../../mode
 import { getFirstCatalogMap } from '../../stubs/test-load-catalog';
 import { ComponentMode } from './ComponentMode';
 
-let mockUpdateSourceCodeFromEntities: jest.Mock;
-jest.mock('../../hooks/useEntityContext/useEntityContext', () => ({
+let mockUpdateSourceCodeFromEntities: vi.Mock;
+vi.mock('../../hooks/useEntityContext/useEntityContext', () => ({
   useEntityContext: () => ({ updateSourceCodeFromEntities: mockUpdateSourceCodeFromEntities }),
 }));
 
@@ -16,7 +16,7 @@ describe('ComponentMode', () => {
     const catalogsMap = await getFirstCatalogMap(catalogLibrary as CatalogLibrary);
     CamelCatalogService.setCatalogKey(CatalogKind.Pattern, { ...catalogsMap.patternCatalogMap });
 
-    mockUpdateSourceCodeFromEntities = jest.fn();
+    mockUpdateSourceCodeFromEntities = vi.fn();
   });
 
   const getMockVizNode = (processorName = 'to'): IVisualizationNode => {
@@ -24,7 +24,7 @@ describe('ComponentMode', () => {
       data: { processorName, path: `route.from.steps.0.${processorName}` },
       getNodeSchema: () => undefined,
       getNodeDefinition: () => ({}),
-      updateModel: jest.fn(),
+      updateModel: vi.fn(),
     } as unknown as IVisualizationNode;
   };
 
@@ -134,7 +134,7 @@ describe('ComponentMode', () => {
   });
 
   it('should query the camel catalog for the component description', () => {
-    const getComponentSpy = jest.spyOn(CamelCatalogService, 'getComponent');
+    const getComponentSpy = vi.spyOn(CamelCatalogService, 'getComponent');
     const vizNode = getMockVizNode('to');
 
     render(<ComponentMode vizNode={vizNode} />);

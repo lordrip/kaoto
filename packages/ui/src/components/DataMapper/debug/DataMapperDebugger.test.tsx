@@ -4,7 +4,7 @@ import { DataMapperDebugger } from './DataMapperDebugger';
 
 describe('Debug', () => {
   it('should render', async () => {
-    const mockLog = jest.fn();
+    const mockLog = vi.fn();
     console.log = mockLog;
     render(<DataMapperDebugger />);
     await screen.findByTestId('dm-debug-main-menu-button');

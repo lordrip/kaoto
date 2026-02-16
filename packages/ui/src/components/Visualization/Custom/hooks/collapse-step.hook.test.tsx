@@ -12,30 +12,30 @@ describe('useCollapseStep', () => {
 
   beforeEach(() => {
     mockGraph = {
-      layout: jest.fn(),
+      layout: vi.fn(),
     } as unknown as Graph;
 
     mockController = {
-      getGraph: jest.fn().mockReturnValue(mockGraph),
+      getGraph: vi.fn().mockReturnValue(mockGraph),
     } as unknown as Controller;
 
     mockElement = {
-      setDimensions: jest.fn(),
-      setCollapsed: jest.fn(),
-      getController: jest.fn().mockReturnValue(mockController),
-      getKind: jest.fn().mockReturnValue('node'),
+      setDimensions: vi.fn(),
+      setCollapsed: vi.fn(),
+      getController: vi.fn().mockReturnValue(mockController),
+      getKind: vi.fn().mockReturnValue('node'),
     } as unknown as Node<ElementModel, unknown>;
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should throw error when element is not a node', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => null);
+    vi.spyOn(console, 'error').mockImplementation(() => null);
 
     const nonNodeElement = {
-      getKind: jest.fn().mockReturnValue('edge'),
+      getKind: vi.fn().mockReturnValue('edge'),
     } as unknown as GraphElement<ElementModel, unknown>;
 
     expect(() => {
@@ -94,8 +94,8 @@ describe('useCollapseStep', () => {
 
     const newMockElement = {
       ...mockElement,
-      setDimensions: jest.fn(),
-      setCollapsed: jest.fn(),
+      setDimensions: vi.fn(),
+      setCollapsed: vi.fn(),
     };
 
     rerender({ element: newMockElement });

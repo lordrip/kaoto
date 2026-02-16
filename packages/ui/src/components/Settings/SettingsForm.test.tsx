@@ -6,7 +6,7 @@ import { ReloadContext, SettingsProvider } from '../../providers';
 import { SettingsForm } from './SettingsForm';
 
 describe('SettingsForm', () => {
-  let reloadPage: jest.Mock;
+  let reloadPage: vi.Mock;
   let settingsAdapter: AbstractSettingsAdapter;
 
   const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -20,7 +20,7 @@ describe('SettingsForm', () => {
   };
 
   beforeEach(() => {
-    reloadPage = jest.fn();
+    reloadPage = vi.fn();
     settingsAdapter = new DefaultSettingsAdapter();
     render(<SettingsForm />, { wrapper });
   });

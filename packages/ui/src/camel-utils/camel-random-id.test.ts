@@ -6,8 +6,7 @@ describe('camel-random-id', () => {
   });
 
   it('should return a random number with a given length', () => {
-    jest
-      .spyOn(global, 'crypto', 'get')
+    vi.spyOn(global, 'crypto', 'get')
       .mockImplementationOnce(() => ({ getRandomValues: () => [19508888] }) as unknown as Crypto);
     expect(getCamelRandomId('route', 6)).toEqual('route-195088');
   });
@@ -17,8 +16,8 @@ describe('camel-random-id', () => {
       value: undefined,
       writable: true,
     });
-    jest.spyOn(global, 'crypto', 'get').mockImplementationOnce(() => undefined as unknown as Crypto);
-    jest.spyOn(global.Date, 'now').mockReturnValueOnce(888);
+    vi.spyOn(global, 'crypto', 'get').mockImplementationOnce(() => undefined as unknown as Crypto);
+    vi.spyOn(global.Date, 'now').mockReturnValueOnce(888);
 
     const result = getCamelRandomId('route');
 
@@ -31,7 +30,7 @@ describe('camel-random-id', () => {
       writable: true,
     });
 
-    jest.spyOn(global, 'crypto', 'get').mockImplementationOnce(() => undefined as unknown as Crypto);
+    vi.spyOn(global, 'crypto', 'get').mockImplementationOnce(() => undefined as unknown as Crypto);
 
     expect(getCamelRandomId('route')).toEqual(expect.any(String));
   });
@@ -40,8 +39,7 @@ describe('camel-random-id', () => {
 describe('getHexaDecimalRandomId()', () => {
   it('should return a random number with Hexadecimal format', async () => {
     // crypto.getRandomValues() in Jest returns a fixed number 12345678. Replacing with Date.now()
-    jest
-      .spyOn(global, 'crypto', 'get')
+    vi.spyOn(global, 'crypto', 'get')
       .mockImplementation(() => ({ getRandomValues: () => [Date.now()] }) as unknown as Crypto);
 
     const one = getHexaDecimalRandomId('test');

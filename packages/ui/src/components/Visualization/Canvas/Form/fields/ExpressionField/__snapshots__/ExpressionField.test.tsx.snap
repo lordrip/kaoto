@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ExpressionField renders empty expression field with schema 1`] = `
+exports[`ExpressionField > renders empty expression field with schema 1`] = `
 <div>
   <div
     class="pf-v6-c-card"
@@ -141,7 +141,7 @@ exports[`ExpressionField renders empty expression field with schema 1`] = `
 </div>
 `;
 
-exports[`ExpressionField renders expression field with selection 1`] = `
+exports[`ExpressionField > renders expression field with selection 1`] = `
 <div>
   <div
     class="pf-v6-c-card"

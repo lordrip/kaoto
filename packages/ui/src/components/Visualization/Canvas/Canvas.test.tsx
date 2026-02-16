@@ -17,15 +17,15 @@ describe('Canvas', () => {
   const entity2 = { ...entity, id: 'route-9999' } as CamelRouteVisualEntity;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
   });
 
-  afterAll(() => {
-    jest.useRealTimers();
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should render correctly', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     const { Provider } = TestProvidersWrapper({
       visibleFlowsContext: { visibleFlows: { ['route-8888']: true } } as unknown as VisibleFlowsContextResult,
     });
@@ -43,7 +43,7 @@ describe('Canvas', () => {
     });
 
     await act(async () => {
-      await jest.runAllTimersAsync();
+      await vi.runAllTimersAsync();
     });
 
     await waitFor(async () => expect(screen.getByText('Reset View')).toBeInTheDocument());
@@ -70,7 +70,7 @@ describe('Canvas', () => {
     });
 
     await act(async () => {
-      await jest.runAllTimersAsync();
+      await vi.runAllTimersAsync();
     });
 
     await waitFor(async () => expect(screen.getByText('Reset View')).toBeInTheDocument());
@@ -78,12 +78,21 @@ describe('Canvas', () => {
   });
 
   it('should schedule a graph.fit(80) upon loading', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Capture requestAnimationFrame callbacks so we can flush them manually
+    const rafCallbacks: FrameRequestCallback[] = [];
+    const originalRaf = window.requestAnimationFrame;
+    window.requestAnimationFrame = (cb: FrameRequestCallback) => {
+      rafCallbacks.push(cb);
+      return rafCallbacks.length;
+    };
+
     const { Provider } = TestProvidersWrapper({
       visibleFlowsContext: { visibleFlows: { ['route-8888']: true } } as unknown as VisibleFlowsContextResult,
     });
     const controller = ControllerService.createController();
-    const fromModelSpy = jest.spyOn(controller, 'fromModel');
+    const fromModelSpy = vi.spyOn(controller, 'fromModel');
 
     await act(async () => {
       render(
@@ -95,13 +104,13 @@ describe('Canvas', () => {
       );
     });
 
-    // The graph has been initialized with the .fromModel method, but the requestAnimationFrame
-    // has not been called yet, so the graph.fit(80) is not called yet.
-    const fitSpy = jest.spyOn(controller.getGraph(), 'fit');
-    const layoutSpy = jest.spyOn(controller.getGraph(), 'layout');
+    // Spy on the graph AFTER fromModel has been called (it may create a new graph)
+    const fitSpy = vi.spyOn(controller.getGraph(), 'fit');
+    const layoutSpy = vi.spyOn(controller.getGraph(), 'layout');
 
+    // Flush requestAnimationFrame callbacks
     await act(async () => {
-      await jest.runAllTimersAsync();
+      rafCallbacks.forEach((cb) => cb(performance.now()));
     });
 
     expect(fromModelSpy).toHaveBeenCalledWith(
@@ -113,12 +122,14 @@ describe('Canvas', () => {
     // This won't be called the first time
     expect(fromModelSpy).not.toHaveBeenCalledWith(expect.anything(), true);
     expect(layoutSpy).not.toHaveBeenCalled();
+
+    window.requestAnimationFrame = originalRaf;
   });
 
   it('should be able to delete the routes', async () => {
     const camelResource = new CamelRouteResource([camelRouteJson]);
     const routeEntities = camelResource.getVisualEntities();
-    const removeSpy = jest.spyOn(camelResource, 'removeEntity');
+    const removeSpy = vi.spyOn(camelResource, 'removeEntity');
 
     const { Provider } = TestProvidersWrapper({
       camelResource,
@@ -142,7 +153,7 @@ describe('Canvas', () => {
     });
 
     await act(async () => {
-      await jest.runAllTimersAsync();
+      await vi.runAllTimersAsync();
     });
 
     const route = result?.getByText('route-8888');
@@ -179,7 +190,7 @@ describe('Canvas', () => {
   it('should be able to delete the kamelets', async () => {
     const kameletResource = new KameletResource(kameletJson);
     const kameletEntities = kameletResource.getVisualEntities();
-    const removeSpy = jest.spyOn(kameletResource, 'removeEntity');
+    const removeSpy = vi.spyOn(kameletResource, 'removeEntity');
 
     const { Provider } = TestProvidersWrapper({
       camelResource: kameletResource,
@@ -203,7 +214,7 @@ describe('Canvas', () => {
     });
 
     await act(async () => {
-      await jest.runAllTimersAsync();
+      await vi.runAllTimersAsync();
     });
 
     const kamelet = result?.getByText('Produces periodic events about random users!');
@@ -246,7 +257,7 @@ describe('Canvas', () => {
 
       await act(async () => {
         result = render(
-          <CatalogModalContext.Provider value={{ getNewComponent: jest.fn(), checkCompatibility: jest.fn() }}>
+          <CatalogModalContext.Provider value={{ getNewComponent: vi.fn(), checkCompatibility: vi.fn() }}>
             <Provider>
               <VisualizationProvider controller={ControllerService.createController()}>
                 <Canvas entities={[entity]} />
@@ -257,7 +268,7 @@ describe('Canvas', () => {
       });
 
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       await waitFor(async () => expect(screen.getByText('Open Catalog')).toBeInTheDocument());
@@ -282,7 +293,7 @@ describe('Canvas', () => {
       });
 
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       await waitFor(async () => expect(screen.queryByText('Open Catalog')).not.toBeInTheDocument());
@@ -309,7 +320,7 @@ describe('Canvas', () => {
       });
 
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       await waitFor(async () => expect(screen.getByTestId('visualization-empty-state')).toBeInTheDocument());
@@ -333,7 +344,7 @@ describe('Canvas', () => {
       });
 
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       await waitFor(async () => expect(screen.getByTestId('visualization-empty-state')).toBeInTheDocument());

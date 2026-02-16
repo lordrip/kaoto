@@ -26,16 +26,16 @@ describe('ItemReplaceStep', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   const mockReplaceModalContext = {
-    actionConfirmation: jest.fn(),
+    actionConfirmation: vi.fn(),
   };
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render replace ContextMenuItem', () => {
@@ -66,16 +66,16 @@ describe('ItemReplaceStep', () => {
 
   it('should process addon when replacing', async () => {
     const mockCatalogModalContext = {
-      setIsModalOpen: jest.fn(),
+      setIsModalOpen: vi.fn(),
       getNewComponent: () => Promise.resolve({} as DefinedComponent),
-      checkCompatibility: jest.fn(),
+      checkCompatibility: vi.fn(),
     };
     const mockReplaceModalContext = {
       actionConfirmation: () => Promise.resolve(ACTION_ID_CONFIRM),
     };
-    const mockAddon = jest.fn();
+    const mockAddon = vi.fn();
     const mockNodeInteractionAddonContext = {
-      registerInteractionAddon: jest.fn(),
+      registerInteractionAddon: vi.fn(),
       getRegisteredInteractionAddons: (
         _interaction: IInteractionType,
         _vizNode?: IVisualizationNode,

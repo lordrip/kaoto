@@ -8,8 +8,8 @@ import { ReloadContext } from './reload.provider';
 import { SchemasLoaderProvider } from './schemas.provider';
 
 describe('SchemasLoaderProvider', () => {
-  let fetchMock: jest.SpyInstance;
-  let getSchemasFilesMock: jest.SpyInstance;
+  let fetchMock: vi.SpyInstance;
+  let getSchemasFilesMock: vi.SpyInstance;
   let fetchResolve: () => void;
   let fetchReject: () => void;
   let catalogDefinition: CatalogDefinition;
@@ -20,7 +20,7 @@ describe('SchemasLoaderProvider', () => {
   });
 
   beforeEach(() => {
-    fetchMock = jest.spyOn(window, 'fetch');
+    fetchMock = vi.spyOn(window, 'fetch');
     fetchMock.mockImplementationOnce((file) => {
       return new Promise((resolve, reject) => {
         fetchResolve = () => {
@@ -35,12 +35,12 @@ describe('SchemasLoaderProvider', () => {
       });
     });
 
-    getSchemasFilesMock = jest.spyOn(CatalogSchemaLoader, 'getSchemasFiles');
+    getSchemasFilesMock = vi.spyOn(CatalogSchemaLoader, 'getSchemasFiles');
     getSchemasFilesMock.mockReturnValueOnce([Promise.resolve]);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should start in loading mode', async () => {
@@ -59,11 +59,11 @@ describe('SchemasLoaderProvider', () => {
   });
 
   it('should stay in Error mode when there is an error', async () => {
-    jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {});
     const { Provider } = TestRuntimeProviderWrapper();
     await act(async () => {
       render(
-        <ReloadContext.Provider value={{ reloadPage: jest.fn(), lastRender: 0 }}>
+        <ReloadContext.Provider value={{ reloadPage: vi.fn(), lastRender: 0 }}>
           <Provider>
             <SchemasLoaderProvider>
               <span data-testid="schemas-loaded">Loaded</span>

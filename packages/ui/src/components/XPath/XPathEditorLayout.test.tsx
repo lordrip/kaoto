@@ -7,15 +7,13 @@ import { DataMapperCanvasProvider } from '../../providers/datamapper-canvas.prov
 import { XPathEditorLayout } from './XPathEditorLayout';
 
 describe('XPathEditorLayout - Search Field', () => {
-  window.ResizeObserver = jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-  }));
+  window.ResizeObserver = vi.fn().mockImplementation(function () {
+    return { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
+  });
   const tree = new MappingTree(DocumentType.TARGET_BODY, BODY_DOCUMENT_ID, DocumentDefinitionType.XML_SCHEMA);
   const mapping: ExpressionItem = new ValueSelector(tree);
   mapping.expression = '/to/some/field';
-  const onUpdate = jest.fn();
+  const onUpdate = vi.fn();
   const setup = () => {
     return render(
       <DataMapperProvider>

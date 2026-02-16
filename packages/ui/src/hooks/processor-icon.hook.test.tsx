@@ -36,7 +36,7 @@ describe('useProcessorIcon', () => {
   it.each(DESCRIPTION_TEST_CASES)(
     'returns the correct description for processorName="%s"',
     (name, expectedDescription) => {
-      jest.spyOn(CamelCatalogService, 'getComponent').mockReturnValueOnce({
+      vi.spyOn(CamelCatalogService, 'getComponent').mockReturnValueOnce({
         model: { description: expectedDescription.split(': ')[1] },
       } as unknown as ComponentsCatalogTypes);
 

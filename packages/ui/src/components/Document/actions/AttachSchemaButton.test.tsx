@@ -26,8 +26,8 @@ import {
 import { readFileAsString } from '../../../stubs/read-file-as-string';
 import { AttachSchemaButton } from './AttachSchemaButton';
 
-jest.mock('../../../stubs/read-file-as-string');
-const mockReadFileAsString = readFileAsString as jest.MockedFunction<typeof readFileAsString>;
+vi.mock('../../../stubs/read-file-as-string');
+const mockReadFileAsString = readFileAsString as vi.MockedFunction<typeof readFileAsString>;
 
 describe('AttachSchemaButton', () => {
   afterAll(() => {

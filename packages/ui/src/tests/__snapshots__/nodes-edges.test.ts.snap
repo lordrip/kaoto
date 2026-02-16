@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
+exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
 [
   {
     "children": [],
@@ -18213,7 +18213,7 @@ exports[`Nodes and Edges should generate edges for steps with branches 1`] = `
 ]
 `;
 
-exports[`Nodes and Edges should generate edges for steps with branches 2`] = `
+exports[`Nodes and Edges > should generate edges for steps with branches 2`] = `
 [
   {
     "edgeStyle": "solid",

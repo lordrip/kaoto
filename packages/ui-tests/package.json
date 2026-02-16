@@ -69,7 +69,7 @@
     "@patternfly/patternfly": "^6.4.0",
     "@patternfly/react-code-editor": "^6.4.0",
     "@patternfly/react-core": "^6.4.0",
-    "@patternfly/react-icons": "^6.4.0",
+    "@patternfly/react-icons": "patch:@patternfly/react-icons@npm%3A6.4.0#~/.yarn/patches/@patternfly-react-icons-npm-6.4.0-9e28fe7888.patch",
     "@patternfly/react-table": "^6.4.0",
     "@patternfly/react-topology": "^6.4.0",
     "storybook": "^8.2.8"

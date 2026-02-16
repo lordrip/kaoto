@@ -24,8 +24,8 @@ describe('ConditionMenuAction', () => {
       targetDoc.fields[0],
       new FieldItem(mappingTree, targetDoc.fields[0]),
     );
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(VisualizationService, 'applyValueSelector');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(VisualizationService, 'applyValueSelector');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -46,8 +46,8 @@ describe('ConditionMenuAction', () => {
       targetDoc.fields[0],
       new FieldItem(mappingTree, targetDoc.fields[0]),
     );
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(VisualizationService, 'applyIf');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(VisualizationService, 'applyIf');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -68,8 +68,8 @@ describe('ConditionMenuAction', () => {
       targetDoc.fields[0],
       new FieldItem(mappingTree, targetDoc.fields[0]),
     );
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(VisualizationService, 'applyChooseWhenOtherwise');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(VisualizationService, 'applyChooseWhenOtherwise');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -86,8 +86,8 @@ describe('ConditionMenuAction', () => {
 
   it('should apply when', () => {
     const nodeData = new MappingNodeData(documentNodeData, new ChooseItem(mappingTree, targetDoc.fields[0]));
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(MappingService, 'addWhen');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(MappingService, 'addWhen');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -105,8 +105,8 @@ describe('ConditionMenuAction', () => {
 
   it('should apply otherwise', () => {
     const nodeData = new MappingNodeData(documentNodeData, new ChooseItem(mappingTree, targetDoc.fields[0]));
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(MappingService, 'addOtherwise');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(MappingService, 'addOtherwise');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -128,8 +128,8 @@ describe('ConditionMenuAction', () => {
       targetDoc.fields[0].fields[3],
       new FieldItem(mappingTree, targetDoc.fields[0].fields[3]),
     );
-    const onUpdateMock = jest.fn();
-    const spyOnApply = jest.spyOn(VisualizationService, 'applyForEach');
+    const onUpdateMock = vi.fn();
+    const spyOnApply = vi.spyOn(VisualizationService, 'applyForEach');
     render(<ConditionMenuAction nodeData={nodeData} onUpdate={onUpdateMock} />);
     const actionToggle = screen.getByTestId('transformation-actions-menu-toggle');
     act(() => {
@@ -145,7 +145,7 @@ describe('ConditionMenuAction', () => {
   });
 
   it('should stop event propagation upon context menu toggle', () => {
-    const stopPropagationSpy = jest.fn();
+    const stopPropagationSpy = vi.fn();
     const nodeData = new TargetFieldNodeData(
       documentNodeData,
       targetDoc.fields[0].fields[3],
@@ -163,7 +163,7 @@ describe('ConditionMenuAction', () => {
   });
 
   it('should stop event propagation upon selecting a menu option', () => {
-    const stopPropagationSpy = jest.fn();
+    const stopPropagationSpy = vi.fn();
     const nodeData = new TargetFieldNodeData(
       documentNodeData,
       targetDoc.fields[0].fields[3],
@@ -174,7 +174,7 @@ describe('ConditionMenuAction', () => {
 
     act(() => {
       const actionToggle = wrapper.getByTestId('transformation-actions-menu-toggle');
-      fireEvent.click(actionToggle, { stopPropagation: jest.fn() });
+      fireEvent.click(actionToggle, { stopPropagation: vi.fn() });
     });
 
     act(() => {
@@ -186,7 +186,7 @@ describe('ConditionMenuAction', () => {
   });
 
   it('should render Add Conditional Mapping dropdown for the add mapping placeholder', async () => {
-    const onUpdateSpy = jest.fn();
+    const onUpdateSpy = vi.fn();
     const nodeData = new AddMappingNodeData(documentNodeData, targetDoc.fields[0].fields[3]);
     const wrapper = render(
       <ConditionMenuAction nodeData={nodeData} dropdownLabel="Add Conditional Mapping" onUpdate={onUpdateSpy} />,

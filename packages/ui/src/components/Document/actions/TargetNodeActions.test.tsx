@@ -13,7 +13,7 @@ describe('TargetNodeActions', () => {
     const targetDoc = TestUtil.createTargetOrderDoc();
     const tree = new MappingTree(DocumentType.TARGET_BODY, BODY_DOCUMENT_ID, DocumentDefinitionType.XML_SCHEMA);
     const nodeData = new TargetDocumentNodeData(targetDoc, tree);
-    render(<TargetNodeActions nodeData={nodeData} onUpdate={jest.fn()} />);
+    render(<TargetNodeActions nodeData={nodeData} onUpdate={vi.fn()} />);
     expect(await screen.findByTestId('transformation-actions-menu-toggle')).toBeTruthy();
   });
 
@@ -25,7 +25,7 @@ describe('TargetNodeActions', () => {
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
-          <TargetNodeActions nodeData={mappingData} onUpdate={jest.fn()} />
+          <TargetNodeActions nodeData={mappingData} onUpdate={vi.fn()} />
         </DataMapperCanvasProvider>
       </DataMapperProvider>,
     );

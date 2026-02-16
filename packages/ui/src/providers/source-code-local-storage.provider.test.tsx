@@ -16,7 +16,7 @@ describe('SourceCodeLocalStorageProvider', () => {
   });
 
   it('should initialize source code from localStorage', () => {
-    const localStorageGetItemSpy = jest.spyOn(Storage.prototype, 'getItem');
+    const localStorageGetItemSpy = vi.spyOn(Storage.prototype, 'getItem');
 
     render(<SourceCodeLocalStorageProvider />);
 
@@ -25,10 +25,10 @@ describe('SourceCodeLocalStorageProvider', () => {
   });
 
   it('should subscribe to eventNotifier events', () => {
-    const mockSubscribe = jest.fn();
-    const mockUnsubscribe = jest.fn();
+    const mockSubscribe = vi.fn();
+    const mockUnsubscribe = vi.fn();
 
-    jest.spyOn(EventNotifier, 'getInstance').mockReturnValueOnce({
+    vi.spyOn(EventNotifier, 'getInstance').mockReturnValueOnce({
       subscribe: mockSubscribe.mockImplementation(() => mockUnsubscribe),
     } as unknown as EventNotifier);
 
@@ -39,10 +39,10 @@ describe('SourceCodeLocalStorageProvider', () => {
   });
 
   it('should unsubscribe from eventNotifier events on unmount', () => {
-    const mockSubscribe = jest.fn();
-    const mockUnsubscribe = jest.fn();
+    const mockSubscribe = vi.fn();
+    const mockUnsubscribe = vi.fn();
 
-    jest.spyOn(EventNotifier, 'getInstance').mockReturnValueOnce({
+    vi.spyOn(EventNotifier, 'getInstance').mockReturnValueOnce({
       subscribe: mockSubscribe.mockImplementation(() => mockUnsubscribe),
     } as unknown as EventNotifier);
 
@@ -56,7 +56,7 @@ describe('SourceCodeLocalStorageProvider', () => {
   });
 
   it('should update localStorage when entities:updated event is triggered', () => {
-    const localStorageSetItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+    const localStorageSetItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
     render(<SourceCodeLocalStorageProvider />);
 
@@ -69,7 +69,7 @@ describe('SourceCodeLocalStorageProvider', () => {
   });
 
   it('should update localStorage when code:updated event is triggered', () => {
-    const localStorageSetItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+    const localStorageSetItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
     render(<SourceCodeLocalStorageProvider />);
 

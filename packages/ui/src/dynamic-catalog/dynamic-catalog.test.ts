@@ -23,7 +23,7 @@ describe('DynamicCatalog', () => {
   describe('get', () => {
     it('should fetch entity from provider when not in cache', async () => {
       const mockEntity: TestEntity = { id: '1', name: 'test-entity', value: 42 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
 
       const result = await catalog.get('entity-key');
 
@@ -34,7 +34,7 @@ describe('DynamicCatalog', () => {
 
     it('should return cached entity on subsequent calls', async () => {
       const mockEntity: TestEntity = { id: '2', name: 'cached-entity', value: 99 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
 
       const firstResult = await catalog.get('cached-key');
       expect(firstResult).toBe(mockEntity);
@@ -48,7 +48,7 @@ describe('DynamicCatalog', () => {
     it('should bypass cache when forceFresh option is true', async () => {
       const firstEntity: TestEntity = { id: '3', name: 'first-version', value: 1 };
       const secondEntity: TestEntity = { id: '3', name: 'second-version', value: 2 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch');
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch');
       fetchSpy.mockResolvedValueOnce(firstEntity).mockResolvedValueOnce(secondEntity);
 
       const firstResult = await catalog.get('entity-key');
@@ -61,7 +61,7 @@ describe('DynamicCatalog', () => {
 
     it('should use cache when forceFresh option is false', async () => {
       const mockEntity: TestEntity = { id: '4', name: 'entity', value: 50 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
 
       await catalog.get('key');
       const result = await catalog.get('key', { forceFresh: false });
@@ -71,7 +71,7 @@ describe('DynamicCatalog', () => {
     });
 
     it('should return undefined when provider returns undefined', async () => {
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(undefined);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(undefined);
 
       const result = await catalog.get('non-existent-key');
 
@@ -80,7 +80,7 @@ describe('DynamicCatalog', () => {
     });
 
     it('should not cache undefined values', async () => {
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(undefined);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(undefined);
 
       const firstResult = await catalog.get('missing-key');
       expect(firstResult).toBeUndefined();
@@ -94,7 +94,7 @@ describe('DynamicCatalog', () => {
     it('should handle multiple different keys independently', async () => {
       const entity1: TestEntity = { id: '1', name: 'first', value: 10 };
       const entity2: TestEntity = { id: '2', name: 'second', value: 20 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch');
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch');
       fetchSpy.mockResolvedValueOnce(entity1).mockResolvedValueOnce(entity2);
 
       const result1 = await catalog.get('key1');
@@ -109,7 +109,7 @@ describe('DynamicCatalog', () => {
 
     it('should use default options when no options provided', async () => {
       const mockEntity: TestEntity = { id: '5', name: 'default-options', value: 123 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
 
       const result = await catalog.get('key');
 
@@ -119,7 +119,7 @@ describe('DynamicCatalog', () => {
 
     it('should handle provider errors gracefully', async () => {
       const error = new Error('Provider fetch failed');
-      jest.spyOn(mockProvider, 'fetch').mockRejectedValue(error);
+      vi.spyOn(mockProvider, 'fetch').mockRejectedValue(error);
 
       await expect(catalog.get('error-key')).rejects.toThrow('Provider fetch failed');
     });
@@ -132,7 +132,7 @@ describe('DynamicCatalog', () => {
         entity2: { id: '2', name: 'second', value: 20 },
         entity3: { id: '3', name: 'third', value: 30 },
       };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const result = await catalog.getAll();
 
@@ -145,7 +145,7 @@ describe('DynamicCatalog', () => {
         cached1: { id: '1', name: 'cached-first', value: 100 },
         cached2: { id: '2', name: 'cached-second', value: 200 },
       };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const firstResult = await catalog.getAll();
       expect(fetchAllSpy).toHaveBeenCalledTimes(1);
@@ -158,7 +158,7 @@ describe('DynamicCatalog', () => {
     it('should bypass cache when forceFresh option is true', async () => {
       const firstEntities = { key1: { id: '1', name: 'first', value: 1 } };
       const secondEntities = { key1: { id: '1', name: 'updated', value: 2 } };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll');
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll');
       fetchAllSpy.mockResolvedValueOnce(firstEntities).mockResolvedValueOnce(secondEntities);
 
       await catalog.getAll();
@@ -174,7 +174,7 @@ describe('DynamicCatalog', () => {
         entity2: { id: '2', name: 'second', value: 20 },
         entity3: { id: '3', name: 'third', value: 30 },
       };
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const filterFn = (_key: string, entity: TestEntity) => entity.value > 15;
       const result = await catalog.getAll({ filterFn });
@@ -192,7 +192,7 @@ describe('DynamicCatalog', () => {
         'exclude-this': { id: '2', name: 'second', value: 20 },
         'include-that': { id: '3', name: 'third', value: 30 },
       };
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const filterFn = (key: string) => key.startsWith('include');
       const result = await catalog.getAll({ filterFn });
@@ -209,7 +209,7 @@ describe('DynamicCatalog', () => {
         entity1: { id: '1', name: 'first', value: 10 },
         entity2: { id: '2', name: 'second', value: 20 },
       };
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const filterFn = () => false;
       const result = await catalog.getAll({ filterFn });
@@ -222,7 +222,7 @@ describe('DynamicCatalog', () => {
         entity1: { id: '1', name: 'first', value: 10 },
         entity2: { id: '2', name: 'second', value: 20 },
       };
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       const result = await catalog.getAll();
 
@@ -232,7 +232,7 @@ describe('DynamicCatalog', () => {
     });
 
     it('should handle empty object from provider', async () => {
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue({});
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue({});
 
       const result = await catalog.getAll();
 
@@ -240,7 +240,7 @@ describe('DynamicCatalog', () => {
     });
 
     it('should handle undefined response from provider', async () => {
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue({});
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue({});
 
       const result = await catalog.getAll();
 
@@ -252,8 +252,8 @@ describe('DynamicCatalog', () => {
         entity1: { id: '1', name: 'first', value: 10 },
         entity2: { id: '2', name: 'second', value: 20 },
       };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch');
-      jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch');
+      vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       await catalog.getAll();
 
@@ -268,7 +268,7 @@ describe('DynamicCatalog', () => {
         key1: { id: '1', name: 'new', value: 15 },
         key2: { id: '2', name: 'another', value: 25 },
       };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll');
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll');
       fetchAllSpy.mockResolvedValueOnce(firstEntities).mockResolvedValueOnce(secondEntities);
 
       await catalog.getAll();
@@ -283,7 +283,7 @@ describe('DynamicCatalog', () => {
 
     it('should handle provider errors gracefully', async () => {
       const error = new Error('FetchAll failed');
-      jest.spyOn(mockProvider, 'fetchAll').mockRejectedValue(error);
+      vi.spyOn(mockProvider, 'fetchAll').mockRejectedValue(error);
 
       await expect(catalog.getAll()).rejects.toThrow('FetchAll failed');
     });
@@ -293,7 +293,7 @@ describe('DynamicCatalog', () => {
         entity1: { id: '1', name: 'first', value: 10 },
         entity2: { id: '2', name: 'second', value: 20 },
       };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       await catalog.getAll();
 
@@ -308,7 +308,7 @@ describe('DynamicCatalog', () => {
   describe('clearCache', () => {
     it('should clear all cached entities', async () => {
       const mockEntity: TestEntity = { id: '1', name: 'test', value: 100 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch').mockResolvedValue(mockEntity);
 
       await catalog.get('test-key');
       expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -324,7 +324,7 @@ describe('DynamicCatalog', () => {
         entity1: { id: '1', name: 'first', value: 10 },
         entity2: { id: '2', name: 'second', value: 20 },
       };
-      const fetchAllSpy = jest.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
+      const fetchAllSpy = vi.spyOn(mockProvider, 'fetchAll').mockResolvedValue(entities);
 
       await catalog.getAll();
       expect(fetchAllSpy).toHaveBeenCalledTimes(1);
@@ -343,7 +343,7 @@ describe('DynamicCatalog', () => {
       const entity1: TestEntity = { id: '1', name: 'first', value: 10 };
       const entity2: TestEntity = { id: '2', name: 'second', value: 20 };
       const entity3: TestEntity = { id: '3', name: 'third', value: 30 };
-      const fetchSpy = jest.spyOn(mockProvider, 'fetch');
+      const fetchSpy = vi.spyOn(mockProvider, 'fetch');
       fetchSpy.mockResolvedValueOnce(entity1);
       fetchSpy.mockResolvedValueOnce(entity2);
       fetchSpy.mockResolvedValueOnce(entity3);
@@ -376,7 +376,7 @@ describe('DynamicCatalog', () => {
 
   it('should maintain cache integrity after partial failures', async () => {
     const goodEntity: TestEntity = { id: '1', name: 'good', value: 50 };
-    const fetchSpy = jest.spyOn(mockProvider, 'fetch');
+    const fetchSpy = vi.spyOn(mockProvider, 'fetch');
     fetchSpy.mockResolvedValueOnce(goodEntity);
     fetchSpy.mockRejectedValueOnce(new Error('Fetch failed'));
     fetchSpy.mockResolvedValueOnce(goodEntity);

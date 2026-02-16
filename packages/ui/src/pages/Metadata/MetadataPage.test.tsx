@@ -15,8 +15,8 @@ const mockEntitiesContext = {
   entities: camelResource.getEntities(),
   visualEntities: camelResource.getVisualEntities(),
   currentSchemaType: camelResource.getType(),
-  updateSourceCodeFromEntities: jest.fn(),
-  updateEntitiesFromCamelResource: jest.fn(),
+  updateSourceCodeFromEntities: vi.fn(),
+  updateEntitiesFromCamelResource: vi.fn(),
 };
 
 describe('MetadataPage', () => {

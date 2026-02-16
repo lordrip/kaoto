@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tile renders correctly 1`] = `
+exports[`Tile > renders correctly 1`] = `
 <div
   class="pf-v6-c-card pf-m-compact pf-m-clickable tile"
   data-ouia-component-id="OUIA-Generated-Card-1"
@@ -33,6 +33,11 @@ exports[`Tile renders correctly 1`] = `
       <div
         class="tile__header"
       >
+        <img
+          alt="component icon"
+          class="tile__icon"
+          src="/src/assets/components/generic-component.png"
+        />
         <div
           class="pf-v6-c-label-group"
         >

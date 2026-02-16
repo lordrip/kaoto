@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CatalogLayoutIcon renders gallery icon correctly 1`] = `
+exports[`CatalogLayoutIcon > renders gallery icon correctly 1`] = `
 <div>
   <svg
     aria-hidden="true"
@@ -18,7 +18,7 @@ exports[`CatalogLayoutIcon renders gallery icon correctly 1`] = `
 </div>
 `;
 
-exports[`CatalogLayoutIcon renders list icon correctly 1`] = `
+exports[`CatalogLayoutIcon > renders list icon correctly 1`] = `
 <div>
   <svg
     aria-hidden="true"
@@ -36,7 +36,7 @@ exports[`CatalogLayoutIcon renders list icon correctly 1`] = `
 </div>
 `;
 
-exports[`CatalogLayoutIcon renders unknown icon correctly 1`] = `
+exports[`CatalogLayoutIcon > renders unknown icon correctly 1`] = `
 <div>
   <svg
     aria-hidden="true"

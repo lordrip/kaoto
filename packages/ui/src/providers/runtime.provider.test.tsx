@@ -6,12 +6,12 @@ import { ReloadContext } from './reload.provider';
 import { RuntimeProvider } from './runtime.provider';
 
 describe('RuntimeProvider', () => {
-  let fetchMock: jest.SpyInstance;
+  let fetchMock: vi.SpyInstance;
   let fetchResolve: () => void;
   let fetchReject: () => void;
 
   beforeEach(() => {
-    fetchMock = jest.spyOn(window, 'fetch');
+    fetchMock = vi.spyOn(window, 'fetch');
     fetchMock.mockImplementationOnce((file) => {
       return new Promise((resolve, reject) => {
         fetchResolve = () => {
@@ -28,7 +28,7 @@ describe('RuntimeProvider', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should start in loading mode', async () => {
@@ -44,10 +44,10 @@ describe('RuntimeProvider', () => {
   });
 
   it('should stay in Error mode when there is an error', async () => {
-    jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {});
     await act(async () => {
       render(
-        <ReloadContext.Provider value={{ reloadPage: jest.fn(), lastRender: 0 }}>
+        <ReloadContext.Provider value={{ reloadPage: vi.fn(), lastRender: 0 }}>
           <RuntimeProvider catalogUrl="">
             <span data-testid="library-loaded">Loaded</span>
           </RuntimeProvider>

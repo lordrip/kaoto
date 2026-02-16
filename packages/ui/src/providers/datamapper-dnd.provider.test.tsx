@@ -1,18 +1,18 @@
 import { canScrollPanel, scrollAwareCollision } from './datamapper-dnd.provider';
 
 // Mock rectIntersection to control collision detection in tests
-jest.mock('@dnd-kit/core', () => {
-  const actual = jest.requireActual('@dnd-kit/core');
+vi.mock('@dnd-kit/core', async () => {
+  const actual = await vi.importActual('@dnd-kit/core');
   return {
     ...actual,
-    rectIntersection: jest.fn((args: { droppableContainers: Array<{ id: string }> }) => {
+    rectIntersection: vi.fn((args: { droppableContainers: Array<{ id: string }> }) => {
       // Return all droppables as potential collisions (let the filtering handle it)
       return Array.from(args.droppableContainers).map((container) => ({
         id: container.id,
         data: { droppableContainer: container, value: 55.9017 },
       }));
     }),
-    pointerWithin: jest.fn(() => []),
+    pointerWithin: vi.fn(() => []),
   };
 });
 
@@ -39,7 +39,7 @@ const createScrollContainer = (rect: DOMRect): HTMLDivElement => {
 const createMockElement = (scrollContainerRect?: DOMRect | null): HTMLDivElement => {
   const element = document.createElement('div');
 
-  element.closest = jest.fn((selector: string) => {
+  element.closest = vi.fn((selector: string) => {
     if (selector === '.expansion-panel__content' && scrollContainerRect !== undefined) {
       if (scrollContainerRect === null) return null;
       return createScrollContainer(scrollContainerRect);
@@ -52,7 +52,7 @@ const createMockElement = (scrollContainerRect?: DOMRect | null): HTMLDivElement
 
 describe('datamapper-dnd.provider', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('scrollAwareCollision', () => {
@@ -269,7 +269,7 @@ describe('datamapper-dnd.provider', () => {
   describe('canScrollPanel', () => {
     const createMockElement = (panelId: string | null) => {
       const element = document.createElement('div');
-      element.closest = jest.fn((selector: string) => {
+      element.closest = vi.fn((selector: string) => {
         if (selector === '#panel-source' && panelId === 'panel-source') {
           return document.createElement('div');
         }

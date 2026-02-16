@@ -15,8 +15,8 @@ import { DebugLayout } from './DebugLayout';
 
 describe('DebugLayout', () => {
   afterAll(() => {
-    jest.resetModules();
-    jest.resetAllMocks();
+    vi.resetModules();
+    vi.resetAllMocks();
   });
 
   it('should render Documents and mappings', async () => {
@@ -46,7 +46,7 @@ describe('DebugLayout', () => {
       }, [getAllNodePaths, mappingTree, sourceBodyDocument, sourceParameterMap]);
       return <>{children}</>;
     };
-    const mockLog = jest.fn();
+    const mockLog = vi.fn();
     console.log = mockLog;
     render(
       <DataMapperProvider>
@@ -90,7 +90,7 @@ describe('DebugLayout', () => {
       }, [getSelectedNodeReference]);
       return <>{children}</>;
     };
-    console.log = jest.fn();
+    console.log = vi.fn();
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
@@ -137,7 +137,7 @@ describe('DebugLayout', () => {
         }, [mappingTree]);
         return <>{children}</>;
       };
-      const mockLog = jest.fn();
+      const mockLog = vi.fn();
       console.log = mockLog;
       render(
         <DataMapperProvider>
@@ -211,7 +211,7 @@ describe('DebugLayout', () => {
         }, []);
         return <>{children}</>;
       };
-      const mockLog = jest.fn();
+      const mockLog = vi.fn();
       console.log = mockLog;
       render(
         <DataMapperProvider>

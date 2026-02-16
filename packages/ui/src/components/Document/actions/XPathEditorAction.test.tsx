@@ -10,18 +10,16 @@ import { XPathEditorAction } from './XPathEditorAction';
 
 describe('XPathEditorAction', () => {
   it('should open xpath editor modal', async () => {
-    window.ResizeObserver = jest.fn().mockImplementation(() => ({
-      observe: jest.fn(),
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-    }));
+    window.ResizeObserver = vi.fn().mockImplementation(function () {
+      return { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
+    });
     const doc = TestUtil.createTargetOrderDoc();
     const tree = new MappingTree(DocumentType.TARGET_BODY, BODY_DOCUMENT_ID, DocumentDefinitionType.XML_SCHEMA);
     const docData = new TargetDocumentNodeData(doc, tree);
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
-          <XPathEditorAction mapping={new ValueSelector(tree)} nodeData={docData} onUpdate={jest.fn()} />
+          <XPathEditorAction mapping={new ValueSelector(tree)} nodeData={docData} onUpdate={vi.fn()} />
         </DataMapperCanvasProvider>
       </DataMapperProvider>,
     );

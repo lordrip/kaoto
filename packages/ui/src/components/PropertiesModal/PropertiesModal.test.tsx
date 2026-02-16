@@ -31,7 +31,7 @@ describe('PropertiesModal', () => {
 
     // Create mock catalog registry
     mockCatalogRegistry = {
-      getEntity: jest.fn(async (kind: CatalogKind, key: string) => {
+      getEntity: vi.fn(async (kind: CatalogKind, key: string) => {
         switch (kind) {
           case CatalogKind.Component:
             return componentCatalogMap[key];
@@ -65,7 +65,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );
@@ -167,7 +167,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );
@@ -196,7 +196,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );
@@ -237,7 +237,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );
@@ -268,7 +268,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );
@@ -322,7 +322,7 @@ describe('PropertiesModal', () => {
       const { baseElement } = await act(async () =>
         render(
           <CatalogContext.Provider value={mockCatalogRegistry}>
-            <PropertiesModal tile={tile} isModalOpen onClose={jest.fn()} />
+            <PropertiesModal tile={tile} isModalOpen onClose={vi.fn()} />
           </CatalogContext.Provider>,
         ),
       );

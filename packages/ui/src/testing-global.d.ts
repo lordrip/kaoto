@@ -1,1 +1,1 @@
-import '@testing-library/jest-dom/extend-expect';
+/// <reference types="vitest/globals" />

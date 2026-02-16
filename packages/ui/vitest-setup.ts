@@ -1,7 +1,8 @@
-import '@testing-library/jest-dom';
-import { setupJestCanvasMock } from 'jest-canvas-mock';
+import '@testing-library/jest-dom/vitest';
+import 'vitest-canvas-mock';
 import { getRandomValues, subtle } from 'node:crypto';
 import { TextDecoder, TextEncoder } from 'node:util';
+import { vi, beforeEach } from 'vitest';
 
 Object.defineProperties(globalThis, {
   TextDecoder: { value: TextDecoder },
@@ -10,9 +11,9 @@ Object.defineProperties(globalThis, {
 
 // Mock ResizeObserver for components that use it
 class ResizeObserverMock {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
 }
 
 Object.defineProperty(globalThis, 'ResizeObserver', {
@@ -20,33 +21,42 @@ Object.defineProperty(globalThis, 'ResizeObserver', {
   value: ResizeObserverMock,
 });
 
+// Override requestAnimationFrame to use setTimeout so that fake timers can control it.
+// jsdom's built-in polyfill captures the real setTimeout before fake timers are installed.
+globalThis.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+  return setTimeout(() => callback(Date.now()), 0) as unknown as number;
+};
+globalThis.cancelAnimationFrame = (id: number): void => {
+  clearTimeout(id);
+};
+
 enableSVGElementMocks();
 
 Object.defineProperty(window, 'fetch', {
   writable: true,
-  value: jest.fn(),
+  value: vi.fn(),
 });
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
-jest.spyOn(globalThis, 'crypto', 'get').mockImplementation(() => ({ getRandomValues, subtle }) as unknown as Crypto);
+vi.spyOn(globalThis, 'crypto', 'get').mockImplementation(() => ({ getRandomValues, subtle }) as unknown as Crypto);
 
-jest.spyOn(console, 'warn').mockImplementation((...args) => {
+vi.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
   if (
-    args[0].toString().includes('[mobx-react-lite] importing batchingForReactDom is no longer needed') ||
-    args[0].toString().includes('NODE_ENV is not defined')
+    args[0]?.toString().includes('[mobx-react-lite] importing batchingForReactDom is no longer needed') ||
+    args[0]?.toString().includes('NODE_ENV is not defined')
   ) {
     return;
   }
@@ -54,14 +64,13 @@ jest.spyOn(console, 'warn').mockImplementation((...args) => {
   console.log(...args);
 });
 
-const fetchMock = jest.spyOn(window, 'fetch');
+const fetchMock = vi.spyOn(window, 'fetch');
 
 beforeEach(() => {
   fetchMock.mockResolvedValue(null as unknown as Response);
-  setupJestCanvasMock();
 });
 
-Element.prototype.scrollIntoView = jest.fn();
+Element.prototype.scrollIntoView = vi.fn();
 
 function enableSVGElementMocks() {
   /**
@@ -73,12 +82,12 @@ function enableSVGElementMocks() {
 
   Object.defineProperty(globalThis.SVGElement.prototype, 'getScreenCTM', {
     writable: true,
-    value: jest.fn(),
+    value: vi.fn(),
   });
 
   Object.defineProperty(globalThis.SVGElement.prototype, 'getBBox', {
     writable: true,
-    value: jest.fn().mockReturnValue({
+    value: vi.fn().mockReturnValue({
       x: 0,
       y: 0,
     }),
@@ -86,12 +95,12 @@ function enableSVGElementMocks() {
 
   Object.defineProperty(globalThis.SVGElement.prototype, 'getComputedTextLength', {
     writable: true,
-    value: jest.fn().mockReturnValue(0),
+    value: vi.fn().mockReturnValue(0),
   });
 
   Object.defineProperty(globalThis.SVGElement.prototype, 'createSVGMatrix', {
     writable: true,
-    value: jest.fn().mockReturnValue({
+    value: vi.fn().mockReturnValue({
       x: 10,
       y: 10,
       inverse: () => {},

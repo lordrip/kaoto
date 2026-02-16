@@ -43,7 +43,7 @@ const getClassNameOnly = (fullyQualifiedName: string): string => {
     return fullyQualifiedName;
   }
 };
-// only for testing private function in jest
+// only for testing private function in vitest
 export const getClassNameOnlyFunctionExportedForTesting = getClassNameOnly;
 
 const fullFillFilter = <T>(value: T, filter: IPropertiesTableFilter<T>): boolean => {

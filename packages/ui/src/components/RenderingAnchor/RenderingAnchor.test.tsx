@@ -15,8 +15,8 @@ describe('RenderingAnchor', () => {
 
   beforeEach(() => {
     renderingAnchorContext = {
-      getRegisteredComponents: jest.fn().mockReturnValue([]),
-      registerComponent: jest.fn(),
+      getRegisteredComponents: vi.fn().mockReturnValue([]),
+      registerComponent: vi.fn(),
     };
   });
 
@@ -51,7 +51,7 @@ describe('RenderingAnchor', () => {
       { key: '1', Component: () => <p>Component 1</p> },
       { key: '2', Component: () => <p>Component 2</p> },
     ];
-    renderingAnchorContext.getRegisteredComponents = jest.fn().mockReturnValue(registeredComponents);
+    renderingAnchorContext.getRegisteredComponents = vi.fn().mockReturnValue(registeredComponents);
 
     const wrapper = render(
       <RenderingAnchorContext.Provider value={renderingAnchorContext}>

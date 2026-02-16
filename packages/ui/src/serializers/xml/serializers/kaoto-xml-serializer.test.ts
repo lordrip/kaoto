@@ -198,7 +198,7 @@ describe('ToXMLConverter', () => {
     });
 
     it('should use EntityOrderingService for sorting entities', () => {
-      const sortSpy = jest.spyOn(EntityOrderingService, 'sortEntitiesForSerialization');
+      const sortSpy = vi.spyOn(EntityOrderingService, 'sortEntitiesForSerialization');
 
       const entities = [
         {

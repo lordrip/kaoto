@@ -6,22 +6,22 @@ import { useCopyStep } from '../hooks/copy-step.hook';
 import { ItemCopyStep } from './ItemCopyStep';
 
 // Mock the `useCopyStep` hook
-jest.mock('../hooks/copy-step.hook', () => ({
-  useCopyStep: jest.fn(),
+vi.mock('../hooks/copy-step.hook', () => ({
+  useCopyStep: vi.fn(),
 }));
 
 describe('ItemCopyStep', () => {
   const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-  const mockOnCopyStep = jest.fn();
+  const mockOnCopyStep = vi.fn();
   beforeEach(() => {
     // Mock the `useCopyStep` hook to return the `onCopyStep` function
-    (useCopyStep as jest.Mock).mockReturnValue({
+    (useCopyStep as vi.Mock).mockReturnValue({
       onCopyStep: mockOnCopyStep,
     });
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render Copy ContextMenuItem', () => {

@@ -16,7 +16,7 @@ import { IVisibleFlows, ROOT_PATH } from '../../../../../../utils';
 import { DataSourceBeanField, PrefixedBeanField, UnprefixedBeanField } from './BeanField';
 
 describe('BeanField', () => {
-  let onPropertyChangeSpy: jest.Mock;
+  let onPropertyChangeSpy: vi.Mock;
   let formPageObject: KaotoFormPageObject;
 
   const beanSchema: KaotoSchemaDefinition['schema'] = { title: 'Bean', type: 'string' };
@@ -27,7 +27,7 @@ describe('BeanField', () => {
     const catalogsMap = await getFirstCatalogMap(catalogLibrary as CatalogLibrary);
     CamelCatalogService.setCatalogKey(CatalogKind.Entity, catalogsMap.entitiesCatalog);
 
-    onPropertyChangeSpy = jest.fn();
+    onPropertyChangeSpy = vi.fn();
     cleanup();
   });
 
@@ -82,7 +82,7 @@ describe('BeanField', () => {
 
       const { container } = render(
         <Provider>
-          <ModelContextProvider model="#dataSource" onPropertyChange={jest.fn()}>
+          <ModelContextProvider model="#dataSource" onPropertyChange={vi.fn()}>
             <PrefixedBeanField propName={ROOT_PATH} />
           </ModelContextProvider>
         </Provider>,
@@ -96,7 +96,7 @@ describe('BeanField', () => {
 
       const wrapper = render(
         <Provider>
-          <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+          <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
             <SchemaProvider schema={{ type: 'string', default: 'Default Value' }}>
               <PrefixedBeanField propName={ROOT_PATH} />
             </SchemaProvider>
@@ -109,7 +109,7 @@ describe('BeanField', () => {
     });
 
     it('should clear the input when using the clear button', async () => {
-      const onPropertyChangeSpy = jest.fn();
+      const onPropertyChangeSpy = vi.fn();
       const { Provider } = TestProvidersWrapper();
 
       render(
@@ -128,7 +128,7 @@ describe('BeanField', () => {
     });
 
     it('should show the new bean modal when creating a new bean', async () => {
-      const onPropertyChangeSpy = jest.fn();
+      const onPropertyChangeSpy = vi.fn();
       const { Provider } = TestProvidersWrapper();
 
       render(
@@ -154,7 +154,7 @@ describe('BeanField', () => {
 
   describe('Typing a bean name and selecting "create new bean"', () => {
     beforeEach(async () => {
-      onPropertyChangeSpy = jest.fn();
+      onPropertyChangeSpy = vi.fn();
 
       const { Provider } = TestProvidersWrapper();
 
@@ -279,7 +279,7 @@ describe('BeanField', () => {
 
       const { container } = render(
         <Provider>
-          <ModelContextProvider model="dataSource" onPropertyChange={jest.fn()}>
+          <ModelContextProvider model="dataSource" onPropertyChange={vi.fn()}>
             <UnprefixedBeanField propName={ROOT_PATH} />
           </ModelContextProvider>
         </Provider>,
@@ -293,7 +293,7 @@ describe('BeanField', () => {
 
       const wrapper = render(
         <Provider>
-          <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+          <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
             <SchemaProvider schema={{ type: 'string', default: 'Default Value' }}>
               <UnprefixedBeanField propName={ROOT_PATH} />
             </SchemaProvider>
@@ -306,7 +306,7 @@ describe('BeanField', () => {
     });
 
     it('should clear the input when using the clear button', async () => {
-      const onPropertyChangeSpy = jest.fn();
+      const onPropertyChangeSpy = vi.fn();
       const { Provider } = TestProvidersWrapper();
 
       render(
@@ -325,7 +325,7 @@ describe('BeanField', () => {
     });
 
     it('should show the new bean modal when creating a new bean', async () => {
-      const onPropertyChangeSpy = jest.fn();
+      const onPropertyChangeSpy = vi.fn();
       const { Provider } = TestProvidersWrapper();
 
       render(
@@ -351,7 +351,7 @@ describe('BeanField', () => {
 
   describe('Creating a new bean without prefix', () => {
     beforeEach(async () => {
-      onPropertyChangeSpy = jest.fn();
+      onPropertyChangeSpy = vi.fn();
 
       const { Provider } = TestProvidersWrapper();
 
@@ -448,7 +448,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={beanReferenceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <UnprefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>
@@ -472,7 +472,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={beanReferenceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <PrefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>
@@ -494,7 +494,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={beanReferenceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <PrefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>
@@ -518,7 +518,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={beanReferenceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <UnprefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>
@@ -536,7 +536,7 @@ describe('BeanField', () => {
   });
 
   describe('DataSourceBeanField', () => {
-    let onPropertyChangeSpy: jest.Mock;
+    let onPropertyChangeSpy: vi.Mock;
     let formPageObject: KaotoFormPageObject;
 
     const dataSourceSchema: KaotoSchemaDefinition['schema'] = { title: 'Data Source', type: 'string' };
@@ -545,7 +545,7 @@ describe('BeanField', () => {
       const catalogsMap = await getFirstCatalogMap(catalogLibrary as CatalogLibrary);
       CamelCatalogService.setCatalogKey(CatalogKind.Entity, catalogsMap.entitiesCatalog);
 
-      onPropertyChangeSpy = jest.fn();
+      onPropertyChangeSpy = vi.fn();
       cleanup();
     });
 
@@ -601,7 +601,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={dataSourceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <UnprefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>
@@ -627,7 +627,7 @@ describe('BeanField', () => {
       render(
         <Provider>
           <SchemaProvider schema={dataSourceSchema}>
-            <ModelContextProvider model={undefined} onPropertyChange={jest.fn()}>
+            <ModelContextProvider model={undefined} onPropertyChange={vi.fn()}>
               <UnprefixedBeanField propName={ROOT_PATH} />
             </ModelContextProvider>
           </SchemaProvider>

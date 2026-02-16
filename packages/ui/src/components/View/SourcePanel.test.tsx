@@ -46,7 +46,7 @@ describe('SourcePanel', () => {
   });
 
   it('should trigger handleLayoutChange when panel is toggled', async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
@@ -65,7 +65,7 @@ describe('SourcePanel', () => {
 
     // Advance timers to trigger onLayoutChange (160ms delay)
     await act(async () => {
-      jest.advanceTimersByTime(200);
+      vi.advanceTimersByTime(200);
     });
 
     // The panel should now be collapsed (data-expanded=false)
@@ -74,6 +74,6 @@ describe('SourcePanel', () => {
       expect(panel).toHaveAttribute('data-expanded', 'false');
     });
 
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 });

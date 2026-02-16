@@ -10,10 +10,10 @@ describe('canDropOnEdge', () => {
     return {
       id,
       data: { path: `route.from.steps.${id}` },
-      getNextNode: jest.fn(),
-      getPreviousNode: jest.fn(),
-      getCopiedContent: jest.fn().mockReturnValue({ name: 'test-component' }),
-      getNodeDefinition: jest.fn().mockReturnValue({}),
+      getNextNode: vi.fn(),
+      getPreviousNode: vi.fn(),
+      getCopiedContent: vi.fn().mockReturnValue({ name: 'test-component' }),
+      getNodeDefinition: vi.fn().mockReturnValue({}),
     } as unknown as IVisualizationNode;
   };
 
@@ -22,29 +22,29 @@ describe('canDropOnEdge', () => {
     targetVizNode: IVisualizationNode,
   ): Edge<EdgeModel, unknown> => {
     const mockSource = {
-      getData: jest.fn().mockReturnValue({ vizNode: sourceVizNode }),
+      getData: vi.fn().mockReturnValue({ vizNode: sourceVizNode }),
     };
     const mockTarget = {
-      getData: jest.fn().mockReturnValue({ vizNode: targetVizNode }),
+      getData: vi.fn().mockReturnValue({ vizNode: targetVizNode }),
     };
 
     return {
-      getSource: jest.fn().mockReturnValue(mockSource),
-      getTarget: jest.fn().mockReturnValue(mockTarget),
+      getSource: vi.fn().mockReturnValue(mockSource),
+      getTarget: vi.fn().mockReturnValue(mockTarget),
     } as unknown as Edge<EdgeModel, unknown>;
   };
 
   const createMockCamelResource = (): EntitiesContextResult['camelResource'] => {
     return {
-      getCompatibleComponents: jest.fn().mockReturnValue([]),
+      getCompatibleComponents: vi.fn().mockReturnValue([]),
     } as unknown as EntitiesContextResult['camelResource'];
   };
 
   const createMockCatalogModalContext = (): CatalogModalContextValue => {
     return {
-      checkCompatibility: jest.fn().mockReturnValue(true),
-      setIsModalOpen: jest.fn(),
-      getNewComponent: jest.fn(),
+      checkCompatibility: vi.fn().mockReturnValue(true),
+      setIsModalOpen: vi.fn(),
+      getNewComponent: vi.fn(),
     } as unknown as CatalogModalContextValue;
   };
 
@@ -65,7 +65,7 @@ describe('canDropOnEdge', () => {
   });
 
   it("should return false when dragged node's next node is the following node", () => {
-    (draggedVizNode.getNextNode as jest.Mock).mockReturnValue(targetVizNode);
+    (draggedVizNode.getNextNode as vi.Mock).mockReturnValue(targetVizNode);
 
     const result = canDropOnEdge(draggedVizNode, edge, camelResource, catalogModalContext);
 
@@ -75,7 +75,7 @@ describe('canDropOnEdge', () => {
   });
 
   it("should return false when dragged node's previous node is the preceding node", () => {
-    (draggedVizNode.getPreviousNode as jest.Mock).mockReturnValue(sourceVizNode);
+    (draggedVizNode.getPreviousNode as vi.Mock).mockReturnValue(sourceVizNode);
 
     const result = canDropOnEdge(draggedVizNode, edge, camelResource, catalogModalContext);
 
@@ -96,8 +96,8 @@ describe('canDropOnEdge', () => {
 
   it('should return false when checkCompatibility returns false', () => {
     const mockFilter = ['filter1', 'filter2'];
-    (camelResource.getCompatibleComponents as jest.Mock).mockReturnValue(mockFilter);
-    (catalogModalContext.checkCompatibility as jest.Mock).mockReturnValue(false);
+    (camelResource.getCompatibleComponents as vi.Mock).mockReturnValue(mockFilter);
+    (catalogModalContext.checkCompatibility as vi.Mock).mockReturnValue(false);
 
     const result = canDropOnEdge(draggedVizNode, edge, camelResource, catalogModalContext);
 
@@ -112,8 +112,8 @@ describe('canDropOnEdge', () => {
 
   it('should return true when all conditions pass and checkCompatibility returns true', () => {
     const mockFilter = ['filter1', 'filter2'];
-    (camelResource.getCompatibleComponents as jest.Mock).mockReturnValue(mockFilter);
-    (catalogModalContext.checkCompatibility as jest.Mock).mockReturnValue(true);
+    (camelResource.getCompatibleComponents as vi.Mock).mockReturnValue(mockFilter);
+    (catalogModalContext.checkCompatibility as vi.Mock).mockReturnValue(true);
 
     const result = canDropOnEdge(draggedVizNode, edge, camelResource, catalogModalContext);
 
@@ -128,8 +128,8 @@ describe('canDropOnEdge', () => {
 
   it('should return false when checkCompatibility returns undefined', () => {
     const mockFilter = ['filter1'];
-    (camelResource.getCompatibleComponents as jest.Mock).mockReturnValue(mockFilter);
-    (catalogModalContext.checkCompatibility as jest.Mock).mockReturnValue(undefined);
+    (camelResource.getCompatibleComponents as vi.Mock).mockReturnValue(mockFilter);
+    (catalogModalContext.checkCompatibility as vi.Mock).mockReturnValue(undefined);
 
     const result = canDropOnEdge(draggedVizNode, edge, camelResource, catalogModalContext);
 

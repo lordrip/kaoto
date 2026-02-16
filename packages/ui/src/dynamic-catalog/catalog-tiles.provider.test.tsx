@@ -15,15 +15,15 @@ import { IDynamicCatalogRegistry } from './models';
 import { CamelComponentsProvider, CamelProcessorsProvider } from './providers/camel-components.provider';
 import { CamelKameletsProvider } from './providers/camel-kamelets.provider';
 
-jest.mock('../camel-utils', () => {
-  const actual = jest.requireActual('../camel-utils');
+vi.mock('../camel-utils', async () => {
+  const actual = await vi.importActual('../camel-utils');
 
   return {
     ...actual,
-    camelComponentToTile: jest.fn(),
-    camelProcessorToTile: jest.fn(),
-    camelEntityToTile: jest.fn(),
-    kameletToTile: jest.fn(),
+    camelComponentToTile: vi.fn(),
+    camelProcessorToTile: vi.fn(),
+    camelEntityToTile: vi.fn(),
+    kameletToTile: vi.fn(),
   };
 });
 
@@ -62,7 +62,7 @@ describe('CatalogTilesProvider', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render children', async () => {
@@ -131,10 +131,10 @@ describe('CatalogTilesProvider', () => {
     const entityCatalog = mockRegistry.getCatalog(CatalogKind.Entity);
     const kameletCatalog = mockRegistry.getCatalog(CatalogKind.Kamelet);
 
-    const getAllSpyComponent = jest.spyOn(componentCatalog!, 'getAll');
-    const getAllSpyPattern = jest.spyOn(patternCatalog!, 'getAll');
-    const getAllSpyEntity = jest.spyOn(entityCatalog!, 'getAll');
-    const getAllSpyKamelet = jest.spyOn(kameletCatalog!, 'getAll');
+    const getAllSpyComponent = vi.spyOn(componentCatalog!, 'getAll');
+    const getAllSpyPattern = vi.spyOn(patternCatalog!, 'getAll');
+    const getAllSpyEntity = vi.spyOn(entityCatalog!, 'getAll');
+    const getAllSpyKamelet = vi.spyOn(kameletCatalog!, 'getAll');
 
     await act(async () => {
       await context?.fetchTiles();
@@ -148,10 +148,10 @@ describe('CatalogTilesProvider', () => {
 
   it('should avoid building the tiles if the catalog is empty', async () => {
     const emptyRegistry: IDynamicCatalogRegistry = {
-      setCatalog: jest.fn(),
-      getCatalog: jest.fn().mockReturnValue(undefined),
-      getEntity: jest.fn(),
-      clearRegistry: jest.fn(),
+      setCatalog: vi.fn(),
+      getCatalog: vi.fn().mockReturnValue(undefined),
+      getEntity: vi.fn(),
+      clearRegistry: vi.fn(),
     };
 
     const {
@@ -178,9 +178,9 @@ describe('CatalogTilesProvider', () => {
     const mockProcessorTile = { id: 'processor-1', name: 'Processor', type: 'processor' };
     const mockKameletTile = { id: 'kamelet-1', name: 'Kamelet', type: 'kamelet' };
 
-    (camelComponentToTile as jest.Mock).mockReturnValue(mockComponentTile);
-    (camelProcessorToTile as jest.Mock).mockReturnValue(mockProcessorTile);
-    (kameletToTile as jest.Mock).mockReturnValue(mockKameletTile);
+    (camelComponentToTile as vi.Mock).mockReturnValue(mockComponentTile);
+    (camelProcessorToTile as vi.Mock).mockReturnValue(mockProcessorTile);
+    (kameletToTile as vi.Mock).mockReturnValue(mockKameletTile);
 
     const {
       result: { current: context },
@@ -224,9 +224,9 @@ describe('CatalogTilesProvider', () => {
     const mockProcessorTile = { id: 'processor-1', name: 'Processor', type: 'processor' };
     const mockKameletTile = { id: 'kamelet-1', name: 'Kamelet', type: 'kamelet' };
 
-    (camelComponentToTile as jest.Mock).mockReturnValue(mockComponentTile);
-    (camelProcessorToTile as jest.Mock).mockReturnValue(mockProcessorTile);
-    (kameletToTile as jest.Mock).mockReturnValue(mockKameletTile);
+    (camelComponentToTile as vi.Mock).mockReturnValue(mockComponentTile);
+    (camelProcessorToTile as vi.Mock).mockReturnValue(mockProcessorTile);
+    (kameletToTile as vi.Mock).mockReturnValue(mockKameletTile);
 
     const {
       result: { current: context },
@@ -259,10 +259,10 @@ describe('CatalogTilesProvider', () => {
     const entityCatalog = mockRegistry.getCatalog(CatalogKind.Entity);
     const kameletCatalog = mockRegistry.getCatalog(CatalogKind.Kamelet);
 
-    const getAllSpyComponent = jest.spyOn(componentCatalog!, 'getAll');
-    const getAllSpyPattern = jest.spyOn(patternCatalog!, 'getAll');
-    const getAllSpyEntity = jest.spyOn(entityCatalog!, 'getAll');
-    const getAllSpyKamelet = jest.spyOn(kameletCatalog!, 'getAll');
+    const getAllSpyComponent = vi.spyOn(componentCatalog!, 'getAll');
+    const getAllSpyPattern = vi.spyOn(patternCatalog!, 'getAll');
+    const getAllSpyEntity = vi.spyOn(entityCatalog!, 'getAll');
+    const getAllSpyKamelet = vi.spyOn(kameletCatalog!, 'getAll');
 
     render(
       <CatalogContext.Provider value={mockRegistry}>

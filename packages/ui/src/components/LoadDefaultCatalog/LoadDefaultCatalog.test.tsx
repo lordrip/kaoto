@@ -5,11 +5,11 @@ import { ReloadContext, SettingsProvider } from '../../providers';
 import { LoadDefaultCatalog } from './LoadDefaultCatalog';
 
 describe('LoadDefaultCatalog', () => {
-  let reloadPage: jest.Mock;
+  let reloadPage: vi.Mock;
   let settingsAdapter: AbstractSettingsAdapter;
 
   beforeEach(() => {
-    reloadPage = jest.fn();
+    reloadPage = vi.fn();
     settingsAdapter = new DefaultSettingsAdapter();
   });
 

@@ -1,4 +1,4 @@
-jest.mock('react-router-dom');
+vi.mock('react-router-dom');
 import {
   ChannelType,
   EditorApi,
@@ -20,7 +20,7 @@ import { EditService } from './EditService';
 import { KaotoEditorApp } from './KaotoEditorApp';
 import { KaotoEditorChannelApi } from './KaotoEditorChannelApi';
 
-jest.mock('../utils/color-scheme');
+vi.mock('../utils/color-scheme');
 
 describe('KaotoEditorApp', () => {
   let kaotoEditorApp: KaotoEditorAppTest;
@@ -31,17 +31,17 @@ describe('KaotoEditorApp', () => {
   let settingsAdapter: AbstractSettingsAdapter;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     editService = EditService.getInstance();
     editorRef = {
       current: {
-        setContent: jest.fn(),
-        getContent: jest.fn(),
-        getPreview: jest.fn(),
-        undo: jest.fn(),
-        redo: jest.fn(),
-        setTheme: jest.fn(),
-        validate: jest.fn(),
+        setContent: vi.fn(),
+        getContent: vi.fn(),
+        getPreview: vi.fn(),
+        undo: vi.fn(),
+        redo: vi.fn(),
+        setTheme: vi.fn(),
+        validate: vi.fn(),
       },
     };
 
@@ -59,11 +59,11 @@ describe('KaotoEditorApp', () => {
           kogitoWorkspace_openFile: getNotificationMock(),
         },
         requests: {
-          getMetadata: jest.fn(),
-          setMetadata: jest.fn(),
-          getResourceContent: jest.fn(),
-          saveResourceContent: jest.fn(),
-          onStepUpdated: jest.fn(),
+          getMetadata: vi.fn(),
+          setMetadata: vi.fn(),
+          getResourceContent: vi.fn(),
+          saveResourceContent: vi.fn(),
+          onStepUpdated: vi.fn(),
         } as unknown as ApiRequests<KaotoEditorChannelApi>,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         shared: {} as any,
@@ -96,7 +96,7 @@ describe('KaotoEditorApp', () => {
 
   describe('setContent', () => {
     it('should check if the edit is stale', async () => {
-      const isStaleEditSpy = jest.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(true);
+      const isStaleEditSpy = vi.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(true);
 
       await kaotoEditorApp.setContent('path', 'content');
 
@@ -104,7 +104,7 @@ describe('KaotoEditorApp', () => {
     });
 
     it('should not do anything if the edit is stale', async () => {
-      jest.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(true);
+      vi.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(true);
 
       await kaotoEditorApp.setContent('path', 'content');
 
@@ -112,8 +112,8 @@ describe('KaotoEditorApp', () => {
     });
 
     it('should clear the hashes when the edit is not stale', async () => {
-      jest.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(false);
-      const clearHashesSpy = jest.spyOn(editService, 'clearEdits');
+      vi.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(false);
+      const clearHashesSpy = vi.spyOn(editService, 'clearEdits');
 
       await kaotoEditorApp.setContent('path', 'content');
 
@@ -121,7 +121,7 @@ describe('KaotoEditorApp', () => {
     });
 
     it('should delegate to the channelApi if the edit is not stale', async () => {
-      jest.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(false);
+      vi.spyOn(editService, 'isStaleEdit').mockResolvedValueOnce(false);
 
       await kaotoEditorApp.setContent('path', 'content');
 
@@ -130,7 +130,7 @@ describe('KaotoEditorApp', () => {
   });
 
   it('getContent', async () => {
-    (editorRef.current!.getContent as jest.Mock).mockResolvedValue('content');
+    (editorRef.current!.getContent as vi.Mock).mockResolvedValue('content');
 
     const content = await kaotoEditorApp.getContent();
 
@@ -138,7 +138,7 @@ describe('KaotoEditorApp', () => {
   });
 
   it('getPreview', async () => {
-    (editorRef.current!.getPreview as jest.Mock).mockResolvedValue('preview');
+    (editorRef.current!.getPreview as vi.Mock).mockResolvedValue('preview');
 
     const preview = await kaotoEditorApp.getPreview();
 
@@ -158,7 +158,7 @@ describe('KaotoEditorApp', () => {
   });
 
   it('validate', async () => {
-    (editorRef.current!.validate as jest.Mock).mockResolvedValue([]);
+    (editorRef.current!.validate as vi.Mock).mockResolvedValue([]);
 
     const notifications = await kaotoEditorApp.validate();
 
@@ -179,7 +179,7 @@ describe('KaotoEditorApp', () => {
 
   describe('sendNewEdit', () => {
     it('should register the content with the EditService', async () => {
-      const registerSpy = jest.spyOn(editService, 'registerEdit');
+      const registerSpy = vi.spyOn(editService, 'registerEdit');
       await kaotoEditorApp.sendNewEdit('content');
 
       expect(registerSpy).toHaveBeenCalledWith('content');
@@ -253,9 +253,9 @@ describe('KaotoEditorApp', () => {
 });
 
 const getNotificationMock = () => ({
-  subscribe: jest.fn(),
-  unsubscribe: jest.fn(),
-  send: jest.fn(),
+  subscribe: vi.fn(),
+  unsubscribe: vi.fn(),
+  send: vi.fn(),
 });
 
 class KaotoEditorAppTest extends KaotoEditorApp {

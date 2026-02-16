@@ -17,7 +17,7 @@ describe('SourceCodeBridgeProvider', () => {
 
   it('should render children', () => {
     const { getByText } = render(
-      <SourceCodeBridgeProvider onNewEdit={jest.fn()}>
+      <SourceCodeBridgeProvider onNewEdit={vi.fn()}>
         <p>Test Child</p>
       </SourceCodeBridgeProvider>,
     );
@@ -26,7 +26,7 @@ describe('SourceCodeBridgeProvider', () => {
   });
 
   it('should call onNewEdit when the entities:updated event is emitted', () => {
-    const mockOnNewEdit = jest.fn();
+    const mockOnNewEdit = vi.fn();
 
     render(
       <SourceCodeBridgeProvider onNewEdit={mockOnNewEdit}>
@@ -42,7 +42,7 @@ describe('SourceCodeBridgeProvider', () => {
   });
 
   it('should ignore the first code:updated event', () => {
-    const mockOnNewEdit = jest.fn();
+    const mockOnNewEdit = vi.fn();
 
     render(
       <SourceCodeBridgeProvider onNewEdit={mockOnNewEdit}>
@@ -58,7 +58,7 @@ describe('SourceCodeBridgeProvider', () => {
   });
 
   it('should call onNewEdit when the code:updated event if there is source code available', () => {
-    const mockOnNewEdit = jest.fn();
+    const mockOnNewEdit = vi.fn();
 
     render(
       <SourceCodeBridgeProvider onNewEdit={mockOnNewEdit}>
@@ -86,11 +86,11 @@ describe('SourceCodeBridgeProvider', () => {
 
   it('should unsubscribe from events on unmount', () => {
     const eventNotifierInstance = EventNotifier.getInstance();
-    const unsubscribeFromEntitiesMock = jest.fn();
-    const unsubscribeFromSourceCodeMock = jest.fn();
+    const unsubscribeFromEntitiesMock = vi.fn();
+    const unsubscribeFromSourceCodeMock = vi.fn();
 
-    jest.spyOn(eventNotifierInstance, 'subscribe').mockReturnValueOnce(unsubscribeFromEntitiesMock);
-    jest.spyOn(eventNotifierInstance, 'subscribe').mockReturnValueOnce(unsubscribeFromSourceCodeMock);
+    vi.spyOn(eventNotifierInstance, 'subscribe').mockReturnValueOnce(unsubscribeFromEntitiesMock);
+    vi.spyOn(eventNotifierInstance, 'subscribe').mockReturnValueOnce(unsubscribeFromSourceCodeMock);
 
     const { unmount } = render(
       <SourceCodeBridgeProvider onNewEdit={async () => {}}>
@@ -107,7 +107,7 @@ describe('SourceCodeBridgeProvider', () => {
   });
 
   it('should not call setContent if the new content is the same as the current one', () => {
-    const setCodeAndNotifyMock = jest.fn();
+    const setCodeAndNotifyMock = vi.fn();
     const wrapper = render(<EnvelopeProviderTestingBed setCodeAndNotify={setCodeAndNotifyMock} />);
 
     act(() => {
@@ -129,7 +129,7 @@ const EnvelopeProviderTestingBed: FunctionComponent<{
 
   return (
     <SourceCodeApiContext.Provider value={{ setCodeAndNotify }}>
-      <SourceCodeBridgeProvider ref={envelopeRef} onNewEdit={jest.fn()}>
+      <SourceCodeBridgeProvider ref={envelopeRef} onNewEdit={vi.fn()}>
         <button
           type="button"
           onClick={() => {

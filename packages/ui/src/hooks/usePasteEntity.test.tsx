@@ -17,17 +17,16 @@ import { usePasteEntity } from './usePasteEntity';
 // Mock the permission API
 Object.assign(navigator, {
   permissions: {
-    query: jest.fn(),
+    query: vi.fn(),
   },
 });
 
 describe('usePasteEntity', () => {
   const camelResource = new CamelRouteResource();
-  const addNewEntitySpy = jest.spyOn(camelResource, 'addNewEntity');
-  const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
-  jest.spyOn(camelResource, 'getType').mockReturnValue(SourceSchemaType.Route);
-  const supportsMultipleVisualEntitiesSpy = jest
-    .spyOn(camelResource, 'supportsMultipleVisualEntities')
+  const addNewEntitySpy = vi.spyOn(camelResource, 'addNewEntity');
+  const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
+  vi.spyOn(camelResource, 'getType').mockReturnValue(SourceSchemaType.Route);
+  const supportsMultipleVisualEntitiesSpy = vi.spyOn(camelResource, 'supportsMultipleVisualEntities')
     .mockReturnValue(true);
 
   const mockEntitiesContext = {
@@ -35,25 +34,25 @@ describe('usePasteEntity', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   const mockVisibleFlowsContext = {
     visibleFlows: {},
     allFlowsVisible: true,
     visualFlowsApi: {
-      toggleFlowVisible: jest.fn(),
-      showFlows: jest.fn(),
-      hideFlows: jest.fn(),
-      clearFlows: jest.fn(),
-      initVisibleFlows: jest.fn(),
-      renameFlow: jest.fn(),
+      toggleFlowVisible: vi.fn(),
+      showFlows: vi.fn(),
+      hideFlows: vi.fn(),
+      clearFlows: vi.fn(),
+      initVisibleFlows: vi.fn(),
+      renameFlow: vi.fn(),
     } as unknown as VisibleFlowsContextResult['visualFlowsApi'],
   };
 
   const mockActionConfirmationContext = {
-    actionConfirmation: jest.fn(),
+    actionConfirmation: vi.fn(),
   };
 
   const copiedRouteContent: IClipboardCopyObject = {
@@ -63,7 +62,7 @@ describe('usePasteEntity', () => {
   };
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -77,8 +76,8 @@ describe('usePasteEntity', () => {
   );
 
   it('should return isCompatible false when clipboard is empty', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(null);
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(null);
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });
 
@@ -88,8 +87,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should return isCompatible true when clipboard-read permission returns rejected (Firefox fallback)', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });
 
@@ -101,8 +100,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should return isCompatible true when clipboard has compatible Route content', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(copiedRouteContent);
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(copiedRouteContent);
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });
 
@@ -112,8 +111,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should return isCompatible false when clipboard has incompatible content', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce({
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce({
       type: SourceSchemaType.Pipe,
       name: 'pipe',
       definition: {},
@@ -127,8 +126,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should show error modal when clipboard is empty on paste', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(null);
+    vi.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce(null);
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });
 
@@ -148,8 +147,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should show error modal when clipboard content is incompatible', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce({
+    vi.spyOn(navigator.permissions, 'query').mockRejectedValueOnce(new Error('Permission error'));
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValueOnce({
       type: SourceSchemaType.Pipe,
       name: 'pipe',
       definition: {},
@@ -173,8 +172,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should paste entity and make it visible', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
     addNewEntitySpy.mockReturnValue('new-route-id');
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });
@@ -202,9 +201,9 @@ describe('usePasteEntity', () => {
     });
 
     it('should prompt for replacement when pasting to single-entity resource with existing entity', async () => {
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
-      jest.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+      vi.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
       mockActionConfirmationContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
       addNewEntitySpy.mockReturnValue('new-route-id');
 
@@ -228,9 +227,9 @@ describe('usePasteEntity', () => {
     });
 
     it('should not paste when user cancels replacement', async () => {
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
-      jest.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+      vi.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
       mockActionConfirmationContext.actionConfirmation.mockResolvedValue(ACTION_ID_CANCEL);
 
       const { result } = renderHook(() => usePasteEntity(), { wrapper });
@@ -249,9 +248,9 @@ describe('usePasteEntity', () => {
     });
 
     it('should paste to single-entity resource when no existing entities', async () => {
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
-      jest.spyOn(camelResource, 'getVisualEntities').mockReturnValue([]);
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+      vi.spyOn(camelResource, 'getVisualEntities').mockReturnValue([]);
       addNewEntitySpy.mockReturnValue('new-route-id');
 
       const { result } = renderHook(() => usePasteEntity(), { wrapper });
@@ -280,8 +279,8 @@ describe('usePasteEntity', () => {
       </VisibleFlowsContext.Provider>
     );
 
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper: wrapperWithoutEntities });
 
@@ -304,8 +303,8 @@ describe('usePasteEntity', () => {
     );
 
     it('when clipboard is empty', async () => {
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(null);
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(null);
 
       const { result } = renderHook(() => usePasteEntity(), { wrapper: wrapperWithoutActionConfirmation });
 
@@ -321,8 +320,8 @@ describe('usePasteEntity', () => {
     });
 
     it('when content is incompatible', async () => {
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue({
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue({
         type: SourceSchemaType.Pipe,
         name: 'pipe',
         definition: {},
@@ -343,9 +342,9 @@ describe('usePasteEntity', () => {
 
     it('when replacing single-entity', async () => {
       supportsMultipleVisualEntitiesSpy.mockReturnValue(false);
-      jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-      jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
-      jest.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
+      vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+      vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+      vi.spyOn(camelResource, 'getVisualEntities').mockReturnValue([{ id: 'existing-entity' }] as never);
 
       const { result } = renderHook(() => usePasteEntity(), { wrapper: wrapperWithoutActionConfirmation });
 
@@ -364,8 +363,8 @@ describe('usePasteEntity', () => {
   });
 
   it('should not toggle flow visibility when newId is empty', async () => {
-    jest.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
-    jest.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
+    vi.spyOn(navigator.permissions, 'query').mockResolvedValueOnce({ state: 'granted' } as PermissionStatus);
+    vi.spyOn(ClipboardManager, 'paste').mockResolvedValue(copiedRouteContent);
     addNewEntitySpy.mockReturnValue('');
 
     const { result } = renderHook(() => usePasteEntity(), { wrapper });

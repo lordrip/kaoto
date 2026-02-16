@@ -11,37 +11,37 @@ import { TestProvidersWrapper } from '../../../stubs';
 import { ContextToolbar } from './ContextToolbar';
 
 // Mock the useUndoRedo hook
-jest.mock('../../../hooks/undo-redo.hook', () => ({
+vi.mock('../../../hooks/undo-redo.hook', () => ({
   useUndoRedo: () => ({
-    undo: jest.fn(),
-    redo: jest.fn(),
+    undo: vi.fn(),
+    redo: vi.fn(),
     canUndo: true,
     canRedo: false,
   }),
 }));
 
 // Mock all the child components to avoid complex dependencies
-jest.mock('./Flows/FlowsMenu', () => ({
+vi.mock('./Flows/FlowsMenu', () => ({
   FlowsMenu: () => <div data-testid="flows-menu">FlowsMenu</div>,
 }));
 
-jest.mock('./NewEntity/NewEntity', () => ({
+vi.mock('./NewEntity/NewEntity', () => ({
   NewEntity: () => <div data-testid="new-entity">NewEntity</div>,
 }));
 
-jest.mock('./FlowClipboard/FlowClipboard', () => ({
+vi.mock('./FlowClipboard/FlowClipboard', () => ({
   FlowClipboard: () => <div data-testid="flow-clipboard">FlowClipboard</div>,
 }));
 
-jest.mock('./FlowExportImage/FlowExportImage', () => ({
+vi.mock('./FlowExportImage/FlowExportImage', () => ({
   FlowExportImage: () => <div data-testid="flow-export-image">FlowExportImage</div>,
 }));
 
-jest.mock('./ExportDocument/ExportDocument', () => ({
+vi.mock('./ExportDocument/ExportDocument', () => ({
   ExportDocument: () => <div data-testid="export-document">ExportDocument</div>,
 }));
 
-jest.mock('./RuntimeSelector/RuntimeSelector', () => ({
+vi.mock('./RuntimeSelector/RuntimeSelector', () => ({
   RuntimeSelector: () => <div data-testid="runtime-selector">RuntimeSelector</div>,
 }));
 

@@ -12,7 +12,7 @@ describe('DocumentActions', () => {
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
-          <DocumentActions nodeData={docData} onRenameClick={jest.fn()} />
+          <DocumentActions nodeData={docData} onRenameClick={vi.fn()} />
         </DataMapperCanvasProvider>
       </DataMapperProvider>,
     );
@@ -24,7 +24,7 @@ describe('DocumentActions', () => {
     render(
       <DataMapperProvider>
         <DataMapperCanvasProvider>
-          <DocumentActions nodeData={docData} onRenameClick={jest.fn()} />
+          <DocumentActions nodeData={docData} onRenameClick={vi.fn()} />
         </DataMapperCanvasProvider>
       </DataMapperProvider>,
     );

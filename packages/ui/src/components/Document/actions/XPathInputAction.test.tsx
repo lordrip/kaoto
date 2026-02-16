@@ -14,7 +14,7 @@ describe('XPathInputAction', () => {
   });
 
   it('should update xpath', () => {
-    const onUpdateMock = jest.fn();
+    const onUpdateMock = vi.fn();
     render(<XPathInputAction mapping={mapping} onUpdate={onUpdateMock} />);
     expect(mapping.expression).toBeFalsy();
     const input = screen.getByTestId('transformation-xpath-input');
@@ -27,15 +27,15 @@ describe('XPathInputAction', () => {
 
   it('should show error popover button if xpath has a parse error', async () => {
     mapping.expression = '{{';
-    const onUpdateMock = jest.fn();
+    const onUpdateMock = vi.fn();
     render(<XPathInputAction mapping={mapping} onUpdate={onUpdateMock} />);
     const btn = await screen.findByTestId('xpath-input-error-btn');
     expect(btn).toBeInTheDocument();
   });
 
   it('should stop event propagation on handleXPathChange', () => {
-    const stopPropagationSpy = jest.fn();
-    const wrapper = render(<XPathInputAction mapping={mapping} onUpdate={jest.fn()} />);
+    const stopPropagationSpy = vi.fn();
+    const wrapper = render(<XPathInputAction mapping={mapping} onUpdate={vi.fn()} />);
 
     act(() => {
       const input = wrapper.getByTestId('transformation-xpath-input');

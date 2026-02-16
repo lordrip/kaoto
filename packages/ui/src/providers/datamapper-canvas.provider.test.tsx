@@ -31,7 +31,7 @@ describe('CanvasProvider', () => {
   });
 
   it('should fail if not within DataMapperProvider', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const thrower = () => {
       render(<DataMapperCanvasProvider></DataMapperCanvasProvider>);
     };

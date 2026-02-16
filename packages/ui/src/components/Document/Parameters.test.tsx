@@ -9,9 +9,9 @@ import { ParametersSection } from './Parameters';
 
 describe('ParametersSection', () => {
   it('should add, rename, and remove a parameter', async () => {
-    const mockUpdateDocument = jest.fn();
-    const mockDeleteParameter = jest.fn();
-    const mockRenameParameter = jest.fn();
+    const mockUpdateDocument = vi.fn();
+    const mockDeleteParameter = vi.fn();
+    const mockRenameParameter = vi.fn();
     render(
       <BrowserFilePickerMetadataProvider>
         <DataMapperProvider
@@ -74,8 +74,8 @@ describe('ParametersSection', () => {
   });
 
   it('should show validation error for invalid parameter name', async () => {
-    const mockUpdateDocument = jest.fn();
-    const mockDeleteParameter = jest.fn();
+    const mockUpdateDocument = vi.fn();
+    const mockDeleteParameter = vi.fn();
     render(
       <BrowserFilePickerMetadataProvider>
         <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
@@ -327,7 +327,7 @@ describe('ParametersSection', () => {
   });
 
   it('should handle parameter submission with duplicate parameter check', async () => {
-    const mockUpdateDocument = jest.fn();
+    const mockUpdateDocument = vi.fn();
     render(
       <BrowserFilePickerMetadataProvider>
         <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
@@ -376,7 +376,7 @@ describe('ParametersSection', () => {
 
   describe('Show/Hide All Parameters Toggle', () => {
     it('should hide all parameters when toggle button is clicked', async () => {
-      const mockUpdateDocument = jest.fn();
+      const mockUpdateDocument = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
@@ -421,7 +421,7 @@ describe('ParametersSection', () => {
     });
 
     it('should show all parameters when toggle button is clicked again', async () => {
-      const mockUpdateDocument = jest.fn();
+      const mockUpdateDocument = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
@@ -545,8 +545,8 @@ describe('ParametersSection', () => {
 
   describe('Cancel Delete Parameter Modal', () => {
     it('should keep parameter when cancel button is clicked in delete modal', async () => {
-      const mockUpdateDocument = jest.fn();
-      const mockDeleteParameter = jest.fn();
+      const mockUpdateDocument = vi.fn();
+      const mockDeleteParameter = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
@@ -605,7 +605,7 @@ describe('ParametersSection', () => {
 
   describe('Multiple Parameters Interaction', () => {
     it('should handle multiple parameters independently', async () => {
-      const mockUpdateDocument = jest.fn();
+      const mockUpdateDocument = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
@@ -673,8 +673,8 @@ describe('ParametersSection', () => {
     });
 
     it('should delete one parameter while keeping others', async () => {
-      const mockUpdateDocument = jest.fn();
-      const mockDeleteParameter = jest.fn();
+      const mockUpdateDocument = vi.fn();
+      const mockDeleteParameter = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument} onDeleteParameter={mockDeleteParameter}>
@@ -739,7 +739,7 @@ describe('ParametersSection', () => {
     });
 
     it('should hide/show all parameters simultaneously', async () => {
-      const mockUpdateDocument = jest.fn();
+      const mockUpdateDocument = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument}>
@@ -860,7 +860,7 @@ describe('ParametersSection', () => {
 
   describe('Parameter Actions Visibility', () => {
     it('should show rename and delete buttons for each parameter', async () => {
-      const mockUpdateDocument = jest.fn();
+      const mockUpdateDocument = vi.fn();
       render(
         <BrowserFilePickerMetadataProvider>
           <DataMapperProvider onUpdateDocument={mockUpdateDocument}>

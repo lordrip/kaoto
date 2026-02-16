@@ -32,7 +32,7 @@ describe('IntegrationTypeSelectorToggle.tsx', () => {
   });
 
   it('should call onSelect when clicking on the MenuToggleAction', async () => {
-    const onSelectSpy = jest.fn();
+    const onSelectSpy = vi.fn();
     const { Provider } = TestProvidersWrapper();
     const wrapper = render(
       <Provider>

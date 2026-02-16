@@ -7,47 +7,47 @@ import { sqlSyntaxSuggestionProvider } from './suggestions/sql.suggestions';
 import { SuggestionRegistrar } from './SuggestionsProvider';
 
 // Mocks
-const registerProvider = jest.fn();
-const unregisterProvider = jest.fn();
+const registerProvider = vi.fn();
+const unregisterProvider = vi.fn();
 const mockSuggestionRegistry = {
   registerProvider,
   unregisterProvider,
 };
 
-jest.mock('@kaoto/forms', () => ({
+vi.mock('@kaoto/forms', () => ({
   useSuggestionRegistry: () => mockSuggestionRegistry,
 }));
-jest.mock('./suggestions/properties.suggestions', () => {
-  const { getPropertiesSuggestionProvider } = jest.requireActual('./suggestions/properties.suggestions');
-  const provider = getPropertiesSuggestionProvider(jest.fn());
+vi.mock('./suggestions/properties.suggestions', async () => {
+  const { getPropertiesSuggestionProvider } = await vi.importActual('./suggestions/properties.suggestions');
+  const provider = getPropertiesSuggestionProvider(vi.fn());
 
   return {
-    getPropertiesSuggestionProvider: jest.fn(() => provider),
+    getPropertiesSuggestionProvider: vi.fn(() => provider),
   };
 });
-jest.mock('./suggestions/simple-language.suggestions', () => {
-  const { getSimpleLanguageSuggestionProvider } = jest.requireActual('./suggestions/simple-language.suggestions');
-  const provider = getSimpleLanguageSuggestionProvider(jest.fn());
+vi.mock('./suggestions/simple-language.suggestions', async () => {
+  const { getSimpleLanguageSuggestionProvider } = await vi.importActual('./suggestions/simple-language.suggestions');
+  const provider = getSimpleLanguageSuggestionProvider(vi.fn());
 
   return {
-    getSimpleLanguageSuggestionProvider: jest.fn(() => provider),
+    getSimpleLanguageSuggestionProvider: vi.fn(() => provider),
   };
 });
 
 describe('SuggestionRegistrar', () => {
-  let mockMetadataApi: jest.Mocked<IMetadataApi>;
+  let mockMetadataApi: vi.Mocked<IMetadataApi>;
 
   beforeEach(() => {
     mockMetadataApi = {
-      getMetadata: jest.fn(),
-      setMetadata: jest.fn(),
-      getResourceContent: jest.fn(),
-      saveResourceContent: jest.fn(),
-      deleteResource: jest.fn(),
-      askUserForFileSelection: jest.fn(),
-      getSuggestions: jest.fn(),
+      getMetadata: vi.fn(),
+      setMetadata: vi.fn(),
+      getResourceContent: vi.fn(),
+      saveResourceContent: vi.fn(),
+      deleteResource: vi.fn(),
+      askUserForFileSelection: vi.fn(),
+      getSuggestions: vi.fn(),
       shouldSaveSchema: false,
-      onStepUpdated: jest.fn(),
+      onStepUpdated: vi.fn(),
     };
   });
 

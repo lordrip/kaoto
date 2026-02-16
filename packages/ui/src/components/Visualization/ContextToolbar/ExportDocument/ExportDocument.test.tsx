@@ -13,10 +13,10 @@ describe('FlowExportDocument.tsx', () => {
     camelResource.addNewEntity(EntityType.RouteConfiguration);
   });
 
-  afterEach(() => jest.clearAllMocks());
+  afterEach(() => vi.clearAllMocks());
 
   it('should be render', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     const { Provider } = TestProvidersWrapper({ camelResource });
     const wrapper = render(
       <Provider>

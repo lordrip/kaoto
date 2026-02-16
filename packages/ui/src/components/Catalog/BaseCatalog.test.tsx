@@ -14,7 +14,7 @@ describe('BaseCatalog', () => {
           className="catalog__base"
           tiles={longTileList}
           catalogLayout={CatalogLayout.Gallery}
-          onTagClick={jest.fn()}
+          onTagClick={vi.fn()}
         />,
       ),
     );
@@ -31,7 +31,7 @@ describe('BaseCatalog', () => {
           className="catalog__base"
           tiles={longTileList}
           catalogLayout={CatalogLayout.List}
-          onTagClick={jest.fn()}
+          onTagClick={vi.fn()}
         />,
       ),
     );
@@ -46,7 +46,7 @@ describe('BaseCatalog', () => {
           className="catalog__base"
           tiles={longTileList}
           catalogLayout={CatalogLayout.List}
-          onTagClick={jest.fn()}
+          onTagClick={vi.fn()}
         />,
       );
     });
@@ -77,7 +77,7 @@ describe('BaseCatalog', () => {
           className="catalog__base"
           tiles={longTileList}
           catalogLayout={CatalogLayout.List}
-          onTagClick={jest.fn()}
+          onTagClick={vi.fn()}
         />,
       );
     });

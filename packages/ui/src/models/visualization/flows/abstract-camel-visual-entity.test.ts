@@ -209,7 +209,7 @@ describe('AbstractCamelVisualEntity', () => {
 
     it('should delegate the serialization to the `CamelComponentSchemaService`', () => {
       const newUri = 'timer';
-      const spy = jest.spyOn(CamelComponentSchemaService, 'getMultiValueSerializedDefinition');
+      const spy = vi.spyOn(CamelComponentSchemaService, 'getMultiValueSerializedDefinition');
       abstractVisualEntity.updateModel('from', { uri: newUri });
 
       expect(spy).toHaveBeenCalledWith('from', { uri: newUri });

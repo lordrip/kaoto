@@ -10,6 +10,19 @@ import {
   IKameletDefinition,
 } from '../models';
 
+/**
+ * Unwrap Vite's JSON module format.
+ * Vite imports JSON as `{ default: <fullJson>, ...partialKeys }`.
+ * The `default` property always contains the complete JSON, while
+ * direct keys may only contain a subset.
+ */
+function unwrapDefault<T>(mod: T & { default?: T }): T {
+  if (mod.default && typeof mod.default === 'object') {
+    return mod.default as T;
+  }
+  return mod;
+}
+
 export const getFirstCatalogMap = async (catalogLibrary: CatalogLibrary) => {
   const [firstCatalogLibraryEntry] = catalogLibrary.definitions;
 
@@ -22,55 +35,45 @@ export const testLoadCatalog = async (catalogLibraryEntry: CatalogLibraryEntry) 
 
   const catalogPath = `@kaoto/camel-catalog/${catalogLibraryEntry.fileName.substring(0, catalogLibraryEntry.fileName.lastIndexOf('/') + 1)}`;
 
-  const componentCatalogMap: Record<string, ICamelComponentDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.components.file}`
+  const componentCatalogMap = unwrapDefault<Record<string, ICamelComponentDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.components.file}`),
   );
-  delete componentCatalogMap.default;
 
-  const modelCatalogMap: Record<string, ICamelProcessorDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.models.file}`
+  const modelCatalogMap = unwrapDefault<Record<string, ICamelProcessorDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.models.file}`),
   );
-  delete modelCatalogMap.default;
 
-  const patternCatalogMap: Record<string, ICamelProcessorDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.patterns.file}`
+  const patternCatalogMap = unwrapDefault<Record<string, ICamelProcessorDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.patterns.file}`),
   );
-  delete patternCatalogMap.default;
 
-  const kameletsCatalogMap: Record<string, IKameletDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.kamelets.file}`
+  const kameletsCatalogMap = unwrapDefault<Record<string, IKameletDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.kamelets.file}`),
   );
-  delete kameletsCatalogMap.default;
 
-  const kameletsBoundariesCatalog: Record<string, IKameletDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.kameletBoundaries.file}`
+  const kameletsBoundariesCatalog = unwrapDefault<Record<string, IKameletDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.kameletBoundaries.file}`),
   );
-  delete kameletsBoundariesCatalog.default;
 
-  const languageCatalog: Record<string, ICamelLanguageDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.languages.file}`
+  const languageCatalog = unwrapDefault<Record<string, ICamelLanguageDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.languages.file}`),
   );
-  delete languageCatalog.default;
 
-  const dataformatCatalog: Record<string, ICamelDataformatDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.dataformats.file}`
+  const dataformatCatalog = unwrapDefault<Record<string, ICamelDataformatDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.dataformats.file}`),
   );
-  delete dataformatCatalog.default;
 
-  const loadbalancerCatalog: Record<string, ICamelLoadBalancerDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.loadbalancers.file}`
+  const loadbalancerCatalog = unwrapDefault<Record<string, ICamelLoadBalancerDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.loadbalancers.file}`),
   );
-  delete loadbalancerCatalog.default;
 
-  const entitiesCatalog: Record<string, ICamelProcessorDefinition> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.entities.file}`
+  const entitiesCatalog = unwrapDefault<Record<string, ICamelProcessorDefinition>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.entities.file}`),
   );
-  delete entitiesCatalog.default;
 
-  const functionsCatalogMap: Record<string, Record<string, KaotoFunction>> = await import(
-    `${catalogPath}${catalogDefinition.catalogs.functions.file}`
+  const functionsCatalogMap = unwrapDefault<Record<string, Record<string, KaotoFunction>>>(
+    await import(`${catalogPath}${catalogDefinition.catalogs.functions.file}`),
   );
-  delete functionsCatalogMap.default;
 
   return {
     catalogDefinition,

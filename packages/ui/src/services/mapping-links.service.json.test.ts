@@ -179,7 +179,7 @@ describe('MappingLinksService : JSON', () => {
       const svgRef: RefObject<SVGSVGElement> = {
         /* tslint:disable-next-line */
         current: {
-          getBoundingClientRect: jest.fn(),
+          getBoundingClientRect: vi.fn(),
         } as unknown as SVGSVGElement,
       };
 

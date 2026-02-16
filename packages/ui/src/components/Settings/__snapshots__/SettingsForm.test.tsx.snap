@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`SettingsForm should render 1`] = `
+exports[`SettingsForm > should render 1`] = `
 <form
   class="pf-v6-c-form kaoto-form kaoto-form__label"
   data-testid="settings-form"

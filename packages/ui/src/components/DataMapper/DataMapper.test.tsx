@@ -133,7 +133,7 @@ describe('DataMapperPage', () => {
     metadata = existingMetadata;
     fileContents['kaoto-datamapper-1234.xsl'] = '<xsl/>';
 
-    const updateMappingFileSpy = jest.spyOn(DataMapperMetadataService, 'updateMappingFile').mockResolvedValue();
+    const updateMappingFileSpy = vi.spyOn(DataMapperMetadataService, 'updateMappingFile').mockResolvedValue();
 
     render(
       <MetadataProvider api={api}>

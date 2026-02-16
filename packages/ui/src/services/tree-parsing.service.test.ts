@@ -113,7 +113,7 @@ describe('TreeParsingService', () => {
     });
 
     it('should use VisualizationService to generate children', () => {
-      const spy = jest.spyOn(VisualizationService, 'generateNodeDataChildren');
+      const spy = vi.spyOn(VisualizationService, 'generateNodeDataChildren');
 
       TreeParsingService.parseTreeNode(tree.root);
 

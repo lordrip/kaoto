@@ -7,21 +7,21 @@ import useDeleteHotkey from './delete-hotkey.hook';
 import { useDeleteStep } from './delete-step.hook';
 
 // Mock hotkeys-js
-jest.mock('hotkeys-js', () => {
-  const mockHotkeys = jest.fn();
-  const mockUnbind = jest.fn();
+vi.mock('hotkeys-js', () => {
+  const mockHotkeys = vi.fn();
+  const mockUnbind = vi.fn();
   Object.assign(mockHotkeys, { unbind: mockUnbind });
-  return mockHotkeys;
+  return { default: mockHotkeys };
 });
 
-const mockHotkeys = hotkeys as jest.MockedFunction<typeof hotkeys>;
+const mockHotkeys = hotkeys as vi.MockedFunction<typeof hotkeys>;
 
-jest.mock('./delete-step.hook', () => ({
-  useDeleteStep: jest.fn(),
+vi.mock('./delete-step.hook', () => ({
+  useDeleteStep: vi.fn(),
 }));
 
-jest.mock('./delete-group.hook', () => ({
-  useDeleteGroup: jest.fn(),
+vi.mock('./delete-group.hook', () => ({
+  useDeleteGroup: vi.fn(),
 }));
 
 // Helper to create fake node
@@ -32,19 +32,19 @@ function makeNode({ canRemoveStep = false, canRemoveFlow = false } = {}) {
 }
 
 describe('useDeleteHotkey', () => {
-  let clearSelected: jest.Mock;
-  let onDeleteStep: jest.Mock;
-  let onDeleteGroup: jest.Mock;
+  let clearSelected: vi.Mock;
+  let onDeleteStep: vi.Mock;
+  let onDeleteGroup: vi.Mock;
 
   beforeEach(() => {
-    clearSelected = jest.fn();
-    onDeleteStep = jest.fn();
-    onDeleteGroup = jest.fn();
+    clearSelected = vi.fn();
+    onDeleteStep = vi.fn();
+    onDeleteGroup = vi.fn();
 
-    (useDeleteStep as jest.Mock).mockReturnValue({ onDeleteStep });
-    (useDeleteGroup as jest.Mock).mockReturnValue({ onDeleteGroup });
+    (useDeleteStep as vi.Mock).mockReturnValue({ onDeleteStep });
+    (useDeleteGroup as vi.Mock).mockReturnValue({ onDeleteGroup });
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   // Small helper for tests
@@ -70,7 +70,7 @@ describe('useDeleteHotkey', () => {
   it('should do nothing if no node selected', () => {
     const handler = setupHotkey(undefined);
 
-    const preventDefault = jest.fn();
+    const preventDefault = vi.fn();
     act(() => handler({ preventDefault }));
 
     expect(onDeleteStep).not.toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe('useDeleteHotkey', () => {
   it('should call onDeleteStep and clearSelected when canRemoveStep=true', () => {
     const handler = setupHotkey(makeNode({ canRemoveStep: true }));
 
-    const preventDefault = jest.fn();
+    const preventDefault = vi.fn();
     act(() => handler({ preventDefault }));
 
     expect(onDeleteStep).toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe('useDeleteHotkey', () => {
   it('should call onDeleteGroup and clearSelected when canRemoveFlow=true', () => {
     const handler = setupHotkey(makeNode({ canRemoveFlow: true }));
 
-    const preventDefault = jest.fn();
+    const preventDefault = vi.fn();
     act(() => handler({ preventDefault }));
 
     expect(onDeleteStep).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('useDeleteHotkey', () => {
   it('should do nothing when node cannot be removed', () => {
     const handler = setupHotkey(makeNode({ canRemoveStep: false, canRemoveFlow: false }));
 
-    const preventDefault = jest.fn();
+    const preventDefault = vi.fn();
     act(() => handler({ preventDefault }));
 
     expect(onDeleteStep).not.toHaveBeenCalled();
@@ -114,7 +114,7 @@ describe('useDeleteHotkey', () => {
   it('should call preventDefault on event', () => {
     const handler = setupHotkey(makeNode({ canRemoveStep: true }));
 
-    const preventDefault = jest.fn();
+    const preventDefault = vi.fn();
     act(() => handler({ preventDefault }));
 
     expect(preventDefault).toHaveBeenCalled();

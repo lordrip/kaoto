@@ -87,7 +87,7 @@ describe('CamelInterceptSendToEndpointVisualEntity', () => {
   });
 
   it('should delegate the validation text to the ModelValidationService', () => {
-    const validateNodeStatusSpy = jest.spyOn(ModelValidationService, 'validateNodeStatus');
+    const validateNodeStatusSpy = vi.spyOn(ModelValidationService, 'validateNodeStatus');
 
     const interceptSendToEndpointVisualEntity = new CamelInterceptSendToEndpointVisualEntity({
       interceptSendToEndpoint: { id: 'id', uri: 'direct:a-reference' },

@@ -27,9 +27,9 @@ import {
 } from '../ContextMenu/item-interaction-helper';
 import { useReplaceStep } from './replace-step.hook';
 
-jest.mock('../ContextMenu/item-interaction-helper', () => ({
-  findOnDeleteModalCustomizationRecursively: jest.fn(),
-  processOnDeleteAddonRecursively: jest.fn(),
+vi.mock('../ContextMenu/item-interaction-helper', () => ({
+  findOnDeleteModalCustomizationRecursively: vi.fn(),
+  processOnDeleteAddonRecursively: vi.fn(),
 }));
 
 describe('useReplaceStep', () => {
@@ -41,35 +41,35 @@ describe('useReplaceStep', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   const mockCatalogModalContext = {
-    setIsModalOpen: jest.fn(),
-    getNewComponent: jest.fn(),
-    checkCompatibility: jest.fn(),
+    setIsModalOpen: vi.fn(),
+    getNewComponent: vi.fn(),
+    checkCompatibility: vi.fn(),
   };
 
   const mockMetadataContext: IMetadataApi = {
-    onStepUpdated: jest.fn(),
-    getMetadata: jest.fn(),
-    setMetadata: jest.fn(),
-    getResourceContent: jest.fn(),
-    saveResourceContent: jest.fn(),
-    deleteResource: jest.fn(),
-    askUserForFileSelection: jest.fn(),
-    getSuggestions: jest.fn(),
+    onStepUpdated: vi.fn(),
+    getMetadata: vi.fn(),
+    setMetadata: vi.fn(),
+    getResourceContent: vi.fn(),
+    saveResourceContent: vi.fn(),
+    deleteResource: vi.fn(),
+    askUserForFileSelection: vi.fn(),
+    getSuggestions: vi.fn(),
     shouldSaveSchema: false,
   };
 
   const mockActionConfirmationModalContext = {
-    actionConfirmation: jest.fn(),
+    actionConfirmation: vi.fn(),
   };
 
   const mockNodeInteractionAddonContext: INodeInteractionAddonContext = {
-    registerInteractionAddon: jest.fn(),
-    getRegisteredInteractionAddons: jest.fn().mockReturnValue([]),
+    registerInteractionAddon: vi.fn(),
+    getRegisteredInteractionAddons: vi.fn().mockReturnValue([]),
   };
 
   const mockDefinedComponent = {
@@ -82,15 +82,15 @@ describe('useReplaceStep', () => {
 
   beforeEach(() => {
     mockVizNode = createVisualizationNode('test-step', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    mockVizNode.addBaseEntityStep = jest.fn();
-    mockVizNode.getChildren = jest.fn().mockReturnValue([]);
-    jest.spyOn(camelResource, 'getCompatibleComponents').mockReturnValue(mockCompatibleComponents);
-    (findOnDeleteModalCustomizationRecursively as jest.Mock).mockReturnValue([]);
-    (processOnDeleteAddonRecursively as jest.Mock).mockImplementation(() => {});
+    mockVizNode.addBaseEntityStep = vi.fn();
+    mockVizNode.getChildren = vi.fn().mockReturnValue([]);
+    vi.spyOn(camelResource, 'getCompatibleComponents').mockReturnValue(mockCompatibleComponents);
+    (findOnDeleteModalCustomizationRecursively as vi.Mock).mockReturnValue([]);
+    (processOnDeleteAddonRecursively as vi.Mock).mockImplementation(() => {});
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -147,7 +147,7 @@ describe('useReplaceStep', () => {
   });
 
   it('should replace step without confirmation when no children', async () => {
-    mockVizNode.getChildren = jest.fn().mockReturnValue([]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([]);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
 
     const { result } = renderHook(() => useReplaceStep(mockVizNode), { wrapper });
@@ -172,7 +172,7 @@ describe('useReplaceStep', () => {
       name: EntityType.Route,
       isPlaceholder: true,
     });
-    mockVizNode.getChildren = jest.fn().mockReturnValue([placeholderChild]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([placeholderChild]);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
 
     const { result } = renderHook(() => useReplaceStep(mockVizNode), { wrapper });
@@ -190,7 +190,7 @@ describe('useReplaceStep', () => {
       name: EntityType.Route,
       isPlaceholder: false,
     });
-    mockVizNode.getChildren = jest.fn().mockReturnValue([nonPlaceholderChild]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([nonPlaceholderChild]);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
 
@@ -214,7 +214,7 @@ describe('useReplaceStep', () => {
       name: EntityType.Route,
       isPlaceholder: false,
     });
-    mockVizNode.getChildren = jest.fn().mockReturnValue([nonPlaceholderChild]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([nonPlaceholderChild]);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CANCEL);
 
     const { result } = renderHook(() => useReplaceStep(mockVizNode), { wrapper });
@@ -233,7 +233,7 @@ describe('useReplaceStep', () => {
       name: EntityType.Route,
       isPlaceholder: false,
     });
-    mockVizNode.getChildren = jest.fn().mockReturnValue([nonPlaceholderChild]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([nonPlaceholderChild]);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useReplaceStep(mockVizNode), { wrapper });
@@ -281,8 +281,8 @@ describe('useReplaceStep', () => {
       name: EntityType.Route,
       isPlaceholder: false,
     });
-    mockVizNode.getChildren = jest.fn().mockReturnValue([nonPlaceholderChild]);
-    (findOnDeleteModalCustomizationRecursively as jest.Mock).mockReturnValue([mockModalCustomization]);
+    mockVizNode.getChildren = vi.fn().mockReturnValue([nonPlaceholderChild]);
+    (findOnDeleteModalCustomizationRecursively as vi.Mock).mockReturnValue([mockModalCustomization]);
     mockActionConfirmationModalContext.actionConfirmation.mockResolvedValue(ACTION_ID_CONFIRM);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
 
@@ -307,7 +307,7 @@ describe('useReplaceStep', () => {
 
     expect(findOnDeleteModalCustomizationRecursively).toHaveBeenCalledWith(mockVizNode, expect.any(Function));
 
-    const callback = (findOnDeleteModalCustomizationRecursively as jest.Mock).mock.calls[0][1];
+    const callback = (findOnDeleteModalCustomizationRecursively as vi.Mock).mock.calls[0][1];
     callback(mockVizNode);
     expect(mockNodeInteractionAddonContext.getRegisteredInteractionAddons).toHaveBeenCalledWith(
       IInteractionType.ON_DELETE,

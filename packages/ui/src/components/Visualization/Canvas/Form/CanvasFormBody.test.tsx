@@ -43,7 +43,7 @@ describe('CanvasFormBody', () => {
 
   describe('should persists changes from both expression editor and main form', () => {
     beforeEach(() => {
-      jest.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     it('expression => main form', async () => {
@@ -73,7 +73,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={setHeaderNode} />
@@ -127,7 +127,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={setHeaderNode} />
@@ -156,7 +156,7 @@ describe('CanvasFormBody', () => {
 
   describe('should persists changes from both dataformat editor and main form', () => {
     beforeEach(() => {
-      jest.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     it('dataformat => main form', async () => {
@@ -186,7 +186,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={marshalNode} />
@@ -237,7 +237,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={marshalNode} />
@@ -263,7 +263,7 @@ describe('CanvasFormBody', () => {
 
   describe('should persists changes from both loadbalancer editor and main form', () => {
     beforeEach(() => {
-      jest.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     it('loadbalancer => main form', async () => {
@@ -293,7 +293,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={loadBalanceNode} />
@@ -344,7 +344,7 @@ describe('CanvasFormBody', () => {
               <CanvasFormTabsContext.Provider
                 value={{
                   selectedTab: 'All',
-                  setSelectedTab: jest.fn(),
+                  setSelectedTab: vi.fn(),
                 }}
               >
                 <CanvasFormBody vizNode={loadBalanceNode} />
@@ -371,7 +371,7 @@ describe('CanvasFormBody', () => {
   it('should show suggestions', async () => {
     const { Provider, camelResource } = TestProvidersWrapper();
     const vizNode = camelResource.getVisualEntities()[0].toVizNode();
-    jest.spyOn(vizNode, 'getNodeSchema').mockReturnValue({
+    vi.spyOn(vizNode, 'getNodeSchema').mockReturnValue({
       type: 'object',
       properties: {
         name: {
@@ -380,14 +380,14 @@ describe('CanvasFormBody', () => {
         },
       },
     });
-    jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue({ name: 'test-component' });
+    vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue({ name: 'test-component' });
 
     const wrapper = render(
       <Provider>
         <CanvasFormTabsContext.Provider
           value={{
             selectedTab: 'All',
-            setSelectedTab: jest.fn(),
+            setSelectedTab: vi.fn(),
           }}
         >
           <CanvasFormBody vizNode={vizNode} />

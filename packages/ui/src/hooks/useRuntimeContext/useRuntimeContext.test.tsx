@@ -14,7 +14,7 @@ describe('useRuntimeContext', () => {
   let fetchResolve: () => void;
 
   beforeEach(() => {
-    const fetchMock = jest.spyOn(window, 'fetch');
+    const fetchMock = vi.spyOn(window, 'fetch');
     fetchMock.mockImplementationOnce((file) => {
       return new Promise((resolve) => {
         fetchResolve = () => {
@@ -28,13 +28,13 @@ describe('useRuntimeContext', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should be throw when use hook without provider', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => null);
+    vi.spyOn(console, 'error').mockImplementation(() => null);
     expect(() => renderHook(() => useRuntimeContext())).toThrow(errorMessage);
-    (console.error as jest.Mock).mockRestore();
+    (console.error as vi.Mock).mockRestore();
   });
 
   it('should return RuntimeContext', async () => {

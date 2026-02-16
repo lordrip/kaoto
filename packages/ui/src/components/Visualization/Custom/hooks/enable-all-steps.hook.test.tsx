@@ -12,20 +12,20 @@ import { setValue } from '../../../../utils/set-value';
 import { useEnableAllSteps } from './enable-all-steps.hook';
 
 const mockController = {
-  getGraph: jest.fn(),
+  getGraph: vi.fn(),
 };
 
-jest.mock('@patternfly/react-topology', () => ({
+vi.mock('@patternfly/react-topology', () => ({
   useVisualizationController: () => mockController,
 }));
 
-jest.mock('../../../../utils/get-viznodes-from-graph');
-const mockGetVisualizationNodesFromGraph = getVisualizationNodesFromGraph as jest.MockedFunction<
+vi.mock('../../../../utils/get-viznodes-from-graph');
+const mockGetVisualizationNodesFromGraph = getVisualizationNodesFromGraph as vi.MockedFunction<
   typeof getVisualizationNodesFromGraph
 >;
 
-jest.mock('../../../../utils/set-value');
-const mockSetValue = setValue as jest.MockedFunction<typeof setValue>;
+vi.mock('../../../../utils/set-value');
+const mockSetValue = setValue as vi.MockedFunction<typeof setValue>;
 
 describe('useEnableAllSteps', () => {
   const camelResource = new CamelRouteResource();
@@ -36,13 +36,13 @@ describe('useEnableAllSteps', () => {
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   beforeEach(() => {
     mockGraph = {
-      getNodes: jest.fn().mockReturnValue([]),
+      getNodes: vi.fn().mockReturnValue([]),
     } as unknown as Node<ElementModel, unknown>;
 
     mockController.getGraph.mockReturnValue(mockGraph);
@@ -50,7 +50,7 @@ describe('useEnableAllSteps', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -111,13 +111,13 @@ describe('useEnableAllSteps', () => {
 
     // Test the filter function
     const enabledNode = createVisualizationNode('enabled', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    enabledNode.getNodeDefinition = jest.fn().mockReturnValue({ disabled: false });
+    enabledNode.getNodeDefinition = vi.fn().mockReturnValue({ disabled: false });
 
     const disabledNode = createVisualizationNode('disabled', {
       catalogKind: CatalogKind.Entity,
       name: EntityType.Route,
     });
-    disabledNode.getNodeDefinition = jest.fn().mockReturnValue({ disabled: true });
+    disabledNode.getNodeDefinition = vi.fn().mockReturnValue({ disabled: true });
 
     expect(filterFunction?.(enabledNode)).toBe(false);
     expect(filterFunction?.(disabledNode)).toBe(true);
@@ -129,16 +129,16 @@ describe('useEnableAllSteps', () => {
       name: EntityType.Route,
     });
     const mockDefinition1 = { disabled: true, id: 'step1' };
-    disabledNode1.getNodeDefinition = jest.fn().mockReturnValue(mockDefinition1);
-    disabledNode1.updateModel = jest.fn();
+    disabledNode1.getNodeDefinition = vi.fn().mockReturnValue(mockDefinition1);
+    disabledNode1.updateModel = vi.fn();
 
     const disabledNode2 = createVisualizationNode('disabled-step-2', {
       catalogKind: CatalogKind.Entity,
       name: EntityType.Route,
     });
     const mockDefinition2 = { disabled: true, id: 'step2' };
-    disabledNode2.getNodeDefinition = jest.fn().mockReturnValue(mockDefinition2);
-    disabledNode2.updateModel = jest.fn();
+    disabledNode2.getNodeDefinition = vi.fn().mockReturnValue(mockDefinition2);
+    disabledNode2.updateModel = vi.fn();
 
     mockGetVisualizationNodesFromGraph.mockReturnValue([disabledNode1, disabledNode2]);
 
@@ -160,8 +160,8 @@ describe('useEnableAllSteps', () => {
       name: EntityType.Route,
     });
     const mockDefinition = {};
-    disabledNode.getNodeDefinition = jest.fn().mockReturnValue(mockDefinition);
-    disabledNode.updateModel = jest.fn();
+    disabledNode.getNodeDefinition = vi.fn().mockReturnValue(mockDefinition);
+    disabledNode.updateModel = vi.fn();
 
     mockGetVisualizationNodesFromGraph.mockReturnValue([disabledNode]);
 
@@ -179,8 +179,8 @@ describe('useEnableAllSteps', () => {
       catalogKind: CatalogKind.Entity,
       name: EntityType.Route,
     });
-    disabledNode.getNodeDefinition = jest.fn().mockReturnValue(undefined);
-    disabledNode.updateModel = jest.fn();
+    disabledNode.getNodeDefinition = vi.fn().mockReturnValue(undefined);
+    disabledNode.updateModel = vi.fn();
 
     mockGetVisualizationNodesFromGraph.mockReturnValue([disabledNode]);
 
@@ -227,12 +227,12 @@ describe('useEnableAllSteps', () => {
       catalogKind: CatalogKind.Entity,
       name: EntityType.Route,
     });
-    disabledNode1.getNodeDefinition = jest.fn().mockReturnValue({ disabled: true });
+    disabledNode1.getNodeDefinition = vi.fn().mockReturnValue({ disabled: true });
     const disabledNode2 = createVisualizationNode('disabled-step-2', {
       catalogKind: CatalogKind.Entity,
       name: EntityType.Route,
     });
-    disabledNode2.getNodeDefinition = jest.fn().mockReturnValue({ disabled: true });
+    disabledNode2.getNodeDefinition = vi.fn().mockReturnValue({ disabled: true });
 
     mockGetVisualizationNodesFromGraph.mockReturnValue([disabledNode1, disabledNode2]);
 

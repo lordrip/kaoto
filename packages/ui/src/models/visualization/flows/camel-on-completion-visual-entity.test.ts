@@ -85,7 +85,7 @@ describe('CamelOnCompletionVisualEntity', () => {
   });
 
   it('should delegate the validation text to the ModelValidationService', () => {
-    const validateNodeStatusSpy = jest.spyOn(ModelValidationService, 'validateNodeStatus');
+    const validateNodeStatusSpy = vi.spyOn(ModelValidationService, 'validateNodeStatus');
 
     const onCompletionVisualEntity = new CamelOnCompletionVisualEntity({
       onCompletion: { id: 'id', mode: 'AfterConsumer' },

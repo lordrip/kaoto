@@ -22,7 +22,7 @@ describe('KameletSchemaService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     CamelCatalogService.clearCatalogs();
   });
 

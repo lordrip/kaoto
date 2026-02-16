@@ -51,7 +51,7 @@ describe('InlineEdit', () => {
 
     it('should go to edit mode and stop click event propagation', () => {
       const mouseEvent = new MouseEvent('click', { bubbles: true });
-      const stopPropagationSpy = jest.spyOn(mouseEvent, 'stopPropagation');
+      const stopPropagationSpy = vi.spyOn(mouseEvent, 'stopPropagation');
 
       const wrapper = render(<InlineEdit data-testid={DATA_TESTID} />);
       const editButton = wrapper.getByTestId('inline--edit');
@@ -155,7 +155,7 @@ describe('InlineEdit', () => {
     });
 
     it('should call the onChange callback if the validation succeeds', () => {
-      const onChange = jest.fn();
+      const onChange = vi.fn();
       const wrapper = render(
         <InlineEdit data-testid={DATA_TESTID} value="My text" onChange={onChange} validator={minLengthValidator} />,
       );
@@ -179,7 +179,7 @@ describe('InlineEdit', () => {
     });
 
     it('should not call the onChange callback if the validation fails', () => {
-      const onChange = jest.fn();
+      const onChange = vi.fn();
       const wrapper = render(
         <InlineEdit data-testid={DATA_TESTID} value="My text" onChange={onChange} validator={minLengthValidator} />,
       );
@@ -199,7 +199,7 @@ describe('InlineEdit', () => {
     });
 
     it('should not call the onChange callback if the value did not change', () => {
-      const onChange = jest.fn();
+      const onChange = vi.fn();
       const wrapper = render(
         <InlineEdit data-testid={DATA_TESTID} value="My text" onChange={onChange} validator={minLengthValidator} />,
       );
@@ -236,7 +236,7 @@ describe('InlineEdit', () => {
 
     it('should return to read mode and stop the event propagation when the user clicks on the cancel button', () => {
       const mouseEvent = new MouseEvent('click', { bubbles: true });
-      const stopPropagationSpy = jest.spyOn(mouseEvent, 'stopPropagation');
+      const stopPropagationSpy = vi.spyOn(mouseEvent, 'stopPropagation');
       const wrapper = render(<InlineEdit data-testid={DATA_TESTID} />);
 
       act(() => {
@@ -256,7 +256,7 @@ describe('InlineEdit', () => {
 
     it('should prevent the form submission', () => {
       const submitEvent = new Event('submit', { bubbles: true });
-      const preventDefaultSpy = jest.spyOn(submitEvent, 'preventDefault');
+      const preventDefaultSpy = vi.spyOn(submitEvent, 'preventDefault');
       const wrapper = render(<InlineEdit data-testid={DATA_TESTID} />);
 
       act(() => {

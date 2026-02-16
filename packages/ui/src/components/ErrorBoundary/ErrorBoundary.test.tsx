@@ -5,10 +5,10 @@ import { ErrorBoundary } from './ErrorBoundary';
 
 describe('ErrorBoundary', () => {
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   const MockComponent = () => {

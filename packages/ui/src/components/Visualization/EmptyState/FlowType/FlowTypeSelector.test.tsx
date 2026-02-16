@@ -21,7 +21,7 @@ config.config[SourceSchemaType.Route].schema = {
   schema: { name: 'route', description: 'desc' } as KaotoSchemaDefinition['schema'],
 } as KaotoSchemaDefinition;
 
-const onSelect = jest.fn();
+const onSelect = vi.fn();
 const FlowTypeSelectorWithContext: React.FunctionComponent<{
   currentSchemaType?: SourceSchemaType;
   xml?: boolean;

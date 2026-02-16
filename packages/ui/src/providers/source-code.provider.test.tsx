@@ -41,7 +41,7 @@ describe('SourceCodeProvider', () => {
     );
 
     const eventNotifier = EventNotifier.getInstance();
-    const notifierSpy = jest.spyOn(eventNotifier, 'next');
+    const notifierSpy = vi.spyOn(eventNotifier, 'next');
 
     const input = wrapper.getByPlaceholderText('sourcecode') as HTMLInputElement;
     const button = wrapper.getByText('Update sourcecode');
@@ -54,7 +54,7 @@ describe('SourceCodeProvider', () => {
   });
 
   it('should clear pastState when loading the store for the first time', () => {
-    const clearSpy = jest.spyOn(useSourceCodeStore.temporal.getState(), 'clear');
+    const clearSpy = vi.spyOn(useSourceCodeStore.temporal.getState(), 'clear');
 
     render(
       <SourceCodeProvider>
@@ -68,7 +68,7 @@ describe('SourceCodeProvider', () => {
   it('should call `setSourceCode` upon receiving a `entities:updated` notification', () => {
     const eventNotifier = EventNotifier.getInstance();
     const originalSetSourceCode = useSourceCodeStore.getState().setSourceCode;
-    const setSourceCodeSpy = jest.fn();
+    const setSourceCodeSpy = vi.fn();
 
     act(() => {
       useSourceCodeStore.setState({ setSourceCode: setSourceCodeSpy });

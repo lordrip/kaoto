@@ -3,16 +3,16 @@ import React from 'react';
 
 import { MappingLink } from './MappingLink';
 
-const mockGetNodeReference = jest.fn();
-const mockToggleSelectedNodeReference = jest.fn();
+const mockGetNodeReference = vi.fn();
+const mockToggleSelectedNodeReference = vi.fn();
 
-jest.mock('../../hooks/useCanvas', () => ({
+vi.mock('../../hooks/useCanvas', () => ({
   useCanvas: () => ({
     getNodeReference: mockGetNodeReference,
   }),
 }));
 
-jest.mock('../../hooks/useMappingLinks', () => ({
+vi.mock('../../hooks/useMappingLinks', () => ({
   useMappingLinks: () => ({
     mappingLinkCanvasRef: { current: { getBoundingClientRect: () => ({ left: 10, right: 110 }) } },
     toggleSelectedNodeReference: mockToggleSelectedNodeReference,

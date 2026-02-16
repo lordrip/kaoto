@@ -67,8 +67,7 @@ describe('CamelRouteConfigurationVisualEntity', () => {
   });
 
   it('should delegate to super return node label', () => {
-    const superGetNodeLabelSpy = jest
-      .spyOn(AbstractCamelVisualEntity.prototype, 'getNodeLabel')
+    const superGetNodeLabelSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'getNodeLabel')
       .mockReturnValueOnce('label');
     const entity = new CamelRouteConfigurationVisualEntity(routeConfigurationDef);
 
@@ -88,8 +87,7 @@ describe('CamelRouteConfigurationVisualEntity', () => {
   });
 
   it('should delegate to super to return tooltip content', () => {
-    const superGetTooltipContentSpy = jest
-      .spyOn(AbstractCamelVisualEntity.prototype, 'getTooltipContent')
+    const superGetTooltipContentSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'getTooltipContent')
       .mockReturnValueOnce('tooltip');
     const entity = new CamelRouteConfigurationVisualEntity(routeConfigurationDef);
 
@@ -106,7 +104,7 @@ describe('CamelRouteConfigurationVisualEntity', () => {
   });
 
   it('should return schema from store', () => {
-    const catalogServiceSpy = jest.spyOn(CamelCatalogService, 'getComponent');
+    const catalogServiceSpy = vi.spyOn(CamelCatalogService, 'getComponent');
 
     const entity = new CamelRouteConfigurationVisualEntity(routeConfigurationDef);
     entity.getNodeSchema(CamelRouteConfigurationVisualEntity.ROOT_PATH);
@@ -191,8 +189,7 @@ describe('CamelRouteConfigurationVisualEntity', () => {
       canRemoveFlow: true,
       canBeDisabled: true,
     };
-    const superGetNodeInteractionSpy = jest
-      .spyOn(AbstractCamelVisualEntity.prototype, 'getNodeInteraction')
+    const superGetNodeInteractionSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'getNodeInteraction')
       .mockReturnValueOnce(mockInteractions);
 
     const entity = new CamelRouteConfigurationVisualEntity(routeConfigurationDef);
@@ -209,7 +206,7 @@ describe('CamelRouteConfigurationVisualEntity', () => {
   describe('addStep', () => {
     it('should strip placeholder from path when adding step', () => {
       const entity = new CamelRouteConfigurationVisualEntity(routeConfigurationDef);
-      const superAddStepSpy = jest.spyOn(AbstractCamelVisualEntity.prototype, 'addStep');
+      const superAddStepSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'addStep');
 
       entity.addStep({
         definedComponent: { type: CatalogKind.Processor, name: 'intercept' } as DefinedComponent,

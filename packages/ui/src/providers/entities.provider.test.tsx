@@ -81,7 +81,7 @@ describe('EntitiesProvider', () => {
   });
 
   it('it should subscribe to the `code:updated` notification', () => {
-    const notifierSpy = jest.spyOn(eventNotifier, 'subscribe');
+    const notifierSpy = vi.spyOn(eventNotifier, 'subscribe');
 
     renderHook(() => useContext(EntitiesContext), { wrapper: EntitiesProvider });
 
@@ -112,7 +112,7 @@ describe('EntitiesProvider', () => {
   });
 
   it('should serialize using YAML 1.1', () => {
-    const notifierSpy = jest.spyOn(eventNotifier, 'next');
+    const notifierSpy = vi.spyOn(eventNotifier, 'next');
     const { result } = renderHook(() => useContext(EntitiesContext), { wrapper: EntitiesProvider });
 
     act(() => {
@@ -130,7 +130,7 @@ describe('EntitiesProvider', () => {
   it('should notify subscribers when the entities are updated', () => {
     mockRandomValues();
 
-    const notifierSpy = jest.spyOn(eventNotifier, 'next');
+    const notifierSpy = vi.spyOn(eventNotifier, 'next');
     const { result } = renderHook(() => useContext(EntitiesContext), { wrapper: EntitiesProvider });
 
     act(() => {
@@ -190,7 +190,7 @@ describe('EntitiesProvider', () => {
   });
 
   it('should refresh entities and notify subscribers', () => {
-    const notifierSpy = jest.spyOn(eventNotifier, 'next');
+    const notifierSpy = vi.spyOn(eventNotifier, 'next');
     const { result } = renderHook(() => useContext(EntitiesContext), { wrapper: EntitiesProvider });
 
     act(() => {

@@ -126,7 +126,7 @@ describe('KameletVisualEntity', () => {
   });
 
   it('getNodeSchema should return the component schema from the underlying AbstractCamelVisualEntity', () => {
-    const getNodeSchemaSpy = jest.spyOn(AbstractCamelVisualEntity.prototype, 'getNodeSchema');
+    const getNodeSchemaSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'getNodeSchema');
 
     const kamelet = new KameletVisualEntity(kameletDef);
     kamelet.getNodeSchema('test-path');
@@ -146,7 +146,7 @@ describe('KameletVisualEntity', () => {
 
   describe('toVizNode', () => {
     it('should delegate to the super class toVizNode', () => {
-      const toVizNodeSpy = jest.spyOn(AbstractCamelVisualEntity.prototype, 'toVizNode');
+      const toVizNodeSpy = vi.spyOn(AbstractCamelVisualEntity.prototype, 'toVizNode');
       const kamelet = new KameletVisualEntity(kameletDef);
       kamelet.toVizNode();
 

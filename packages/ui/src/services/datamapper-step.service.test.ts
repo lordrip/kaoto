@@ -6,25 +6,25 @@ import { EntitiesContextResult } from '../providers';
 import { XSLT_COMPONENT_NAME, XsltComponentDef } from '../utils';
 import { DataMapperStepService } from './datamapper-step.service';
 
-jest.mock('../models/visualization/flows/camel-catalog.service');
+vi.mock('../models/visualization/flows/camel-catalog.service');
 
 describe('DataMapperStepService', () => {
-  let mockEntitiesContext: jest.Mocked<EntitiesContextResult>;
+  let mockEntitiesContext: vi.Mocked<EntitiesContextResult>;
 
   beforeEach(() => {
     mockEntitiesContext = {
-      updateSourceCodeFromEntities: jest.fn(),
-    } as unknown as jest.Mocked<EntitiesContextResult>;
+      updateSourceCodeFromEntities: vi.fn(),
+    } as unknown as vi.Mocked<EntitiesContextResult>;
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('getDataMapperMetadataId', () => {
     it('should return the id from visualization node', () => {
       const vizNode = createVisualizationNode('custom-id', { catalogKind: CatalogKind.Processor, name: 'step' });
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue({ id: 'custom-metadata-id' });
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue({ id: 'custom-metadata-id' });
 
       const metadataId = DataMapperStepService.getDataMapperMetadataId(vizNode);
 
@@ -52,8 +52,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       const documentName = DataMapperStepService.initializeXsltStep(vizNode, metadataId, mockEntitiesContext);
 
@@ -78,8 +78,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       const documentName = DataMapperStepService.initializeXsltStep(vizNode, metadataId, mockEntitiesContext);
 
@@ -143,7 +143,7 @@ describe('DataMapperStepService', () => {
 
   describe('supportsJsonBody', () => {
     it('should return true when useJsonBody parameter exists in catalog', () => {
-      (CamelCatalogService.getComponent as jest.Mock).mockReturnValue({
+      (CamelCatalogService.getComponent as vi.Mock).mockReturnValue({
         properties: {
           useJsonBody: {
             type: 'boolean',
@@ -159,7 +159,7 @@ describe('DataMapperStepService', () => {
     });
 
     it('should return false when useJsonBody parameter does not exist in catalog', () => {
-      (CamelCatalogService.getComponent as jest.Mock).mockReturnValue({
+      (CamelCatalogService.getComponent as vi.Mock).mockReturnValue({
         properties: {
           otherParam: {
             type: 'string',
@@ -173,7 +173,7 @@ describe('DataMapperStepService', () => {
     });
 
     it('should return false when component is not found', () => {
-      (CamelCatalogService.getComponent as jest.Mock).mockReturnValue(undefined);
+      (CamelCatalogService.getComponent as vi.Mock).mockReturnValue(undefined);
 
       const result = DataMapperStepService.supportsJsonBody();
 
@@ -181,7 +181,7 @@ describe('DataMapperStepService', () => {
     });
 
     it('should return false when component has no properties', () => {
-      (CamelCatalogService.getComponent as jest.Mock).mockReturnValue({
+      (CamelCatalogService.getComponent as vi.Mock).mockReturnValue({
         properties: undefined,
       });
 
@@ -211,8 +211,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       DataMapperStepService.setUseJsonBody(vizNode, true, mockEntitiesContext);
 
@@ -247,8 +247,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       DataMapperStepService.setUseJsonBody(vizNode, false, mockEntitiesContext);
 
@@ -273,8 +273,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       DataMapperStepService.setUseJsonBody(vizNode, true, mockEntitiesContext);
 
@@ -305,8 +305,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       DataMapperStepService.setUseJsonBody(vizNode, true, mockEntitiesContext);
 
@@ -324,8 +324,8 @@ describe('DataMapperStepService', () => {
         ],
       };
 
-      jest.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
-      const updateModelSpy = jest.spyOn(vizNode, 'updateModel');
+      vi.spyOn(vizNode, 'getNodeDefinition').mockReturnValue(model);
+      const updateModelSpy = vi.spyOn(vizNode, 'updateModel');
 
       DataMapperStepService.setUseJsonBody(vizNode, true, mockEntitiesContext);
 

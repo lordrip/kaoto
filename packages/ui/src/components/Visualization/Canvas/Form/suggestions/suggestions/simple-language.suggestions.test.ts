@@ -59,7 +59,7 @@ describe('Properties Suggestions', () => {
   });
 
   it('should use the CamelCatalogService to query available functions', async () => {
-    const catalogSpy = jest.spyOn(CamelCatalogService, 'getComponent');
+    const catalogSpy = vi.spyOn(CamelCatalogService, 'getComponent');
     const word = '';
     await getSimpleLanguageSuggestionProvider().getSuggestions(word, {
       inputValue: 'test example',
@@ -82,7 +82,7 @@ describe('Properties Suggestions', () => {
   });
 
   it('should generate basic functions if the catalog is not available', async () => {
-    jest.spyOn(CamelCatalogService, 'getComponent').mockReturnValueOnce(undefined);
+    vi.spyOn(CamelCatalogService, 'getComponent').mockReturnValueOnce(undefined);
     const suggestions = await getSimpleLanguageSuggestionProvider().getSuggestions('test', {
       inputValue: 'test example',
       cursorPosition: 0,
@@ -100,7 +100,7 @@ describe('Properties Suggestions', () => {
   });
 
   it('should return suggestions from the catalog with metadata', async () => {
-    const metadataMock: IMetadataApi['getSuggestions'] = jest.fn().mockResolvedValue([{ value: 'mocked-suggestion' }]);
+    const metadataMock: IMetadataApi['getSuggestions'] = vi.fn().mockResolvedValue([{ value: 'mocked-suggestion' }]);
 
     const provider = getSimpleLanguageSuggestionProvider(metadataMock);
     const suggestions = await provider.getSuggestions('test', { inputValue: '', cursorPosition: 0, propertyName: '' });

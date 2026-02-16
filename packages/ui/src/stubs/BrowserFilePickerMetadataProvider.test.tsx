@@ -12,13 +12,13 @@ import { IMetadataApi, MetadataContext } from '../providers';
 import { BrowserFilePickerMetadataProvider } from './BrowserFilePickerMetadataProvider';
 import { readFileAsString } from './read-file-as-string';
 
-jest.mock('./read-file-as-string');
+vi.mock('./read-file-as-string');
 
-const mockReadFileAsString = readFileAsString as jest.MockedFunction<typeof readFileAsString>;
+const mockReadFileAsString = readFileAsString as vi.MockedFunction<typeof readFileAsString>;
 
 describe('BrowserFilePickerMetadataProvider', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const renderWithProvider = () => {
@@ -93,7 +93,7 @@ describe('BrowserFilePickerMetadataProvider', () => {
 
     it('should trigger file input click', () => {
       const { api, fileInput } = renderWithProvider();
-      const clickSpy = jest.fn();
+      const clickSpy = vi.fn();
       fileInput.click = clickSpy;
 
       act(() => {

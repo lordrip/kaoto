@@ -3,15 +3,15 @@ import { act, render, screen } from '@testing-library/react';
 import { useLocalStorage } from '../hooks/local-storage.hook';
 import { Shell } from './Shell';
 
-jest.mock('../hooks/local-storage.hook', () => ({
-  useLocalStorage: jest.fn(),
+vi.mock('../hooks/local-storage.hook', () => ({
+  useLocalStorage: vi.fn(),
 }));
 
-jest.mock('./Navigation', () => ({
+vi.mock('./Navigation', () => ({
   Navigation: ({ isNavOpen }: { isNavOpen: boolean }) => <div data-testid="navigation" data-is-open={isNavOpen}></div>,
 }));
 
-jest.mock('./TopBar', () => ({
+vi.mock('./TopBar', () => ({
   TopBar: ({ navToggle }: { navToggle: () => void }) => (
     <button title="button" type="button" data-testid="topbar" onClick={navToggle} />
   ),
@@ -19,7 +19,7 @@ jest.mock('./TopBar', () => ({
 
 describe('Shell Component', () => {
   it('renders the Shell component with children', () => {
-    (useLocalStorage as jest.Mock).mockReturnValue([true, jest.fn()]);
+    (useLocalStorage as vi.Mock).mockReturnValue([true, vi.fn()]);
 
     render(
       <Shell>
@@ -33,8 +33,8 @@ describe('Shell Component', () => {
   });
 
   it('toggles navigation state when navToggle is called', () => {
-    const setIsNavOpenMock = jest.fn();
-    (useLocalStorage as jest.Mock).mockReturnValue([true, setIsNavOpenMock]);
+    const setIsNavOpenMock = vi.fn();
+    (useLocalStorage as vi.Mock).mockReturnValue([true, setIsNavOpenMock]);
 
     render(<Shell />);
 
@@ -47,7 +47,7 @@ describe('Shell Component', () => {
   });
 
   it('renders navigation as closed when isNavOpen is false', () => {
-    (useLocalStorage as jest.Mock).mockReturnValue([false, jest.fn()]);
+    (useLocalStorage as vi.Mock).mockReturnValue([false, vi.fn()]);
 
     render(<Shell />);
 

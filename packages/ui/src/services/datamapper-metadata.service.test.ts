@@ -8,24 +8,24 @@ import { JsonSchemaDocumentService } from './json-schema-document.service';
 import { EMPTY_XSL } from './mapping-serializer.service';
 
 describe('DataMapperMetadataService', () => {
-  let mockApi: jest.Mocked<IMetadataApi>;
+  let mockApi: vi.Mocked<IMetadataApi>;
 
   beforeEach(() => {
     mockApi = {
-      getMetadata: jest.fn(),
-      setMetadata: jest.fn(),
-      getResourceContent: jest.fn(),
-      saveResourceContent: jest.fn(),
-      deleteResource: jest.fn(),
-      askUserForFileSelection: jest.fn(),
-      getSuggestions: jest.fn(),
+      getMetadata: vi.fn(),
+      setMetadata: vi.fn(),
+      getResourceContent: vi.fn(),
+      saveResourceContent: vi.fn(),
+      deleteResource: vi.fn(),
+      askUserForFileSelection: vi.fn(),
+      getSuggestions: vi.fn(),
       shouldSaveSchema: false,
-      onStepUpdated: jest.fn(),
-    } as jest.Mocked<IMetadataApi>;
+      onStepUpdated: vi.fn(),
+    } as vi.Mocked<IMetadataApi>;
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('createMetadata', () => {
@@ -166,7 +166,7 @@ describe('DataMapperMetadataService', () => {
         return undefined;
       });
 
-      const spy = jest.spyOn(DataMapperMetadataService as never, 'doLoadDocument');
+      const spy = vi.spyOn(DataMapperMetadataService as never, 'doLoadDocument');
 
       const result = await DataMapperMetadataService.loadDocuments(mockApi, metadata);
 
@@ -307,7 +307,7 @@ describe('DataMapperMetadataService', () => {
       };
 
       mockApi.getResourceContent.mockRejectedValue(new Error('File not found'));
-      const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation();
 
       const result = await DataMapperMetadataService.loadDocuments(mockApi, metadata);
 
@@ -755,7 +755,7 @@ describe('DataMapperMetadataService', () => {
     it('should handle file save errors gracefully', async () => {
       mockApi.shouldSaveSchema = true;
       mockApi.saveResourceContent.mockRejectedValue(new Error('Save failed'));
-      const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation();
 
       const metadata: IDataMapperMetadata = {
         sourceBody: { type: DocumentDefinitionType.Primitive, filePath: [] },

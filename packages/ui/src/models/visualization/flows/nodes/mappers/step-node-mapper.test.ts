@@ -61,7 +61,7 @@ describe('StepNodeMapper', () => {
   });
 
   it('should verify if this step node is a Kaoto DataMapper one', () => {
-    const dataMapperNodeSpy = jest.spyOn(DataMapperNodeMapper, 'isDataMapperNode');
+    const dataMapperNodeSpy = vi.spyOn(DataMapperNodeMapper, 'isDataMapperNode');
 
     mapper.getVizNodeFromProcessor(path, { processorName: 'step' }, routeDefinition);
 
@@ -69,8 +69,8 @@ describe('StepNodeMapper', () => {
   });
 
   it('should delegate to the rootNodeMapper if this step node is a Kaoto DataMapper one', () => {
-    const rootNodeMapperSpy = jest.spyOn(rootNodeMapper, 'getVizNodeFromProcessor');
-    const dataMapperNodeSpy = jest.spyOn(DataMapperNodeMapper, 'isDataMapperNode');
+    const rootNodeMapperSpy = vi.spyOn(rootNodeMapper, 'getVizNodeFromProcessor');
+    const dataMapperNodeSpy = vi.spyOn(DataMapperNodeMapper, 'isDataMapperNode');
     dataMapperNodeSpy.mockReturnValue(true);
 
     mapper.getVizNodeFromProcessor(path, { processorName: 'step' }, routeDefinition);

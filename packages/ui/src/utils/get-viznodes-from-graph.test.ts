@@ -25,7 +25,7 @@ import { getVisualizationNodesFromGraph } from './get-viznodes-from-graph';
 describe('getVisualizationNodesFromGraph', () => {
   it('should return an empty array if there are no nodes in the graph', () => {
     const graph = {
-      getNodes: jest.fn().mockReturnValue([]),
+      getNodes: vi.fn().mockReturnValue([]),
     } as unknown as Graph;
 
     const result = getVisualizationNodesFromGraph(graph);

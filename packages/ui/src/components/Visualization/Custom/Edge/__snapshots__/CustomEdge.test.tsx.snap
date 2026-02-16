@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CustomEdge should render without error 1`] = `
+exports[`CustomEdge > should render without error 1`] = `
 <DocumentFragment>
   <g
     class="custom-edge"

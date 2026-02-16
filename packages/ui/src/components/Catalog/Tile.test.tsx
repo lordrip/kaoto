@@ -15,15 +15,15 @@ describe('Tile', () => {
 
   it('renders correctly', async () => {
     const { container } = await act(async () =>
-      render(<Tile tile={tile} onClick={jest.fn()} onTagClick={jest.fn()} />),
+      render(<Tile tile={tile} onClick={vi.fn()} onTagClick={vi.fn()} />),
     );
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('calls onClick and onTagClick prop when clicked', async () => {
-    const onClick = jest.fn();
-    const onTagClick = jest.fn();
+    const onClick = vi.fn();
+    const onTagClick = vi.fn();
 
     const { getByTestId } = await act(async () =>
       render(<Tile tile={tile} onClick={onClick} onTagClick={onTagClick} />),

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { CatalogKind, IVisualizationNode } from '../../../../models';
 import { CustomNodeContent } from './CustomNodeContent';
 
-jest.mock('../../../IconResolver', () => ({
+vi.mock('../../../IconResolver', () => ({
   IconResolver: ({ alt, catalogKind, name }: { alt?: string; catalogKind: CatalogKind; name: string }) => (
     <div data-testid="icon-resolver" data-alt={alt} data-catalog-kind={catalogKind} data-name={name} />
   ),

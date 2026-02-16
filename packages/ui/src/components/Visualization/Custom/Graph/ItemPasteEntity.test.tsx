@@ -3,14 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { usePasteEntity } from '../../../../hooks/usePasteEntity';
 import { ItemPasteEntity } from './ItemPasteEntity';
 
-jest.mock('../../../../hooks/usePasteEntity');
+vi.mock('../../../../hooks/usePasteEntity');
 
 describe('ItemPasteEntity', () => {
-  const mockUsePasteEntity = usePasteEntity as jest.MockedFunction<typeof usePasteEntity>;
-  const mockOnPasteEntity = jest.fn();
+  const mockUsePasteEntity = usePasteEntity as vi.MockedFunction<typeof usePasteEntity>;
+  const mockOnPasteEntity = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders the paste menu item with icon and text', () => {

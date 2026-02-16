@@ -1,5 +1,6 @@
 import { SuggestionRegistryProvider } from '@kaoto/forms';
 import { FunctionComponent, PropsWithChildren } from 'react';
+import { vi } from 'vitest';
 
 import { CamelResource } from '../models/camel/camel-resource';
 import { CamelRouteResource } from '../models/camel/camel-route-resource';
@@ -22,10 +23,10 @@ interface TestProvidersWrapperResult {
 export const TestProvidersWrapper = (props: TestProviderWrapperProps = {}): TestProvidersWrapperResult => {
   const camelResource = props.camelResource ?? new CamelRouteResource([camelRouteJson]);
   const currentSchemaType = camelResource.getType();
-  const updateEntitiesFromCamelResourceSpy = jest.fn();
-  const updateSourceCodeFromEntitiesSpy = jest.fn();
+  const updateEntitiesFromCamelResourceSpy = vi.fn();
+  const updateSourceCodeFromEntitiesSpy = vi.fn();
 
-  const dispatchSpy = jest.fn();
+  const dispatchSpy = vi.fn();
   const visibleFlowsContext: VisibleFlowsContextResult = {
     allFlowsVisible: props.visibleFlowsContext?.allFlowsVisible ?? false,
     visibleFlows: props.visibleFlowsContext?.visibleFlows ?? {},

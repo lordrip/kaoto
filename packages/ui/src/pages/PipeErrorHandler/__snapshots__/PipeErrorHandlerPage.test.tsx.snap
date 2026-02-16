@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`PipeErrorHandlerPage renders "Not applicable" when the resource type is not supported 1`] = `
+exports[`PipeErrorHandlerPage > renders "Not applicable" when the resource type is not supported 1`] = `
 <div>
   <div
     class="pf-v6-c-content"
@@ -14,7 +14,7 @@ exports[`PipeErrorHandlerPage renders "Not applicable" when the resource type is
 </div>
 `;
 
-exports[`PipeErrorHandlerPage renders the KaotoForm when the resource type is supported 1`] = `
+exports[`PipeErrorHandlerPage > renders the KaotoForm when the resource type is supported 1`] = `
 <div>
   <form
     class="pf-v6-c-form kaoto-form kaoto-form__label"

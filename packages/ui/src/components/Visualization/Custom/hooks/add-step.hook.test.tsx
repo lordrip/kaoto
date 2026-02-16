@@ -14,32 +14,32 @@ import { useAddStep } from './add-step.hook';
 
 describe('useAddStep', () => {
   const camelResource = new CamelRouteResource();
-  const getCompatibleComponentsSpy = jest.spyOn(camelResource, 'getCompatibleComponents');
+  const getCompatibleComponentsSpy = vi.spyOn(camelResource, 'getCompatibleComponents');
 
   const mockEntitiesContext = {
     camelResource,
     entities: camelResource.getEntities(),
     visualEntities: camelResource.getVisualEntities(),
     currentSchemaType: camelResource.getType(),
-    updateSourceCodeFromEntities: jest.fn(),
-    updateEntitiesFromCamelResource: jest.fn(),
+    updateSourceCodeFromEntities: vi.fn(),
+    updateEntitiesFromCamelResource: vi.fn(),
   };
 
   const mockCatalogModalContext = {
-    setIsModalOpen: jest.fn(),
-    getNewComponent: jest.fn(),
-    checkCompatibility: jest.fn(),
+    setIsModalOpen: vi.fn(),
+    getNewComponent: vi.fn(),
+    checkCompatibility: vi.fn(),
   };
 
   const mockMetadataContext: IMetadataApi = {
-    onStepUpdated: jest.fn(),
-    getMetadata: jest.fn(),
-    setMetadata: jest.fn(),
-    getResourceContent: jest.fn(),
-    saveResourceContent: jest.fn(),
-    deleteResource: jest.fn(),
-    askUserForFileSelection: jest.fn(),
-    getSuggestions: jest.fn(),
+    onStepUpdated: vi.fn(),
+    getMetadata: vi.fn(),
+    setMetadata: vi.fn(),
+    getResourceContent: vi.fn(),
+    saveResourceContent: vi.fn(),
+    deleteResource: vi.fn(),
+    askUserForFileSelection: vi.fn(),
+    getSuggestions: vi.fn(),
     shouldSaveSchema: false,
   };
 
@@ -52,7 +52,7 @@ describe('useAddStep', () => {
   const mockCompatibleComponents = (item: ITile) => ['log', 'to'].includes(item.type);
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const wrapper: FunctionComponent<PropsWithChildren> = ({ children }) => (
@@ -110,7 +110,7 @@ describe('useAddStep', () => {
 
   it('should get compatible components and open catalog modal', async () => {
     const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    const addBaseEntityStepSpy = jest.spyOn(vizNode, 'addBaseEntityStep');
+    const addBaseEntityStepSpy = vi.spyOn(vizNode, 'addBaseEntityStep');
 
     getCompatibleComponentsSpy.mockReturnValue(mockCompatibleComponents);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
@@ -132,7 +132,7 @@ describe('useAddStep', () => {
 
   it('should work with PrependStep mode', async () => {
     const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    const addBaseEntityStepSpy = jest.spyOn(vizNode, 'addBaseEntityStep');
+    const addBaseEntityStepSpy = vi.spyOn(vizNode, 'addBaseEntityStep');
 
     getCompatibleComponentsSpy.mockReturnValue(mockCompatibleComponents);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);
@@ -147,7 +147,7 @@ describe('useAddStep', () => {
 
   it('should return early when catalog modal returns no component', async () => {
     const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    const addBaseEntityStepSpy = jest.spyOn(vizNode, 'addBaseEntityStep');
+    const addBaseEntityStepSpy = vi.spyOn(vizNode, 'addBaseEntityStep');
 
     getCompatibleComponentsSpy.mockReturnValue(mockCompatibleComponents);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(null);
@@ -165,7 +165,7 @@ describe('useAddStep', () => {
 
   it('should return early when catalog modal returns undefined', async () => {
     const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    const addBaseEntityStepSpy = jest.spyOn(vizNode, 'addBaseEntityStep');
+    const addBaseEntityStepSpy = vi.spyOn(vizNode, 'addBaseEntityStep');
 
     getCompatibleComponentsSpy.mockReturnValue(mockCompatibleComponents);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(undefined);
@@ -181,7 +181,7 @@ describe('useAddStep', () => {
 
   it('should handle missing metadata context gracefully', async () => {
     const vizNode = createVisualizationNode('test', { catalogKind: CatalogKind.Entity, name: EntityType.Route });
-    const addBaseEntityStepSpy = jest.spyOn(vizNode, 'addBaseEntityStep');
+    const addBaseEntityStepSpy = vi.spyOn(vizNode, 'addBaseEntityStep');
 
     getCompatibleComponentsSpy.mockReturnValue(mockCompatibleComponents);
     mockCatalogModalContext.getNewComponent.mockResolvedValue(mockDefinedComponent);

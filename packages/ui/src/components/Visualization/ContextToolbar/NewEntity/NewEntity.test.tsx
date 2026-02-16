@@ -274,7 +274,7 @@ describe('NewEntity', () => {
 
       // Mock empty groups scenario
       const originalGetCanvasEntityList = mockResource.getCanvasEntityList;
-      mockResource.getCanvasEntityList = jest.fn().mockReturnValue({
+      mockResource.getCanvasEntityList = vi.fn().mockReturnValue({
         common: [{ name: 'route', title: 'Route', description: 'Route description' }],
         groups: {},
       });

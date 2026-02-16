@@ -1,5 +1,5 @@
-jest.mock('./utils/color-scheme', () => ({
-  setColorScheme: jest.fn(),
+vi.mock('./utils/color-scheme', () => ({
+  setColorScheme: vi.fn(),
 }));
 
 import { act, render } from '@testing-library/react';

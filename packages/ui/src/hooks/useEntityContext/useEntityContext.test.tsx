@@ -8,9 +8,9 @@ const wrapper = ({ children }: PropsWithChildren) => <EntitiesProvider>{children
 
 describe('useEntityContext', () => {
   it('should be throw when use hook without provider', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => null);
+    vi.spyOn(console, 'error').mockImplementation(() => null);
     expect(() => renderHook(() => useEntityContext())).toThrow(errorMessage);
-    (console.error as jest.Mock).mockRestore();
+    (console.error as vi.Mock).mockRestore();
   });
 
   it('should return EntityContext', () => {

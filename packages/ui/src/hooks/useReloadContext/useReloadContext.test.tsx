@@ -10,9 +10,9 @@ const wrapper = ({ children }: PropsWithChildren) => (
 
 describe('useReloadContext', () => {
   it('should be throw when use hook without provider', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => null);
+    vi.spyOn(console, 'error').mockImplementation(() => null);
     expect(() => renderHook(() => useReloadContext())).toThrow(errorMessage);
-    (console.error as jest.Mock).mockRestore();
+    (console.error as vi.Mock).mockRestore();
   });
 
   it('should return ReloadContext', () => {

@@ -19,7 +19,7 @@ import { ItemDeleteGroup } from './ItemDeleteGroup';
 describe('ItemDeleteGroup', () => {
   let vizNode: IVisualizationNode;
   const mockDeleteModalContext = {
-    actionConfirmation: jest.fn(),
+    actionConfirmation: vi.fn(),
   };
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('ItemDeleteGroup', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render delete ContextMenuItem', () => {
@@ -56,7 +56,7 @@ describe('ItemDeleteGroup', () => {
 
   it('should call removeEntity if deletion is confirmed', async () => {
     const camelResource = new CamelRouteResource();
-    const removeEntitySpy = jest.spyOn(camelResource, 'removeEntity');
+    const removeEntitySpy = vi.spyOn(camelResource, 'removeEntity');
     const entityId = camelResource.addNewEntity(EntityType.Route);
     vizNode = camelResource.getVisualEntities()[0].toVizNode();
     mockDeleteModalContext.actionConfirmation.mockResolvedValueOnce(ACTION_ID_CONFIRM);
@@ -84,9 +84,9 @@ describe('ItemDeleteGroup', () => {
     const mockDeleteModalContext = {
       actionConfirmation: () => Promise.resolve(ACTION_ID_CONFIRM),
     };
-    const mockAddon = jest.fn();
+    const mockAddon = vi.fn();
     const mockNodeInteractionAddonContext = {
-      registerInteractionAddon: jest.fn(),
+      registerInteractionAddon: vi.fn(),
       getRegisteredInteractionAddons: (
         _interaction: IInteractionType,
         _vizNode?: IVisualizationNode,

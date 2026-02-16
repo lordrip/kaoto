@@ -14,7 +14,7 @@ import { DataMapperCanvasProvider } from '../../../providers/datamapper-canvas.p
 import { RenameParameterButton } from './RenameParameterButton';
 
 describe('RenameParameterButton', () => {
-  const renameAction = jest.fn();
+  const renameAction = vi.fn();
 
   it('should rename a parameter', async () => {
     let parameterMap: Map<string, IDocument>;
