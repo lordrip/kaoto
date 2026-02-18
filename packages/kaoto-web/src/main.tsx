@@ -1,11 +1,8 @@
 /**
- * Kaoto Web MVP
+ * Kaoto Web
  *
- * Validates that the multiplying architecture works on the web by:
- * 1. Creating a web envelope context (direct in-memory channel, no postMessage)
- * 2. Using KaotoEditorFactory.createEditor() - the same factory used by VS Code Kaoto
- * 3. Rendering editor.af_componentRoot() - the full Kaoto React component tree
- * 4. Loading a hardcoded Camel route via editor.setContent()
+ * Uses the multiplying architecture to run the Kaoto visual editor
+ * in a standalone browser tab with a route selection sidebar.
  */
 import '@patternfly/react-core/dist/styles/base.css';
 
@@ -15,36 +12,14 @@ import type { Editor, EditorInitArgs } from '@kie-tools-core/editor/dist/api';
 import { createRoot } from 'react-dom/client';
 
 import { createWebEnvelopeContext } from './channel/createWebEnvelopeContext';
-
-const SAMPLE_ROUTE = `- route:
-    id: sample-route
-    from:
-      uri: timer:hello
-      parameters:
-        period: "1000"
-      steps:
-        - setBody:
-            simple: "Hello from Kaoto Web!"
-        - log:
-            message: "\${body}"
-`;
+import { App } from './components/App';
+import { sampleRoutes } from './sampleRoutes';
 
 async function main() {
   const container = document.getElementById('root')!;
   const root = createRoot(container);
 
-  let editor: Editor | undefined;
-
-  const envelopeContext = createWebEnvelopeContext({
-    onReady: () => {
-      console.log('[KaotoWeb] Editor signaled ready, setting content...');
-      editor?.setContent('sample-route.camel.yaml', SAMPLE_ROUTE);
-    },
-    onNewEdit: () => {
-      // MVP: just log edits
-      console.log('[KaotoWeb] Editor produced a new edit');
-    },
-  });
+  const envelopeContext = createWebEnvelopeContext();
 
   const initArgs: EditorInitArgs = {
     resourcesPathPrefix: '',
@@ -56,17 +31,15 @@ async function main() {
   };
 
   const factory = new KaotoEditorFactory();
-  editor = await factory.createEditor(envelopeContext, initArgs);
+  const editor: Editor = await factory.createEditor(envelopeContext, initArgs);
 
-  // Call af_onOpen lifecycle hook (sets color scheme)
   editor.af_onOpen?.();
 
-  // Render the editor's React component tree
-  const editorElement = editor.af_componentRoot();
   root.render(
-    <div style={{ width: '100vw', height: '100vh' }}>
-      {editorElement as React.ReactElement}
-    </div>,
+    <App
+      editor={editor}
+      routes={sampleRoutes}
+    />,
   );
 }
 
