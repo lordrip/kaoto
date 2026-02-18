@@ -3,6 +3,17 @@
 ## Goal
 Create a web wrapper that leverages the same Kaoto editor used in VS Code Kaoto via the "multiplying architecture", with multi-file support (in-memory files shown in a sidebar list, clicking each opens it in the editor), similar to the Serverless Logic Web Tools experience.
 
+## Important: Standalone Repository Structure
+This web wrapper is intended to be **extracted into its own repository** later (similar to how `vscode-kaoto` lives in a separate repo from `kaoto`). To facilitate this:
+- All code lives in a **self-contained `packages/kaoto-web/` folder** with no imports from sibling packages by relative path
+- Dependencies on `@kaoto/kaoto` and `@kaoto/camel-catalog` are declared as **npm dependencies** (not workspace references), so the package can be lifted out and pointed at published packages
+- The folder should have its own README explaining how to develop and build it both inside this monorepo and standalone
+
+## MVP First
+Before building the full multi-file experience, we validate the approach with a minimal MVP:
+1. A single `src/main.tsx` that creates a web envelope context, instantiates `KaotoEditorFactory.createEditor()`, renders `editor.af_componentRoot()`, and loads a hardcoded Camel route YAML via `editor.setContent()`
+2. If the visual canvas renders and nodes can be added/edited, the multiplying architecture works on the web - everything else is UI on top
+
 ## Background
 
 ### How the Multiplying Architecture Works
@@ -13,7 +24,7 @@ The Kaoto UI library (`@kaoto/kaoto`) exports two key things:
 In VS Code Kaoto, the editor runs inside a webview (the "envelope") and VS Code acts as the "channel", communicating via `postMessage`. The `KaotoEditorApp` implements the `Editor` interface from `@kie-tools-core/editor` with methods like `setContent(path, content)`, `getContent()`, and `af_componentRoot()` (which returns the full React component tree).
 
 ### What We Need for Web
-In a web context, we don't need the iframe/postMessage boundary. Instead, we create a **lightweight mock of the `KogitoEditorEnvelopeContextType`** that provides the same `channelApi` but backed by in-memory state. This way we reuse the exact same `KaotoEditorFactory` and `KaotoEditorApp` as VS Code, fulfilling the multiplying architecture contract.
+In a web context, we don't need the iframe/postMessage boundary. Instead, we create a **web implementation of the `KogitoEditorEnvelopeContextType`** that provides the same `channelApi` but backed by in-memory state (direct method calls instead of postMessage). This is exactly what the multiplying architecture is designed for: different hosts providing different implementations of the same API. VS Code implements it with postMessage across a webview boundary; the web implements it with direct in-memory calls.
 
 ## Architecture
 
@@ -46,9 +57,17 @@ In a web context, we don't need the iframe/postMessage boundary. Instead, we cre
 
 ## Implementation Steps
 
+### Step 0: MVP - Validate multiplying architecture on the web
+Create the minimal `packages/kaoto-web/` scaffolding and a single `src/main.tsx` that:
+- Creates a web envelope context with bare-minimum channel API (`getVSCodeKaotoSettings()` returning a catalog URL, everything else returns empty/undefined defaults)
+- Calls `new KaotoEditorFactory().createEditor(context, initArgs)` to get a `KaotoEditorApp`
+- Renders `editor.af_componentRoot()` into a div
+- On `kogitoEditor_ready`, calls `editor.setContent('test.camel.yaml', hardcodedTimerToLogYaml)`
+- **Success criteria**: the visual canvas renders and nodes can be interacted with
+
 ### Step 1: Create package scaffolding
 Create `packages/kaoto-web/` with:
-- `package.json` - workspace package with dependencies on `@kaoto/kaoto`, `@kaoto/camel-catalog`, PatternFly, React, and the `@kie-tools-core/*` packages
+- `package.json` - standalone package with npm dependencies on `@kaoto/kaoto`, `@kaoto/camel-catalog`, PatternFly, React, and the `@kie-tools-core/*` packages (no workspace: references, so it can be extracted later)
 - `tsconfig.json` - TypeScript config
 - `vite.config.mts` - Vite config with React plugin and catalog file copying (similar to `packages/ui/vite.config.mjs`)
 - `index.html` - HTML entry point
@@ -155,7 +174,7 @@ The new package needs:
 
 ## Risks and Mitigations
 
-1. **Mock envelope context complexity**: The `MessageBusClientApi` type system uses conditional types to split methods into requests/notifications/shared. Mitigation: We build the mock carefully matching the type signatures, using `as unknown as MessageBusClientApi<KaotoEditorChannelApi>` only if necessary.
+1. **Web envelope context complexity**: The `MessageBusClientApi` type system uses conditional types to split methods into requests/notifications/shared. Mitigation: We build the web implementation carefully matching the type signatures, using `as unknown as MessageBusClientApi<KaotoEditorChannelApi>` only if necessary.
 
 2. **Catalog loading**: The Camel catalog must be served as static files. Mitigation: Copy them via vite-plugin-static-copy, same as the existing web app.
 
