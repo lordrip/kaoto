@@ -3173,6 +3173,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kaoto/camel-catalog@npm:*":
+  version: 0.3.10
+  resolution: "@kaoto/camel-catalog@npm:0.3.10"
+  checksum: 10/8ac81dd96f971204d30e6cceafd03b7e7af2fd1c08e727edc1dde7ac9edb7c257522b510243a2a8e33789a2beb85b4ac343ce2acbe54de3fa01a1ea82ca35037
+  languageName: node
+  linkType: hard
+
 "@kaoto/camel-catalog@npm:^0.3.1":
   version: 0.3.5
   resolution: "@kaoto/camel-catalog@npm:0.3.5"
@@ -3180,7 +3187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kaoto/forms@npm:^1.6.0":
+"@kaoto/forms@npm:^1.5.9, @kaoto/forms@npm:^1.6.0":
   version: 1.6.0
   resolution: "@kaoto/forms@npm:1.6.0"
   dependencies:
@@ -3252,6 +3259,79 @@ __metadata:
     vite: "npm:^5.4.0"
   languageName: unknown
   linkType: soft
+
+"@kaoto/kaoto-web@workspace:packages/kaoto-web":
+  version: 0.0.0-use.local
+  resolution: "@kaoto/kaoto-web@workspace:packages/kaoto-web"
+  dependencies:
+    "@kaoto/camel-catalog": "npm:*"
+    "@kaoto/kaoto": "npm:*"
+    "@kie-tools-core/editor": "npm:^10.0.0"
+    "@kie-tools-core/envelope-bus": "npm:^10.0.0"
+    "@kie-tools-core/i18n": "npm:^10.0.0"
+    "@kie-tools-core/keyboard-shortcuts": "npm:^10.0.0"
+    "@kie-tools-core/notifications": "npm:^10.0.0"
+    "@kie-tools-core/workspace": "npm:^10.0.0"
+    "@patternfly/patternfly": "npm:^6.4.0"
+    "@patternfly/react-core": "npm:^6.4.0"
+    "@patternfly/react-icons": "npm:^6.4.0"
+    "@types/react": "npm:^19.2.7"
+    "@types/react-dom": "npm:^19.2.3"
+    "@vitejs/plugin-react": "npm:^4.0.3"
+    react: "npm:^19.2.1"
+    react-dom: "npm:^19.2.1"
+    sass-embedded: "npm:^1.79.5"
+    typescript: "npm:^5.4.2"
+    vite: "npm:^5.4.0"
+    vite-plugin-static-copy: "npm:^1.0.6"
+  languageName: unknown
+  linkType: soft
+
+"@kaoto/kaoto@npm:*":
+  version: 2.9.0
+  resolution: "@kaoto/kaoto@npm:2.9.0"
+  dependencies:
+    "@carbon/icons-react": "npm:^11.67.0"
+    "@dnd-kit/core": "npm:^6.1.0"
+    "@kaoto/forms": "npm:^1.5.9"
+    "@kie-tools-core/editor": "npm:^10.0.0"
+    "@kie-tools-core/notifications": "npm:^10.0.0"
+    "@visx/shape": "npm:^3.12.0"
+    chevrotain: "npm:10.5.0"
+    clsx: "npm:^2.1.0"
+    hotkeys-js: "npm:^3.13.15"
+    html-to-image: "npm:1.11.11"
+    jszip: "npm:^3.10.1"
+    lodash: "npm:^4.17.21"
+    mobx: "npm:^6.9.0"
+    monaco-editor: "npm:^0.50.0"
+    react-markdown: "npm:^10.0.0"
+    react-router-dom: "npm:^6.14.1"
+    remark-gfm: "npm:^4.0.1"
+    simple-zustand-devtools: "npm:^1.1.0"
+    ts-markdown: "npm:^1.2.0"
+    usehooks-ts: "npm:^3.0.0"
+    uuid: "npm:^10.0.0"
+    xml-formatter: "npm:^3.6.5"
+    xml-name-validator: "npm:^5.0.0"
+    yaml: "npm:^2.3.2"
+    zundo: "npm:^2.3.0"
+    zustand: "npm:^4.3.9"
+  peerDependencies:
+    "@kaoto/camel-catalog": ^0.2.2 || ^0.3.0
+    "@patternfly/patternfly": ^6.4.0
+    "@patternfly/react-code-editor": ^6.4.0
+    "@patternfly/react-core": ^6.4.0
+    "@patternfly/react-icons": ^6.4.0
+    "@patternfly/react-table": ^6.4.0
+    "@patternfly/react-topology": ^6.4.0
+    monaco-yaml: ^5.1.1
+    react: ^18.3.1
+    react-dom: ^18.3.1
+    react-monaco-editor: ^0.56.0
+  checksum: 10/9c903db0056b3b3ee12660707428fe1f68bfa3378274e1317c5bdf09e1862d2c9f89ea2cc19d757db8e350a3b6c520ad4138f9fae9ff999871a816e471f7b2ba
+  languageName: node
+  linkType: hard
 
 "@kaoto/kaoto@workspace:*, @kaoto/kaoto@workspace:packages/ui":
   version: 0.0.0-use.local
@@ -3408,6 +3488,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kie-tools-core/envelope-bus@npm:10.1.0, @kie-tools-core/envelope-bus@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "@kie-tools-core/envelope-bus@npm:10.1.0"
+  peerDependencies:
+    react: ">=17.0.2 <19.0.0"
+    react-dom: ">=17.0.2 <19.0.0"
+  checksum: 10/29251db16e734a2cfe0ebee9b2e4235287b5c4c482fba4a127d87786575091d2e6895522aaa402fcce66bb8602b24e33adfcc6be35b0611681c6d9448e6617b5
+  languageName: node
+  linkType: hard
+
 "@kie-tools-core/envelope@npm:10.0.0":
   version: 10.0.0
   resolution: "@kie-tools-core/envelope@npm:10.0.0"
@@ -3430,6 +3520,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kie-tools-core/i18n@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "@kie-tools-core/i18n@npm:10.1.0"
+  peerDependencies:
+    react: ">=17.0.2 <19.0.0"
+    react-dom: ">=17.0.2 <19.0.0"
+  checksum: 10/2685ef111acd14f4602db724f0028c4dd7ce6a4eeb5199309932d62ae5e7c136cf62712b3529e2beee8d81e45f98677198640d5b5eabbec79e1e1a87a4f23a37
+  languageName: node
+  linkType: hard
+
 "@kie-tools-core/keyboard-shortcuts@npm:10.0.0":
   version: 10.0.0
   resolution: "@kie-tools-core/keyboard-shortcuts@npm:10.0.0"
@@ -3438,6 +3538,18 @@ __metadata:
     "@kie-tools-core/operating-system": "npm:10.0.0"
     react: "npm:^17.0.2"
   checksum: 10/4399642c1dc54399c40a1ba5af0301d15dd99a4482885281f821b4d7328dc0b2d902bcd5009f8231b79165215087c5598165221b5f12f128baa8c88140d10d63
+  languageName: node
+  linkType: hard
+
+"@kie-tools-core/keyboard-shortcuts@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "@kie-tools-core/keyboard-shortcuts@npm:10.1.0"
+  dependencies:
+    "@kie-tools-core/envelope-bus": "npm:10.1.0"
+    "@kie-tools-core/operating-system": "npm:10.1.0"
+  peerDependencies:
+    react: ">=17.0.2 <19.0.0"
+  checksum: 10/a30c7aee37523a8fe1b869242c7c39df779818b1aea51dda43a1688f731fe9e0d410b26085eae1bc680a4bc1a71c970bfbde10a9c4df4b29e5c5f422bd0fc7b9
   languageName: node
   linkType: hard
 
@@ -3458,6 +3570,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kie-tools-core/operating-system@npm:10.1.0":
+  version: 10.1.0
+  resolution: "@kie-tools-core/operating-system@npm:10.1.0"
+  checksum: 10/2dbf3f039b65af561a692a982cfa1397a30901bf6cc839d4f6bcfad2a36d6f36ed253395efeb8840176dbfde574acb1e2708abd3e88148818685e48088bea081
+  languageName: node
+  linkType: hard
+
 "@kie-tools-core/patternfly-base@npm:10.0.0":
   version: 10.0.0
   resolution: "@kie-tools-core/patternfly-base@npm:10.0.0"
@@ -3471,6 +3590,15 @@ __metadata:
   dependencies:
     "@kie-tools-core/operating-system": "npm:10.0.0"
   checksum: 10/4b4db2acb0839894ae25b6ce3390789353f6cccb0b57bd43dabe53276b44bae99a9a09eaee43a423d6cda8d0434a79cbfd17bd9bb78c8324a6613038af239087
+  languageName: node
+  linkType: hard
+
+"@kie-tools-core/workspace@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "@kie-tools-core/workspace@npm:10.1.0"
+  dependencies:
+    "@kie-tools-core/operating-system": "npm:10.1.0"
+  checksum: 10/3e8288ca52c06abadb92a2cd7c17d0278d2f5ee202714f1cebe0e7b03cec19b22d743c2b948481715db53b1c3376af65dbf5f3dddb2d9d27b81f43e9b8c329cc
   languageName: node
   linkType: hard
 

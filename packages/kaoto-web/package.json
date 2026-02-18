@@ -1,0 +1,37 @@
+{
+  "name": "@kaoto/kaoto-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Kaoto Web - A web wrapper for the Kaoto visual editor using the multiplying architecture",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "vite --mode=dev",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kaoto/camel-catalog": "*",
+    "@kaoto/kaoto": "*",
+    "@kie-tools-core/editor": "^10.0.0",
+    "@kie-tools-core/envelope-bus": "^10.0.0",
+    "@kie-tools-core/i18n": "^10.0.0",
+    "@kie-tools-core/keyboard-shortcuts": "^10.0.0",
+    "@kie-tools-core/notifications": "^10.0.0",
+    "@kie-tools-core/workspace": "^10.0.0",
+    "@patternfly/patternfly": "^6.4.0",
+    "@patternfly/react-core": "^6.4.0",
+    "@patternfly/react-icons": "^6.4.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.0.3",
+    "sass-embedded": "^1.79.5",
+    "typescript": "^5.4.2",
+    "vite": "^5.4.0",
+    "vite-plugin-static-copy": "^1.0.6"
+  }
+}
