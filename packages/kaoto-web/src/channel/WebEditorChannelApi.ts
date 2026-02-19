@@ -5,18 +5,38 @@
  * that the Kaoto editor calls back into the host for settings,
  * metadata, file operations, etc.
  *
- * Note: We avoid `implements KaotoEditorChannelApi` because the
- * @kie-tools-core sub-packages bundle duplicate type declarations
- * that cause structural type conflicts. The type safety is enforced
- * at the point of use in createWebEnvelopeContext instead.
+ * The `contentProvider` callback is called by the editor whenever it
+ * needs to reload the current file (e.g. on initial load). This lets
+ * us serve content from IndexedDB without the channel needing to know
+ * about IndexedDB directly.
  */
 import { EditorTheme } from '@kie-tools-core/editor/dist/api';
 import { SettingsModel } from '@kaoto/kaoto/models';
 
 const CATALOG_URL = './camel-catalog/index.json';
 
+export interface ContentResponse {
+  content: string;
+  normalizedPosixPathRelativeToTheWorkspaceRoot: string;
+}
+
+export type ContentProvider = () => ContentResponse;
+
 export class WebEditorChannelApi {
   private metadata: Map<string, unknown> = new Map();
+  private contentProvider: ContentProvider;
+
+  constructor(contentProvider?: ContentProvider) {
+    this.contentProvider = contentProvider ?? (() => ({
+      content: '',
+      normalizedPosixPathRelativeToTheWorkspaceRoot: '',
+    }));
+  }
+
+  /** Replace the content provider (e.g. when the active file changes). */
+  setContentProvider(provider: ContentProvider): void {
+    this.contentProvider = provider;
+  }
 
   // -- KaotoEditorChannelApi methods --
 
@@ -45,7 +65,7 @@ export class WebEditorChannelApi {
   }
 
   async saveResourceContent(): Promise<void> {
-    // no-op for MVP
+    // no-op for now
   }
 
   async deleteResource(): Promise<boolean> {
@@ -82,8 +102,8 @@ export class WebEditorChannelApi {
     // no-op
   }
 
-  async kogitoEditor_contentRequest() {
-    return { content: '', normalizedPosixPathRelativeToTheWorkspaceRoot: '' };
+  async kogitoEditor_contentRequest(): Promise<ContentResponse> {
+    return this.contentProvider();
   }
 
   kogitoEditor_theme() {

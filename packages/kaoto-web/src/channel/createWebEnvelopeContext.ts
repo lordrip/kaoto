@@ -10,7 +10,7 @@ import { EditorTheme } from '@kie-tools-core/editor/dist/api';
 import type { KogitoEditorEnvelopeContextType } from '@kie-tools-core/editor/dist/api';
 import type { MessageBusClientApi } from '@kie-tools-core/envelope-bus/dist/api';
 
-import { WebEditorChannelApi } from './WebEditorChannelApi';
+import { WebEditorChannelApi, type ContentProvider } from './WebEditorChannelApi';
 
 /**
  * Creates a no-op NotificationConsumer.
@@ -55,28 +55,22 @@ function createSharedValueConsumer<T>(defaultValue: T) {
   };
 }
 
-export interface WebEnvelopeContextOptions {
-  /** Callback invoked when the editor signals it is ready */
-  onReady?: () => void;
-  /** Callback invoked when the editor produces a new edit */
-  onNewEdit?: (edit: unknown) => void;
+export interface WebEnvelopeContextResult {
+  envelopeContext: KogitoEditorEnvelopeContextType<KaotoEditorChannelApi>;
+  /** Direct access to the channel API so callers can update the content provider. */
+  channelApi: WebEditorChannelApi;
+  /** Subscribe to "new edit" notifications from the editor. */
+  onNewEdit: (callback: () => void) => void;
 }
 
 export function createWebEnvelopeContext(
-  options: WebEnvelopeContextOptions = {},
-): KogitoEditorEnvelopeContextType<KaotoEditorChannelApi> {
-  const channelApi = new WebEditorChannelApi();
+  contentProvider?: ContentProvider,
+): WebEnvelopeContextResult {
+  const channelApi = new WebEditorChannelApi(contentProvider);
 
   // Build notification consumers
   const readyConsumer = createNotificationConsumer();
-  if (options.onReady) {
-    readyConsumer.subscribe(options.onReady);
-  }
-
   const newEditConsumer = createNotificationConsumer();
-  if (options.onNewEdit) {
-    newEditConsumer.subscribe(options.onNewEdit);
-  }
 
   const notifications = {
     kogitoEditor_ready: readyConsumer,
@@ -114,7 +108,7 @@ export function createWebEnvelopeContext(
     shared,
   } as unknown as MessageBusClientApi<KaotoEditorChannelApi>;
 
-  return {
+  const envelopeContext = {
     channelApi: messageBusClientApi,
     operatingSystem: undefined,
     services: {
@@ -123,4 +117,12 @@ export function createWebEnvelopeContext(
     },
     supportedThemes: [EditorTheme.LIGHT, EditorTheme.DARK],
   } as unknown as KogitoEditorEnvelopeContextType<KaotoEditorChannelApi>;
+
+  return {
+    envelopeContext,
+    channelApi,
+    onNewEdit: (callback: () => void) => {
+      newEditConsumer.subscribe(callback);
+    },
+  };
 }
