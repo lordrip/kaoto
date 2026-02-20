@@ -1,10 +1,11 @@
 import { Page, PageSection } from '@patternfly/react-core';
 import type { Editor } from '@kie-tools-core/editor/dist/api';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { WebEditorChannelApi } from '../channel/WebEditorChannelApi';
 import type { SampleRoute } from '../sampleRoutes';
 import { listFiles, readFile, saveFile, deleteFile, type StoredFile } from '../storage/fileStorage';
+import { CreateFileModal } from './CreateFileModal';
 import { RouteSidebar } from './RouteSidebar';
 
 export interface FileEntry {
@@ -23,6 +24,7 @@ interface AppProps {
 export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
   const [activeFile, setActiveFile] = useState<string | undefined>();
   const [storedFiles, setStoredFiles] = useState<StoredFile[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const isLoadingRef = useRef(false);
 
   /** Content cache so the channelApi content provider can return synchronously. */
@@ -42,7 +44,7 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
   const fileEntries: FileEntry[] = [
     ...storedFiles.map((f) => ({
       filename: f.filename,
-      name: sampleRoutes.find((s) => s.filename === f.filename)?.name ?? f.filename.replace('.camel.yaml', ''),
+      name: sampleRoutes.find((s) => s.filename === f.filename)?.name ?? f.filename.replace(/\.\w+\.yaml$/, ''),
       isSample: false,
     })),
     ...sampleRoutes
@@ -54,6 +56,14 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
       })),
   ];
 
+  // Set of all known filenames for duplicate detection in the modal
+  const existingFilenames = useMemo(() => {
+    const set = new Set<string>();
+    storedFiles.forEach((f) => set.add(f.filename));
+    sampleRoutes.forEach((s) => set.add(s.filename));
+    return set;
+  }, [storedFiles, sampleRoutes]);
+
   // Auto-save: when the editor emits a new edit, persist via getContent()
   useEffect(() => {
     onNewEdit(async () => {
@@ -64,7 +74,6 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
         const yaml = await editor.getContent();
         contentCacheRef.current.content = yaml;
         await saveFile(filename, yaml);
-        // Refresh the list (updates timestamps, may promote a sample to "stored")
         refreshFileList();
       } catch (err) {
         console.error('[KaotoWeb] Auto-save failed:', err);
@@ -72,19 +81,18 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
     });
   }, [editor, onNewEdit, refreshFileList]);
 
-  const handleSelectFile = useCallback(
+  /** Open a file by filename — reads from IndexedDB first, falls back to samples. */
+  const openFile = useCallback(
     async (filename: string) => {
       if (isLoadingRef.current || filename === activeFile) return;
       isLoadingRef.current = true;
 
       try {
-        // Resolve content: try IndexedDB first, then sample routes
         let content = await readFile(filename);
         if (content === undefined) {
           const sample = sampleRoutes.find((s) => s.filename === filename);
           if (sample) {
             content = sample.content;
-            // Persist the sample so future edits are saved
             await saveFile(filename, content);
             await refreshFileList();
           }
@@ -95,7 +103,6 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
           return;
         }
 
-        // Update the content cache and point the channel API at it
         contentCacheRef.current = { filename, content };
         channelApi.setContentProvider(() => ({
           content: contentCacheRef.current.content,
@@ -124,12 +131,25 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
     [activeFile, refreshFileList],
   );
 
+  /** Called from the modal when the user confirms a new file. */
+  const handleCreateFile = useCallback(
+    async (filename: string, content: string) => {
+      await saveFile(filename, content);
+      await refreshFileList();
+      setIsCreateModalOpen(false);
+      // Open the newly created file
+      await openFile(filename);
+    },
+    [refreshFileList, openFile],
+  );
+
   const sidebar = (
     <RouteSidebar
       files={fileEntries}
       activeFilename={activeFile}
-      onSelectFile={handleSelectFile}
+      onSelectFile={openFile}
       onDeleteFile={handleDeleteFile}
+      onCreateFile={() => setIsCreateModalOpen(true)}
     />
   );
 
@@ -140,6 +160,13 @@ export function App({ editor, channelApi, onNewEdit, sampleRoutes }: AppProps) {
           {editor.af_componentRoot() as React.ReactElement}
         </div>
       </PageSection>
+
+      <CreateFileModal
+        isOpen={isCreateModalOpen}
+        existingFilenames={existingFilenames}
+        onClose={() => setIsCreateModalOpen(false)}
+        onCreate={handleCreateFile}
+      />
     </Page>
   );
 }
