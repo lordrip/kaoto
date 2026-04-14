@@ -34,13 +34,12 @@ export class EndpointsEntityHandler {
     return this.testResource?.toJSON() as Test | undefined;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getDefinedEndpointsNameAndType(endpoints: Record<string, any>[]): { name: string; type: string }[] {
+  getDefinedEndpointsNameAndType(endpoints: Record<string, unknown>[]): { name: string; type: string }[] {
     const definedEndpoints: { name: string; type: string }[] = [];
 
     for (const endpoint of endpoints) {
       if (endpoint.type !== undefined) {
-        definedEndpoints.push({ name: endpoint.name ?? ('' as string), type: endpoint.type ?? ('unknown' as string) });
+        definedEndpoints.push({ name: (endpoint.name as string) ?? '', type: (endpoint.type as string) ?? 'unknown' });
       } else {
         const type = this.getEndpointType(endpoint);
         if (type) {
@@ -66,7 +65,7 @@ export class EndpointsEntityHandler {
     );
 
     for (const action of testEntity.actions ?? []) {
-      if (action.createEndpoint != undefined) {
+      if (action.createEndpoint !== undefined) {
         const jsonRecord = action.createEndpoint as Record<string, unknown>;
         const type = this.getEndpointType(jsonRecord);
         if (type) {
@@ -133,13 +132,14 @@ export class EndpointsEntityHandler {
     const endpointName = prevName || model['name'];
     if (endpointName) {
       const index = test.endpoints.findIndex((endpoint) => {
-        const type = this.getEndpointType(endpoint);
-        if (type) {
-          const name = this.findEndpointName(type, endpoint);
+        const foundType = this.getEndpointType(endpoint);
+        if (foundType) {
+          const name = this.findEndpointName(foundType, endpoint);
           if (name && name === endpointName) {
             return true;
           }
         }
+        return false;
       });
 
       if (index > -1) {
