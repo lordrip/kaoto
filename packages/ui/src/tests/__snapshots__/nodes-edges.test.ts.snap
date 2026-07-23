@@ -27,7 +27,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
           "name": "timer",
           "path": "route.from",
           "primaryNodeId": {
-            "catalogKind": "processor",
+            "catalogKind": "entity",
             "name": "from",
           },
           "processorIconTooltip": "",
@@ -2936,7 +2936,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -3076,7 +3076,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -3243,7 +3243,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -3503,7 +3503,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
               "name": "timer",
               "path": "route.from",
               "primaryNodeId": {
-                "catalogKind": "processor",
+                "catalogKind": "entity",
                 "name": "from",
               },
               "processorIconTooltip": "",
@@ -4184,7 +4184,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                           "name": "timer",
                           "path": "route.from",
                           "primaryNodeId": {
-                            "catalogKind": "processor",
+                            "catalogKind": "entity",
                             "name": "from",
                           },
                           "processorIconTooltip": "",
@@ -4324,7 +4324,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -4491,7 +4491,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -4751,7 +4751,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -5390,7 +5390,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -5530,7 +5530,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -5697,7 +5697,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -5957,7 +5957,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -6643,7 +6643,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -6783,7 +6783,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -6950,7 +6950,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -7210,7 +7210,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -7855,7 +7855,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                           "name": "timer",
                           "path": "route.from",
                           "primaryNodeId": {
-                            "catalogKind": "processor",
+                            "catalogKind": "entity",
                             "name": "from",
                           },
                           "processorIconTooltip": "",
@@ -7995,7 +7995,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -8162,7 +8162,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -8422,7 +8422,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -9178,7 +9178,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -9318,7 +9318,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -9485,7 +9485,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -9745,7 +9745,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
               "name": "timer",
               "path": "route.from",
               "primaryNodeId": {
-                "catalogKind": "processor",
+                "catalogKind": "entity",
                 "name": "from",
               },
               "processorIconTooltip": "",
@@ -10427,7 +10427,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                           "name": "timer",
                           "path": "route.from",
                           "primaryNodeId": {
-                            "catalogKind": "processor",
+                            "catalogKind": "entity",
                             "name": "from",
                           },
                           "processorIconTooltip": "",
@@ -10567,7 +10567,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -10734,7 +10734,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -10994,7 +10994,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -11633,7 +11633,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -11773,7 +11773,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -11940,7 +11940,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -12200,7 +12200,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -12886,7 +12886,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -13026,7 +13026,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -13193,7 +13193,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -13453,7 +13453,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -14098,7 +14098,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                           "name": "timer",
                           "path": "route.from",
                           "primaryNodeId": {
-                            "catalogKind": "processor",
+                            "catalogKind": "entity",
                             "name": "from",
                           },
                           "processorIconTooltip": "",
@@ -14238,7 +14238,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                         "name": "timer",
                         "path": "route.from",
                         "primaryNodeId": {
-                          "catalogKind": "processor",
+                          "catalogKind": "entity",
                           "name": "from",
                         },
                         "processorIconTooltip": "",
@@ -14405,7 +14405,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -14665,7 +14665,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -15421,7 +15421,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                       "name": "timer",
                       "path": "route.from",
                       "primaryNodeId": {
-                        "catalogKind": "processor",
+                        "catalogKind": "entity",
                         "name": "from",
                       },
                       "processorIconTooltip": "",
@@ -15561,7 +15561,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -15728,7 +15728,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -15988,7 +15988,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
               "name": "timer",
               "path": "route.from",
               "primaryNodeId": {
-                "catalogKind": "processor",
+                "catalogKind": "entity",
                 "name": "from",
               },
               "processorIconTooltip": "",
@@ -16745,7 +16745,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -16885,7 +16885,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -17052,7 +17052,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -17312,7 +17312,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
             "name": "timer",
             "path": "route.from",
             "primaryNodeId": {
-              "catalogKind": "processor",
+              "catalogKind": "entity",
               "name": "from",
             },
             "processorIconTooltip": "",
@@ -17672,7 +17672,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -18500,7 +18500,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -18640,7 +18640,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -19468,7 +19468,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -20025,7 +20025,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -20178,7 +20178,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
               "name": "timer",
               "path": "route.from",
               "primaryNodeId": {
-                "catalogKind": "processor",
+                "catalogKind": "entity",
                 "name": "from",
               },
               "processorIconTooltip": "",
@@ -20394,7 +20394,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -21302,7 +21302,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -21776,7 +21776,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -21952,7 +21952,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -22780,7 +22780,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -23310,7 +23310,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
@@ -23436,7 +23436,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -23606,7 +23606,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
               "name": "timer",
               "path": "route.from",
               "primaryNodeId": {
-                "catalogKind": "processor",
+                "catalogKind": "entity",
                 "name": "from",
               },
               "processorIconTooltip": "",
@@ -24568,7 +24568,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                 "name": "timer",
                 "path": "route.from",
                 "primaryNodeId": {
-                  "catalogKind": "processor",
+                  "catalogKind": "entity",
                   "name": "from",
                 },
                 "processorIconTooltip": "",
@@ -25069,7 +25069,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                   "name": "timer",
                   "path": "route.from",
                   "primaryNodeId": {
-                    "catalogKind": "processor",
+                    "catalogKind": "entity",
                     "name": "from",
                   },
                   "processorIconTooltip": "",
@@ -25570,7 +25570,7 @@ exports[`Nodes and Edges > should generate edges for steps with branches 1`] = `
                     "name": "timer",
                     "path": "route.from",
                     "primaryNodeId": {
-                      "catalogKind": "processor",
+                      "catalogKind": "entity",
                       "name": "from",
                     },
                     "processorIconTooltip": "",
