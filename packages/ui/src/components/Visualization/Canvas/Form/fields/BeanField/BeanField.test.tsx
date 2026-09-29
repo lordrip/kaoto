@@ -11,6 +11,7 @@ import { useEntityContext } from '../../../../../../hooks/useEntityContext/useEn
 import { KaotoSchemaDefinition } from '../../../../../../models';
 import { CamelRouteResource } from '../../../../../../models/camel/camel-route-resource';
 import { BeansEntity } from '../../../../../../models/visualization/metadata';
+import { BeansEntityHandler } from '../../../../../../models/visualization/metadata/beans-entity-handler';
 import { EntitiesContext, EntitiesContextResult } from '../../../../../../providers';
 import { DocumentationService } from '../../../../../../services/documentation.service';
 import { camelRouteJson, TestProvidersWrapper } from '../../../../../../stubs';
@@ -747,10 +748,17 @@ describe('BeanField', () => {
   });
 
   describe('Source update stability', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
     it('should keep the bean creation modal open and stable during a source update', async () => {
+      const originalResource = new CamelRouteResource([camelRouteJson]);
+      await originalResource.initialize();
+      const getBeanSchemaSpy = vi.spyOn(BeansEntityHandler.prototype, 'getBeanSchema');
       let updateResource: ((resource: CamelRouteResource) => void) | undefined;
       const DynamicProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-        const [resource, setResource] = useState(new CamelRouteResource([camelRouteJson]));
+        const [resource, setResource] = useState(originalResource);
         updateResource = setResource;
         const entitiesContextValue: EntitiesContextResult = useMemo(
           () => ({
@@ -791,6 +799,10 @@ describe('BeanField', () => {
       expect(nameInput).toHaveValue('myNewBean');
 
       await formPageObject.inputText('Type', 'io.kaoto.new.MyNewBean');
+      const typeInput = screen.getByRole('textbox', { name: 'Type' });
+      typeInput.focus();
+      expect(typeInput).toHaveFocus();
+      expect(getBeanSchemaSpy).toHaveBeenCalledTimes(1);
 
       // Replace the resource instance while modal is open
       const newResource = new CamelRouteResource([camelRouteJson]);
@@ -801,11 +813,21 @@ describe('BeanField', () => {
       });
 
       // The modal should remain open and interactive
-      expect(screen.getByTestId('NewBeanModal-myNewBean')).toBeInTheDocument();
+      expect(getBeanSchemaSpy).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId('NewBeanModal-myNewBean')).toBeVisible();
+      expect(screen.getByRole('textbox', { name: 'Name' })).toBe(nameInput);
+      expect(screen.getByRole('textbox', { name: 'Type' })).toBe(typeInput);
+      expect(nameInput).toHaveValue('myNewBean');
+      expect(typeInput).toHaveValue('io.kaoto.new.MyNewBean');
+      expect(typeInput).toHaveFocus();
       await clickCreateButton();
 
       expect(onPropertyChangeSpy).toHaveBeenCalledTimes(1);
       expect(onPropertyChangeSpy).toHaveBeenCalledWith(ROOT_PATH, '#myNewBean');
+      expect(new BeansEntityHandler(newResource).getBeansModel()).toEqual([
+        { name: 'myNewBean', type: 'io.kaoto.new.MyNewBean' },
+      ]);
+      expect(new BeansEntityHandler(originalResource).getBeansModel()).toBeUndefined();
     });
 
     it('should close the modal and log an error if getBeanSchema rejects', async () => {
