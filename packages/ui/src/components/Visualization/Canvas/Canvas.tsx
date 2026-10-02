@@ -106,7 +106,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({
     }
 
     const requestedSelection = consumeNodeSelection(controller, nodes);
-    setSelectedIds(requestedSelection ?? []);
+    setSelectedIds((ids) => requestedSelection ?? ids.filter((id) => nodes.some((node) => node.id === id)));
 
     const model: Model = {
       nodes,
@@ -214,7 +214,7 @@ export const Canvas: FunctionComponent<PropsWithChildren<CanvasProps>> = ({
 
   const isSidebarOpen = useMemo(() => selectedIds.length > 0, [selectedIds.length]);
 
-  if (isModelResolving) {
+  if (isModelResolving && !initialized) {
     return null;
   }
 
