@@ -28,6 +28,7 @@ import { Canvas } from './Canvas';
 import { LayoutType } from './canvas.models';
 import { COLLAPSE_STATE } from './collapse-handler-state';
 import { ControllerService } from './controller.service';
+import { requestNodeSelection } from './node-selection-state';
 
 function getCanvasPropsFromVizNodes(vizNodes: IVisualizationNode[], entitiesCount: number) {
   const { nodes, edges } = buildDesignerCanvasModel(vizNodes);
@@ -691,5 +692,40 @@ describe('Canvas', () => {
       await vi.runAllTimersAsync();
     });
     expect(screen.queryByTestId('close-side-bar')).not.toBeInTheDocument();
+  });
+  it('keeps a selected form mounted and updates its value after a source refresh', async () => {
+    setupDynamicCatalogRegistry(await getFirstCatalogMap(catalogLibrary as CatalogLibrary));
+    const makeEntity = (message: string) =>
+      new CamelRouteVisualEntity({
+        route: {
+          id: 'route-1',
+          from: { uri: 'timer:test', steps: [{ log: { id: 'log-1', message } }] },
+        },
+      });
+    const original = await makeEntity('before').toVizNode();
+    const replacement = await makeEntity('after').toVizNode();
+    const controller = ControllerService.createController();
+    requestNodeSelection(controller, original, 'route.from.steps.0.log');
+    const { Provider } = await TestProvidersWrapper();
+    const renderCanvas = (vizNode: IVisualizationNode | undefined, isModelResolving = false) => (
+      <Provider>
+        <CanvasFormTabsProvider>
+          <VisualizationProvider controller={controller}>
+            <Canvas {...getCanvasPropsFromVizNodes(vizNode ? [vizNode] : [], 1)} isModelResolving={isModelResolving} />
+          </VisualizationProvider>
+        </CanvasFormTabsProvider>
+      </Provider>
+    );
+    const { rerender } = render(renderCanvas(original));
+    const input = await screen.findByDisplayValue('before');
+
+    rerender(renderCanvas(undefined, true));
+    expect(input).toBeInTheDocument();
+
+    rerender(renderCanvas(replacement));
+    await waitFor(() => expect(input).toHaveValue('after'));
+
+    rerender(renderCanvas(undefined));
+    await waitFor(() => expect(input).not.toBeInTheDocument());
   });
 });
