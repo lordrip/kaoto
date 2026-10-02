@@ -322,6 +322,39 @@ describe('EntitiesProvider', () => {
   });
 
   describe('async initialization lifecycle', () => {
+    it('publishes a replacement resource and its entities together', async () => {
+      const originalEntities = [{ id: 'original' }];
+      const replacementEntities = [{ id: 'replacement' }];
+      const original = createMockResource({ getEntities: vi.fn().mockReturnValue(originalEntities) });
+      const pending = createDeferred<void>();
+      const replacement = createMockResource({
+        initialize: vi.fn().mockReturnValue(pending.promise),
+        getEntities: vi.fn().mockReturnValue(replacementEntities),
+      });
+      let resource = original;
+      const wrapper = ({ children }: PropsWithChildren) => (
+        <KaotoResourceContext.Provider value={{ kaotoResource: resource }}>
+          <EntitiesProvider>{children}</EntitiesProvider>
+        </KaotoResourceContext.Provider>
+      );
+      const { result, rerender } = renderHook(() => useContext(EntitiesContext), { wrapper });
+      await waitFor(() => {
+        expect(result.current?.entities).toBe(originalEntities);
+      });
+
+      resource = replacement;
+      rerender();
+      expect(result.current?.camelResource).toBe(original);
+      expect(result.current?.entities).toBe(originalEntities);
+
+      await act(async () => {
+        pending.resolve();
+        await pending.promise;
+      });
+      expect(result.current?.camelResource).toBe(replacement);
+      expect(result.current?.entities).toBe(replacementEntities);
+    });
+
     // WORKED EXAMPLE — the failure path (entities.provider.tsx catch block).
     it('should reset entities and log when initialization rejects', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});

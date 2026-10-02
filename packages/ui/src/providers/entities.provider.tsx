@@ -34,12 +34,21 @@ export interface EntitiesContextResult {
 
 export const EntitiesContext = createContext<EntitiesContextResult | null>(null);
 
+interface EntitiesSnapshot {
+  resource: KaotoResource;
+  entities: BaseEntity[];
+  visualEntities: BaseVisualEntity[];
+}
+
 export const EntitiesProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const eventNotifier = EventNotifier.getInstance();
 
   const { kaotoResource } = useKaotoResourceContext();
-  const [entities, setEntities] = useState<BaseEntity[]>([]);
-  const [visualEntities, setVisualEntities] = useState<BaseVisualEntity[]>([]);
+  const [snapshot, setSnapshot] = useState<EntitiesSnapshot>();
+  const activeSnapshot = useMemo<EntitiesSnapshot>(
+    () => snapshot ?? { resource: kaotoResource, entities: [], visualEntities: [] },
+    [snapshot, kaotoResource],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -47,13 +56,15 @@ export const EntitiesProvider: FunctionComponent<PropsWithChildren> = ({ childre
       try {
         await kaotoResource.initialize();
         if (cancelled) return;
-        setEntities(kaotoResource.getEntities());
-        setVisualEntities(kaotoResource.getVisualEntities());
+        setSnapshot({
+          resource: kaotoResource,
+          entities: kaotoResource.getEntities(),
+          visualEntities: kaotoResource.getVisualEntities(),
+        });
       } catch (error) {
         if (cancelled) return;
         console.error('Failed to initialize KaotoResource', error);
-        setEntities([]);
-        setVisualEntities([]);
+        setSnapshot({ resource: kaotoResource, entities: [], visualEntities: [] });
       }
     };
     void init();
@@ -64,33 +75,31 @@ export const EntitiesProvider: FunctionComponent<PropsWithChildren> = ({ childre
   }, [kaotoResource]);
 
   const updateSourceCodeFromEntities = useCallback(() => {
-    void kaotoResource.toSourceCode().then((code) => {
+    void activeSnapshot.resource.toSourceCode().then((code) => {
       eventNotifier.next('entities:updated', code);
     });
-  }, [kaotoResource, eventNotifier]);
+  }, [activeSnapshot.resource, eventNotifier]);
 
   const updateEntitiesFromCamelResource = useCallback(() => {
-    const entities = kaotoResource.getEntities();
-    const visualEntities = kaotoResource.getVisualEntities();
-    setEntities(entities);
-    setVisualEntities(visualEntities);
+    const resource = activeSnapshot.resource;
+    setSnapshot({ resource, entities: resource.getEntities(), visualEntities: resource.getVisualEntities() });
 
     /**
      * Notify consumers that entities has been refreshed, hence the code needs to be updated
      */
     updateSourceCodeFromEntities();
-  }, [kaotoResource, updateSourceCodeFromEntities]);
+  }, [activeSnapshot.resource, updateSourceCodeFromEntities]);
 
   const value = useMemo(
     () => ({
-      entities,
-      visualEntities,
-      currentSchemaType: kaotoResource.getType(),
-      camelResource: kaotoResource,
+      entities: activeSnapshot.entities,
+      visualEntities: activeSnapshot.visualEntities,
+      currentSchemaType: activeSnapshot.resource.getType(),
+      camelResource: activeSnapshot.resource,
       updateEntitiesFromCamelResource,
       updateSourceCodeFromEntities,
     }),
-    [entities, visualEntities, kaotoResource, updateEntitiesFromCamelResource, updateSourceCodeFromEntities],
+    [activeSnapshot, updateEntitiesFromCamelResource, updateSourceCodeFromEntities],
   );
 
   return <EntitiesContext.Provider value={value}>{children}</EntitiesContext.Provider>;
