@@ -18,6 +18,7 @@
     "declarationMap": true,
     "jsx": "react-jsx",
     "outDir": "lib",
+    "rootDir": "./src",
 
     /* Linting */
     "strict": true,
