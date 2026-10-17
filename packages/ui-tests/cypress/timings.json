@@ -1,0 +1,264 @@
+{
+  "durations": [
+    {
+      "spec": "cypress/e2e/beansConfig.cy.ts",
+      "duration": 20028
+    },
+    {
+      "spec": "cypress/e2e/catalogVersions/catalogVersions.cy.ts",
+      "duration": 119794
+    },
+    {
+      "spec": "cypress/e2e/codeEditor/camelRouteRoundTrip.cy.ts",
+      "duration": 34070
+    },
+    {
+      "spec": "cypress/e2e/codeEditor/malformedFlows.cy.ts",
+      "duration": 10290
+    },
+    {
+      "spec": "cypress/e2e/codeEditor/multiFlowEditor.cy.ts",
+      "duration": 27861
+    },
+    {
+      "spec": "cypress/e2e/codeEditor/sourceCodeActions.cy.ts",
+      "duration": 36254
+    },
+    {
+      "spec": "cypress/e2e/componentCatalog.cy.ts",
+      "duration": 12925
+    },
+    {
+      "spec": "cypress/e2e/datamapper/json-to-json.ts",
+      "duration": 26318
+    },
+    {
+      "spec": "cypress/e2e/datamapper/multischema.ts",
+      "duration": 7767
+    },
+    {
+      "spec": "cypress/e2e/datamapper/nodeActions.cy.ts",
+      "duration": 10289
+    },
+    {
+      "spec": "cypress/e2e/datamapper/xml-to-xml.ts",
+      "duration": 22920
+    },
+    {
+      "spec": "cypress/e2e/datamapper/xpath-editor.cy.ts",
+      "duration": 35031
+    },
+    {
+      "spec": "cypress/e2e/designer/DnD/dragAndDrop.cy.ts",
+      "duration": 21404
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/hoverToolbarActions.cy.ts",
+      "duration": 24854
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepAddition.cy.ts",
+      "duration": 23228
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepCopy.cy.ts",
+      "duration": 10258
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepDisable.cy.ts",
+      "duration": 14124
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepDuplication.cy.ts",
+      "duration": 36326
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepMove.cy.ts",
+      "duration": 22622
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepPaste.cy.ts",
+      "duration": 20572
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepRemoval.cy.ts",
+      "duration": 29083
+    },
+    {
+      "spec": "cypress/e2e/designer/basicNodeActions/stepReplacement.cy.ts",
+      "duration": 23931
+    },
+    {
+      "spec": "cypress/e2e/designer/branchingFlows/branchingStepActions.cy.ts",
+      "duration": 16751
+    },
+    {
+      "spec": "cypress/e2e/designer/branchingFlows/branchingStepAddition.cy.ts",
+      "duration": 32715
+    },
+    {
+      "spec": "cypress/e2e/designer/catalogs/catalogProperties.cy.ts",
+      "duration": 23146
+    },
+    {
+      "spec": "cypress/e2e/designer/catalogs/quarkusCatalog.cy.ts",
+      "duration": 23770
+    },
+    {
+      "spec": "cypress/e2e/designer/catalogs/springBootCatalog.cy.ts",
+      "duration": 24020
+    },
+    {
+      "spec": "cypress/e2e/designer/catalogs/userSpecifiedCatalog.cy.ts",
+      "duration": 16534
+    },
+    {
+      "spec": "cypress/e2e/designer/multiflow/deleteMultiFlow.cy.ts",
+      "duration": 11206
+    },
+    {
+      "spec": "cypress/e2e/designer/multiflow/multiFlowDesigner.cy.ts",
+      "duration": 21971
+    },
+    {
+      "spec": "cypress/e2e/designer/propsWarnings/mandatoryPropsWarnings.cy.ts",
+      "duration": 11598
+    },
+    {
+      "spec": "cypress/e2e/designer/rootContainerConfig/rootContainersConf.cy.ts",
+      "duration": 29498
+    },
+    {
+      "spec": "cypress/e2e/designer/rootContainerConfig/visibilityProviderConf.cy.ts",
+      "duration": 31823
+    },
+    {
+      "spec": "cypress/e2e/designer/routeDocumentation/exportRouteDocumentation.cy.ts",
+      "duration": 97222
+    },
+    {
+      "spec": "cypress/e2e/designer/settings/aboutPage.cy.ts",
+      "duration": 8583
+    },
+    {
+      "spec": "cypress/e2e/designer/settings/switchColorScheme.cy.ts",
+      "duration": 10854
+    },
+    {
+      "spec": "cypress/e2e/designer/settings/switchDescriptionId.cy.ts",
+      "duration": 11845
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/modelineConf.cy.ts",
+      "duration": 10771
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/multiValueSerialization.cy.ts",
+      "duration": 16546
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/producerConsumerConf.cy.ts",
+      "duration": 8783
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/propertiesFilter.cy.ts",
+      "duration": 30438
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/routeBeanConf.cy.ts",
+      "duration": 40760
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/stepConfiguration.cy.ts",
+      "duration": 12310
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/stepRename.cy.ts",
+      "duration": 11502
+    },
+    {
+      "spec": "cypress/e2e/designer/sidepanelConfig/uriRouteConfig.cy.ts",
+      "duration": 25624
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/errorHandler.cy.ts",
+      "duration": 11005
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/interceptSendToEndpoint.cy.ts",
+      "duration": 8302
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/onCompletion.cy.ts",
+      "duration": 8721
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/onException.cy.ts",
+      "duration": 27687
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/rest.cy.ts",
+      "duration": 15762
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/restConfiguration.cy.ts",
+      "duration": 21675
+    },
+    {
+      "spec": "cypress/e2e/designer/specialCamelRoutes/routeConfiguration.cy.ts",
+      "duration": 14623
+    },
+    {
+      "spec": "cypress/e2e/designer/specialKamelets/serializeTemplateFrom.cy.ts",
+      "duration": 8930
+    },
+    {
+      "spec": "cypress/e2e/designer/specialStepConfiguration/dataFormatStepConfig.cy.ts",
+      "duration": 17515
+    },
+    {
+      "spec": "cypress/e2e/designer/specialStepConfiguration/expressionStepConfig.cy.ts",
+      "duration": 34906
+    },
+    {
+      "spec": "cypress/e2e/designer/specialStepConfiguration/loadBalancerConfig.cy.ts",
+      "duration": 19039
+    },
+    {
+      "spec": "cypress/e2e/designer/specialStepConfiguration/setHeadersStepConfig.cy.ts",
+      "duration": 18027
+    },
+    {
+      "spec": "cypress/e2e/designer/undoRedoKeyboard.cy.ts",
+      "duration": 8196
+    },
+    {
+      "spec": "cypress/e2e/designer/undoRedoToolbar.cy.ts",
+      "duration": 9788
+    },
+    {
+      "spec": "cypress/e2e/metadata.cy.ts",
+      "duration": 39421
+    },
+    {
+      "spec": "cypress/e2e/pipeErrorHandler.cy.ts",
+      "duration": 20876
+    },
+    {
+      "spec": "cypress/e2e/xmlSupport/basicXml.cy.ts",
+      "duration": 32846
+    },
+    {
+      "spec": "cypress/e2e/xmlSupport/beansXml.cy.ts",
+      "duration": 12016
+    },
+    {
+      "spec": "cypress/e2e/xmlSupport/multiRouteXml.cy.ts",
+      "duration": 8651
+    },
+    {
+      "spec": "cypress/e2e/xmlSupport/uriConfigXml.cy.ts",
+      "duration": 9346
+    }
+  ]
+}

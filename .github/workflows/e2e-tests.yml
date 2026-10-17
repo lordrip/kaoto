@@ -95,6 +95,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          # Balance shards by recorded spec durations (packages/ui-tests/cypress/timings.json)
+          SPLIT_FILE: cypress/timings.json
 
       - name: 💾 Save videos
         if: failure()
@@ -151,6 +153,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          # Balance shards by recorded spec durations (packages/ui-tests/cypress/timings.json)
+          SPLIT_FILE: cypress/timings.json
 
       - name: 💾 Save videos
         if: failure()
@@ -207,6 +211,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
+          # Balance shards by recorded spec durations (packages/ui-tests/cypress/timings.json)
+          SPLIT_FILE: cypress/timings.json
       - name: 💾 Save videos
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
