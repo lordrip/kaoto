@@ -41,6 +41,18 @@ describe('KaotoBridge', () => {
     expect(getByText('Test Child')).toBeInTheDocument();
   });
 
+  it('registers the canvas history with the host binding and releases it on unmount', () => {
+    const onHistory = vi.fn();
+    const { unmount } = render(
+      <KaotoBridge {...defaultProps} onHistory={onHistory}>
+        <div>Test Child</div>
+      </KaotoBridge>,
+    );
+    expect(onHistory).toHaveBeenCalledWith({ undo: expect.any(Function), redo: expect.any(Function) });
+    unmount();
+    expect(onHistory).toHaveBeenLastCalledWith(undefined);
+  });
+
   it('should call onReady on mount', () => {
     render(
       <KaotoBridge {...defaultProps}>

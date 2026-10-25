@@ -23,11 +23,10 @@ import { EntitiesProvider } from '../../providers/entities.provider';
 import { ReloadProvider } from '../../providers/reload.provider';
 import { RuntimeProvider } from '../../providers/runtime.provider';
 import { SettingsProvider } from '../../providers/settings.provider';
-import { SourceCodeSync } from '../../providers/source-code-sync';
+import { SourceCodeProvider } from '../../providers/source-code.provider';
 import { setColorScheme } from '../../utils/color-scheme';
-import { bindEditorDocument, type EditorDocumentState, type SourceCodeBridgeProviderRef } from './Bridge/editor-api';
+import { bindEditorDocument, type EditorDocumentState } from './Bridge/editor-document';
 import { KaotoBridge } from './Bridge/KaotoBridge';
-import { SourceCodeBridgeProvider } from './Bridge/SourceCodeBridgeProvider';
 import { kaotoEditorRouter } from './KaotoEditorRouter';
 
 export interface KaotoEditorInit {
@@ -45,33 +44,13 @@ interface Props {
 }
 
 export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
-  // A stable ref: the document binding below captures it once, so it must survive re-renders.
-  const editorRef = useRef<SourceCodeBridgeProviderRef>(null);
-
   // Settings state: start from initialSettings, updated by bus events
   const [settingsAdapter, setSettingsAdapter] = useState(() => new DefaultSettingsAdapter(initialSettings.settings));
   const settingsVersionRef = useRef(initialSettings.settingsVersion);
 
   // Document state via useSyncExternalStore
-  const docRef = useRef<ReturnType<typeof bindEditorDocument> | null>(null);
-  const listenersRef = useRef(new Set<() => void>());
-
-  docRef.current ??= bindEditorDocument(bus, editorRef, () => {
-    listenersRef.current.forEach((l) => {
-      l();
-    });
-  });
-
-  const subscribe = useCallback((listener: () => void) => {
-    listenersRef.current.add(listener);
-    return () => {
-      listenersRef.current.delete(listener);
-    };
-  }, []);
-
-  const getDocumentState = useCallback(() => docRef.current!.getState(), []);
-
-  const documentState: EditorDocumentState = useSyncExternalStore(subscribe, getDocumentState);
+  const [editorDocument] = useState(() => bindEditorDocument(bus));
+  const documentState: EditorDocumentState = useSyncExternalStore(editorDocument.subscribe, editorDocument.getState);
 
   // Subscribe to settings updates
   useEffect(() => {
@@ -98,7 +77,7 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
       // React Strict Mode replays mount effects. Dispose only after a real unmount.
       queueMicrotask(() => {
         if (mounts.current === 0) {
-          docRef.current?.dispose();
+          editorDocument.dispose();
           bus.dispose();
         }
       });
@@ -111,14 +90,14 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
   // History controls (native undo/redo delegated to host)
   const applyHistory = useCallback(
     (command: 'undo' | 'redo') => {
-      void docRef.current?.applyHistory(command).catch((error: unknown) => {
+      void editorDocument.applyHistory(command).catch((error: unknown) => {
         bus.emit('host:notification:show', {
           type: 'error',
           message: error instanceof Error ? error.message : 'Could not apply document history',
         });
       });
     },
-    [bus],
+    [bus, editorDocument],
   );
 
   const history = documentState.nativeUndoRedo
@@ -136,12 +115,8 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
 
   // Bridge callbacks
   const sendReady = useCallback(() => {
-    docRef.current?.ready();
-  }, []);
-
-  const sendNewEdit = useCallback(async (content: string) => {
-    docRef.current?.notifyChange(content);
-  }, []);
+    editorDocument.ready();
+  }, [editorDocument]);
 
   const request = useCallback(
     async <R extends keyof KaotoRequests>(requestName: R, payload: KaotoRequests[R]): Promise<KaotoResponses[R]> => {
@@ -149,12 +124,12 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
         return await bus.request(requestName, payload);
       } catch (error) {
         if (error instanceof BridgeError && ['NOT_CONNECTED', 'DISPOSED'].includes(error.code)) {
-          docRef.current?.suspend(error);
+          editorDocument.suspend(error);
         }
         throw error;
       }
     },
-    [bus],
+    [bus, editorDocument],
   );
 
   const getMetadata = useCallback(
@@ -257,11 +232,11 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
   );
 
   const handleRetry = useCallback(() => {
-    docRef.current?.dispose();
+    editorDocument.dispose();
     bus.dispose();
     if (init.onRetry) init.onRetry();
     else window.location.reload();
-  }, [bus, init]);
+  }, [bus, editorDocument, init]);
 
   return (
     <HostBridgeProvider bus={bus}>
@@ -288,37 +263,36 @@ export const KaotoEditor = ({ bus, initialSettings, init }: Props) => {
       >
         <ReloadProvider>
           <SettingsProvider adapter={settingsAdapter}>
-            <SourceCodeSync>
-              <SourceCodeBridgeProvider ref={editorRef} onNewEdit={sendNewEdit} history={history}>
-                <KaotoResourceProvider fileExtension={init.fileExtension}>
-                  <RuntimeProvider
-                    catalogUrl={settings.catalogUrl}
-                    runtimeCatalogName={settings.runtimeCatalogName}
-                    testingCatalogName={settings.testingCatalogName}
-                  >
-                    <CatalogLoaderProvider getResourcesContentByType={getResourcesContentByType}>
-                      <EntitiesProvider>
-                        <KaotoBridge
-                          onReady={sendReady}
-                          getMetadata={getMetadata}
-                          setMetadata={setMetadata}
-                          getResourceContent={getResourceContent}
-                          saveResourceContent={saveResourceContent}
-                          isResourceExist={isResourceExist}
-                          deleteResource={deleteResource}
-                          askUserForFileSelection={askUserForFileSelection}
-                          getSuggestions={getSuggestions}
-                          shouldSaveSchema={false}
-                          onStepUpdated={onStepUpdated}
-                        >
-                          <RouterProvider router={kaotoEditorRouter} />
-                        </KaotoBridge>
-                      </EntitiesProvider>
-                    </CatalogLoaderProvider>
-                  </RuntimeProvider>
-                </KaotoResourceProvider>
-              </SourceCodeBridgeProvider>
-            </SourceCodeSync>
+            <SourceCodeProvider adapter={editorDocument.adapter} history={history}>
+              <KaotoResourceProvider fileExtension={init.fileExtension}>
+                <RuntimeProvider
+                  catalogUrl={settings.catalogUrl}
+                  runtimeCatalogName={settings.runtimeCatalogName}
+                  testingCatalogName={settings.testingCatalogName}
+                >
+                  <CatalogLoaderProvider getResourcesContentByType={getResourcesContentByType}>
+                    <EntitiesProvider>
+                      <KaotoBridge
+                        onReady={sendReady}
+                        onHistory={editorDocument.setLocalHistory}
+                        getMetadata={getMetadata}
+                        setMetadata={setMetadata}
+                        getResourceContent={getResourceContent}
+                        saveResourceContent={saveResourceContent}
+                        isResourceExist={isResourceExist}
+                        deleteResource={deleteResource}
+                        askUserForFileSelection={askUserForFileSelection}
+                        getSuggestions={getSuggestions}
+                        shouldSaveSchema={false}
+                        onStepUpdated={onStepUpdated}
+                      >
+                        <RouterProvider router={kaotoEditorRouter} />
+                      </KaotoBridge>
+                    </EntitiesProvider>
+                  </CatalogLoaderProvider>
+                </RuntimeProvider>
+              </KaotoResourceProvider>
+            </SourceCodeProvider>
           </SettingsProvider>
         </ReloadProvider>
       </div>
